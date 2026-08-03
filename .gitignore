@@ -1,0 +1,24 @@
+# Environment — JANGAN commit key asli
+.env
+.env.*
+!.env.example
+
+# Dependencies
+node_modules
+
+# Next.js build output
+.next
+out
+
+# Local uploads (fallback storage saat dev tanpa Supabase Storage)
+public/uploads/
+
+# Prisma
+prisma/migrations/dev
+
+# Misc
+*.log
+.DS_Store
+.vercel
+*.tsbuildinfo
+next-env.d.ts

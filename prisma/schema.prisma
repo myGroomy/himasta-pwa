@@ -1,0 +1,188 @@
+// Prisma Schema - HIMASTA App V1
+// Sesuai dengan TDD.md
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// ============================================
+// ENUMS
+// ============================================
+
+enum Role {
+  ANGGOTA
+  KADIV
+  BPH
+  DOSEN
+}
+
+enum AnnouncementScope {
+  GENERAL
+  DIVISION
+}
+
+enum AnnouncementStatus {
+  DRAFT
+  PENDING_APPROVAL
+  PUBLISHED
+  REJECTED
+}
+
+enum DocumentCategory {
+  NOTULEN
+  PROPOSAL
+  LPJ
+  LAINNYA
+}
+
+// ============================================
+// MODELS
+// ============================================
+
+model Division {
+  id            String         @id @default(cuid())
+  name          String         @unique   // BPH, PSDM, RION, PR, KOMINFO
+  slug          String         @unique
+  description   String?
+  createdAt     DateTime       @default(now())
+
+  users         User[]
+  announcements Announcement[]
+  documents     Document[]
+  sessions      AttendanceSession[]
+}
+
+model User {
+  id             String    @id @default(cuid())
+  nim            String?   @unique          // null untuk dosen
+  email          String    @unique
+  password       String                     // hashed dengan bcrypt
+  name           String
+  role           Role
+  divisionId     String?
+  division       Division? @relation(fields: [divisionId], references: [id])
+  phone          String?
+  photoUrl       String?
+  isActive       Boolean   @default(true)
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  announcementsAuthored Announcement[]      @relation("AnnouncementAuthor")
+  announcementsApproved Announcement[]      @relation("AnnouncementApprover")
+  approvalLogs          ApprovalLog[]
+  attendanceRecords     AttendanceRecord[]
+  sessionsCreated       AttendanceSession[] @relation("SessionCreator")
+  documentsUploaded     Document[]          @relation("DocumentUploader")
+  notifications         Notification[]
+}
+
+model Announcement {
+  id           String              @id @default(cuid())
+  title        String
+  content      String              @db.Text
+  category     String              @default("organisasi") // event | beasiswa | akademik | organisasi
+  scope        AnnouncementScope
+  divisionId   String?             // wajib diisi jika scope = DIVISION
+  division     Division?           @relation(fields: [divisionId], references: [id])
+  status       AnnouncementStatus  @default(DRAFT)
+  authorId     String
+  author       User                @relation("AnnouncementAuthor", fields: [authorId], references: [id])
+  approvedById String?
+  approvedBy   User?               @relation("AnnouncementApprover", fields: [approvedById], references: [id])
+  rejectionReason String?          @db.Text   // alasan penolakan (wajib saat REJECTED)
+  visibleToDosen Boolean           @default(false)
+  createdAt    DateTime            @default(now())
+  updatedAt    DateTime            @updatedAt
+  publishedAt  DateTime?
+
+  approvalLogs  ApprovalLog[]
+
+  @@index([status, scope])
+  @@index([divisionId])
+  @@index([category])
+}
+
+model ApprovalLog {
+  id             String       @id @default(cuid())
+  announcementId String
+  announcement   Announcement @relation(fields: [announcementId], references: [id], onDelete: Cascade)
+  actorId        String
+  actor          User         @relation(fields: [actorId], references: [id])
+  action         String       // APPROVE | REJECT
+  note           String?      @db.Text   // catatan saat approve / alasan reject
+  createdAt      DateTime     @default(now())
+
+  @@index([announcementId])
+  @@index([actorId])
+}
+
+model AttendanceSession {
+  id          String   @id @default(cuid())
+  title       String                    // contoh: "Rapat Mingguan RION #4"
+  description String?  @db.Text
+  divisionId  String?                   // null jika sesi general/lintas divisi
+  division    Division? @relation(fields: [divisionId], references: [id])
+  qrToken     String   @unique          // token unik untuk QR
+  createdById String
+  createdBy   User     @relation("SessionCreator", fields: [createdById], references: [id])
+  startTime   DateTime
+  endTime     DateTime?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+
+  records     AttendanceRecord[]
+
+  @@index([qrToken])
+  @@index([divisionId, startTime])
+}
+
+model AttendanceRecord {
+  id         String             @id @default(cuid())
+  sessionId  String
+  session    AttendanceSession  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  userId     String
+  user       User               @relation(fields: [userId], references: [id])
+  scannedAt  DateTime           @default(now())
+
+  @@unique([sessionId, userId])   // 1 user hanya bisa absen 1x per sesi
+  @@index([userId])
+  @@index([sessionId])
+}
+
+model Document {
+  id          String            @id @default(cuid())
+  title       String
+  description String?           @db.Text
+  category    DocumentCategory
+  fileUrl     String                    // path di Supabase Storage
+  fileName    String                    // nama file original
+  fileSize    Int?                      // dalam bytes
+  mimeType    String?
+  divisionId  String?                   // null jika dokumen general
+  division    Division?         @relation(fields: [divisionId], references: [id])
+  uploadedById String
+  uploadedBy  User              @relation("DocumentUploader", fields: [uploadedById], references: [id])
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+
+  @@index([category, divisionId])
+  @@index([uploadedById])
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title     String
+  message   String   @db.Text
+  link      String?
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([userId, isRead])
+}

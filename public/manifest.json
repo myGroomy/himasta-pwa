@@ -1,0 +1,38 @@
+{
+  "name": "HIMASTA — Sistem Informasi & Operasional",
+  "short_name": "HIMASTA",
+  "description": "Sistem informasi dan operasional resmi Himpunan Mahasiswa Sains Data.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
+  "orientation": "portrait",
+  "background_color": "#ffffff",
+  "theme_color": "#4338CA",
+  "lang": "id",
+  "categories": ["education", "productivity", "utilities"],
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Scan Absensi",
+      "short_name": "Scan",
+      "description": "Buka kamera untuk scan QR absensi",
+      "url": "/absensi/scan",
+      "icons": [{ "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml" }]
+    },
+    {
+      "name": "Pengumuman",
+      "short_name": "Info",
+      "description": "Lihat pengumuman resmi HIMASTA",
+      "url": "/announcements",
+      "icons": [{ "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml" }]
+    }
+  ]
+}
