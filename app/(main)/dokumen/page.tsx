@@ -22,8 +22,8 @@ export default async function DokumenPage() {
     user.role === 'BPH'
       ? {}
       : user.role === 'DOSEN'
-      ? { divisionId: null }
-      : { OR: [{ divisionId: user.divisionId ?? '__none__' }, { divisionId: null }] }
+        ? { divisionId: null }
+        : { OR: [{ divisionId: user.divisionId ?? '__none__' }, { divisionId: null }] }
 
   const [documents, divisions] = await Promise.all([
     prisma.document.findMany({
@@ -48,7 +48,7 @@ export default async function DokumenPage() {
     <div>
       <PageHeader
         title="Arsip Dokumen"
-        description="Notulen, proposal, dan LPJ — tersimpan dan bisa diakses ulang."
+        description="Notulen, proposal, dan LPJ tersimpan dan bisa diakses ulang."
         action={
           canUpload ? (
             <Dialog>

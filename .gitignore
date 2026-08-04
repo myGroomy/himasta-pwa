@@ -1,4 +1,4 @@
-# Environment — JANGAN commit key asli
+# Environment JANGAN commit key asli
 .env
 .env.*
 !.env.example
@@ -22,3 +22,6 @@ prisma/migrations/dev
 .vercel
 *.tsbuildinfo
 next-env.d.ts
+
+# Local Skills
+Skill/

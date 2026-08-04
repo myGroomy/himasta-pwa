@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import sanitizeHtml from 'sanitize-html'
 import { notFound } from 'next/navigation'
 import { ArrowLeft, Calendar, UserRound } from 'lucide-react'
 import { requireSession } from '@/lib/permissions'
@@ -31,14 +32,26 @@ export default async function AnnouncementDetailPage({ params }: { params: { id:
     .map((n) => n[0]?.toUpperCase() ?? '')
     .join('')
 
+  const isOwner = announcement.authorId === user.id
+  const canEdit = user.role === 'BPH' || (user.role === 'KADIV' && isOwner)
+
   return (
     <div className="mx-auto max-w-3xl">
-      <Button asChild variant="ghost" size="sm" className="mb-4 -ml-2">
-        <Link href="/announcements">
-          <ArrowLeft className="h-4 w-4" />
-          Kembali
-        </Link>
-      </Button>
+      <div className="mb-4 flex items-center justify-between">
+        <Button asChild variant="ghost" size="sm" className="-ml-2">
+          <Link href="/announcements">
+            <ArrowLeft className="h-4 w-4 mr-1" />
+            Kembali
+          </Link>
+        </Button>
+        {canEdit && (
+          <Button asChild variant="outline" size="sm">
+            <Link href={`/announcements/${announcement.id}/edit`}>
+              Edit Pengumuman
+            </Link>
+          </Button>
+        )}
+      </div>
 
       <Card>
         <CardHeader>
@@ -66,7 +79,19 @@ export default async function AnnouncementDetailPage({ params }: { params: { id:
             </span>
           </div>
         </CardHeader>
-        <CardContent className="whitespace-pre-line text-sm leading-7">{announcement.content}</CardContent>
+        <CardContent 
+          className="prose prose-sm dark:prose-invert max-w-none text-sm leading-7"
+          dangerouslySetInnerHTML={{ 
+            __html: sanitizeHtml(announcement.content, {
+              allowedTags: sanitizeHtml.defaults.allowedTags.concat([ 'img', 'h1', 'h2' ]),
+              allowedAttributes: {
+                ...sanitizeHtml.defaults.allowedAttributes,
+                img: ['src', 'alt', 'class'],
+                '*': ['class']
+              }
+            }) 
+          }}
+        />
       </Card>
     </div>
   )

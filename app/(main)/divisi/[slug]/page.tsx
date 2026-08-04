@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { DOC_CATEGORY_LABELS } from '@/lib/constants'
 import { formatDate } from '@/lib/utils'
+import { DiscussionPanel } from '@/components/discussions/discussion-panel'
 
 export const dynamic = 'force-dynamic'
 
@@ -170,6 +171,15 @@ export default async function DivisionWorkspacePage({ params }: { params: { slug
             ))}
           </div>
         )}
+      </section>
+
+      {/* V3 Thread Diskusi */}
+      <section>
+        <DiscussionPanel
+          divisionId={division.id}
+          currentUserId={user.id}
+          canPost={canManage}
+        />
       </section>
     </div>
   )

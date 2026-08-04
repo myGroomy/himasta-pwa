@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import sanitizeHtml from 'sanitize-html'
 import type { Announcement, AnnouncementScope, AnnouncementStatus, User, Division } from '@prisma/client'
 import { Calendar, Eye, Globe, Lock, UserRound } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
@@ -12,10 +13,10 @@ type AnnouncementCardData = Announcement & {
 }
 
 const CATEGORY_BADGE: Record<string, string> = {
-  event: 'bg-amber-100 text-amber-800',
-  beasiswa: 'bg-emerald-100 text-emerald-800',
-  akademik: 'bg-sky-100 text-sky-800',
-  organisasi: 'bg-violet-100 text-violet-800',
+  event: 'bg-amber-100 text-amber-900 font-semibold',
+  beasiswa: 'bg-emerald-100 text-emerald-900 font-semibold',
+  akademik: 'bg-sky-100 text-sky-900 font-semibold',
+  organisasi: 'bg-violet-100 text-violet-900 font-semibold',
 }
 
 const CATEGORY_LABEL: Record<string, string> = {
@@ -86,14 +87,15 @@ export function AnnouncementCard({
               </Badge>
             )}
           </div>
-          <span className="text-xs text-muted-foreground">{timeAgo(announcement.createdAt)}</span>
         </div>
         <CardTitle className="text-lg leading-snug">
           <Link href={`/announcements/${announcement.id}`} className="hover:underline">
             {announcement.title}
           </Link>
         </CardTitle>
-        <CardDescription className="line-clamp-3 whitespace-pre-line">{announcement.content}</CardDescription>
+        <CardDescription className="line-clamp-3 overflow-hidden text-ellipsis [&>p]:inline [&>p]:mr-1">
+          <span dangerouslySetInnerHTML={{ __html: sanitizeHtml(announcement.content, { allowedTags: ['p', 'br', 'strong', 'em', 'u', 'ul', 'ol', 'li'] }) }} />
+        </CardDescription>
       </CardHeader>
       <CardContent className="pb-3 pt-0">
         {children}

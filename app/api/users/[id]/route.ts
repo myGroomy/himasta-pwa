@@ -28,15 +28,6 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
   const target = await prisma.user.findUnique({ where: { id: params.id } })
   if (!target) return notFound('User tidak ditemukan')
 
-  // BPH protection: user BPH tidak boleh diubah role/status/divisi oleh BPH lain,
-  // dan BPH tidak boleh menonaktifkan dirinya sendiri.
-  if (target.role === 'BPH') {
-    const protectedFields = ['role', 'isActive', 'divisionId'] as const
-    const attempts = protectedFields.filter((f) => f in parsed.data && parsed.data[f] !== undefined)
-    if (attempts.length > 0) {
-      return badRequest('Akun BPH tidak dapat diubah peran, status, atau divisinya')
-    }
-  }
   if (target.id === user.id && parsed.data.isActive === false) {
     return badRequest('Anda tidak dapat menonaktifkan akun sendiri')
   }
@@ -61,6 +52,26 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
       },
     })
     return NextResponse.json({ user })
+  } catch (error) {
+    return serverError(error)
+  }
+}
+
+export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+  const result = await requireApiSession(['BPH'])
+  if (isApiResponse(result)) return result
+  const user = result as SessionUser
+
+  if (params.id === user.id) {
+    return badRequest('Anda tidak dapat menghapus akun sendiri')
+  }
+
+  const target = await prisma.user.findUnique({ where: { id: params.id } })
+  if (!target) return notFound('User tidak ditemukan')
+
+  try {
+    await prisma.user.delete({ where: { id: params.id } })
+    return NextResponse.json({ ok: true })
   } catch (error) {
     return serverError(error)
   }

@@ -3,7 +3,7 @@ import type { NextRequest } from 'next/server'
 type Entry = { count: number; resetAt: number }
 
 // Rate limiter in-memory sederhana. Untuk multi-instance production,
-// ganti dengan store terdistribusi (mis. Redis) — ponytail: upgrade saat
+// ganti dengan store terdistribusi (mis. Redis) ponytail: upgrade saat
 // deploy lebih dari satu instance di Vercel.
 const buckets = new Map<string, Entry>()
 

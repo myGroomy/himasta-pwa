@@ -5,15 +5,19 @@ import { ServiceWorkerRegistration } from '@/components/shared/service-worker-re
 
 const APP_NAME = 'HIMASTA'
 const APP_DESCRIPTION =
-  'Sistem informasi dan operasional resmi Himpunan Mahasiswa Sains Data — portal pengumuman, absensi QR, dan arsip dokumen.'
+  'Sistem informasi dan operasional resmi Himpunan Mahasiswa Sains Data portal pengumuman, absensi QR, dan arsip dokumen.'
 
 export const metadata: Metadata = {
   title: {
-    default: `${APP_NAME} — Sistem Informasi & Operasional`,
+    default: `${APP_NAME} Sistem Informasi & Operasional`,
     template: `%s | ${APP_NAME}`,
   },
   description: APP_DESCRIPTION,
   manifest: '/manifest.json',
+  icons: {
+    icon: '/himasta-logo.png',
+    apple: '/himasta-logo.png',
+  },
   applicationName: APP_NAME,
   authors: [{ name: 'HIMASTA' }],
   keywords: ['HIMASTA', 'Himpunan Mahasiswa Sains Data', 'organisasi', 'absensi QR', 'pengumuman'],
@@ -22,16 +26,16 @@ export const metadata: Metadata = {
     locale: 'id_ID',
     url: process.env.NEXTAUTH_URL ?? 'https://himasta.example.com',
     siteName: APP_NAME,
-    title: `${APP_NAME} — Sistem Informasi & Operasional`,
+    title: `${APP_NAME} Sistem Informasi & Operasional`,
     description: APP_DESCRIPTION,
   },
   twitter: {
     card: 'summary',
-    title: `${APP_NAME} — Sistem Informasi & Operasional`,
+    title: `${APP_NAME} Sistem Informasi & Operasional`,
     description: APP_DESCRIPTION,
   },
   robots: {
-    index: false, // internal tool — tidak perlu diindeks mesin pencari
+    index: false, // internal tool tidak perlu diindeks mesin pencari
     follow: false,
   },
   appleWebApp: {
@@ -47,18 +51,31 @@ export const viewport: Viewport = {
   initialScale: 1,
 }
 
+import { ThemeProviderWrapper } from '@/components/shared/theme-provider-wrapper'
+import { Outfit } from 'next/font/google'
+import { clsx, type ClassValue } from 'clsx'
+import { twMerge } from 'tailwind-merge'
+
+function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs))
+}
+
+const outfit = Outfit({ subsets: ['latin'], variable: '--font-outfit' })
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="id">
+    <html lang="id" suppressHydrationWarning>
       <head>
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="format-detection" content="telephone=no" />
       </head>
-      <body className="antialiased">
-        {children}
-        <Toaster />
-        <ServiceWorkerRegistration />
+      <body className={cn("antialiased font-sans", outfit.variable)}>
+        <ThemeProviderWrapper attribute="class" defaultTheme="system" enableSystem>
+          {children}
+          <Toaster />
+          <ServiceWorkerRegistration />
+        </ThemeProviderWrapper>
       </body>
     </html>
   )

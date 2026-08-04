@@ -191,7 +191,7 @@ export function DocumentUploadForm({ divisions, userDivisionId, isBPH }: Documen
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="doc-file">File (maks 10 MB — PDF, Word, Excel, atau gambar)</Label>
+        <Label htmlFor="doc-file">File (maks 10 MB PDF, Word, Excel, atau gambar)</Label>
         <Input
           id="doc-file"
           type="file"

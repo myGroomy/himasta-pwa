@@ -59,3 +59,45 @@ self.addEventListener('fetch', (event) => {
     })
   )
 })
+
+// Web Push Notification Handlers (PRD V2 3.7)
+self.addEventListener('push', (event) => {
+  if (!event.data) return
+
+  try {
+    const payload = event.data.json()
+    const title = payload.title || 'Notifikasi HIMASTA'
+    const options = {
+      body: payload.body || 'Ada pengumuman atau pembaruan baru.',
+      icon: '/icon.svg',
+      badge: '/icon.svg',
+      data: { url: payload.url || '/notifikasi' },
+    }
+    event.waitUntil(self.registration.showNotification(title, options))
+  } catch (err) {
+    const options = {
+      body: event.data.text(),
+      icon: '/icon.svg',
+      data: { url: '/notifikasi' },
+    }
+    event.waitUntil(self.registration.showNotification('HIMASTA PWA', options))
+  }
+})
+
+self.addEventListener('notificationclick', (event) => {
+  event.notification.close()
+  const targetUrl = event.notification.data?.url || '/'
+  event.waitUntil(
+    clients.matchAll({ type: 'window', includeUncontrolled: true }).then((windowClients) => {
+      for (const client of windowClients) {
+        if (client.url === targetUrl && 'focus' in client) {
+          return client.focus()
+        }
+      }
+      if (clients.openWindow) {
+        return clients.openWindow(targetUrl)
+      }
+    })
+  )
+})
+

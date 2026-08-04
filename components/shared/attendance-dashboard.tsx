@@ -15,6 +15,7 @@ import {
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
+import { ATTENDANCE_STATUS_LABELS } from '@/lib/constants'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
@@ -34,6 +35,7 @@ type SessionData = {
   division: { id: string; name: string; slug: string } | null
   createdBy: { id: string; name: string }
   _count: { records: number }
+  statusCounts?: Record<string, number>
 }
 
 type MyRecord = {
@@ -270,6 +272,18 @@ function SessionCard({
         <CardContent className="border-t pt-4">
           {session.description && (
             <p className="mb-3 text-sm text-muted-foreground">{session.description}</p>
+          )}
+          {session.statusCounts && canManage && (
+            <div className="mb-3 flex flex-wrap gap-2">
+              {(['HADIR', 'IZIN', 'TANPA_KETERANGAN'] as const).map((s) => (
+                <Badge
+                  key={s}
+                  variant={s === 'HADIR' ? 'success' : s === 'IZIN' ? 'info' : 'destructive'}
+                >
+                  {ATTENDANCE_STATUS_LABELS[s]}: {session.statusCounts?.[s] ?? 0}
+                </Badge>
+              ))}
+            </div>
           )}
           <p className="mb-2 text-xs font-medium uppercase tracking-wide text-muted-foreground">
             Dibuat oleh {session.createdBy.name}

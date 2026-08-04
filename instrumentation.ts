@@ -1,5 +1,5 @@
 // Validasi konfigurasi lingkungan saat startup (Next.js 14+ instrumentation hook).
-// Dijalankan sekali saat server dimulai — memastikan env yang dibutuhkan tersedia.
+// Dijalankan sekali saat server dimulai memastikan env yang dibutuhkan tersedia.
 
 export async function register() {
   if (process.env.NEXT_RUNTIME === 'nodejs') {
@@ -19,7 +19,7 @@ const REQUIRED_ENV = [
   'DATABASE_URL',
   'NEXTAUTH_SECRET',
   'NEXTAUTH_URL',
-  // Supabase Storage opsional — aplikasi punya fallback lokal untuk dev
+  // Supabase Storage opsional aplikasi punya fallback lokal untuk dev
   // 'NEXT_PUBLIC_SUPABASE_URL',
   // 'SUPABASE_SERVICE_ROLE_KEY',
 ]

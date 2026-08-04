@@ -55,3 +55,31 @@ export async function DELETE(_req: NextRequest, { params }: { params: { id: stri
     return serverError(error)
   }
 }
+
+export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {
+  const user = await getApiSession()
+  if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+
+  const announcement = await prisma.announcement.findUnique({ where: { id: params.id } })
+  if (!announcement) return notFound()
+
+  const isOwner = announcement.authorId === user.id
+  const canEdit = user.role === 'BPH' || (user.role === 'KADIV' && isOwner)
+
+  if (!canEdit) {
+    return NextResponse.json({ error: 'Anda tidak berhak mengedit pengumuman ini' }, { status: 403 })
+  }
+
+  try {
+    const json = await req.json()
+    const { title, content, scope, divisionId, category, visibleToDosen } = json
+
+    const updated = await prisma.announcement.update({
+      where: { id: params.id },
+      data: { title, content, scope, divisionId, category, visibleToDosen }
+    })
+    return NextResponse.json({ ok: true, announcement: updated })
+  } catch (error) {
+    return serverError(error)
+  }
+}

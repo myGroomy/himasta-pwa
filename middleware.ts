@@ -1,10 +1,11 @@
 import { NextResponse, type NextRequest } from 'next/server'
 import { getToken } from 'next-auth/jwt'
 
-const PUBLIC_PATHS = ['/login']
+const PUBLIC_PATHS = ['/', '/login', '/welcome']
+const PUBLIC_API_PATHS = ['/api/events/register-external'] // form pendaftaran tanpa akun
 const API_AUTH_PREFIX = '/api/auth'
 
-// Security headers — diterapkan ke semua response kecuali API (untuk menghindari
+// Security headers diterapkan ke semua response kecuali API (untuk menghindari
 // konflik dengan cache headers). CSP dikecualikan ke header tambahan karena
 // aplikasi memakai inline script dari Next.js.
 const SECURITY_HEADERS = {
@@ -32,7 +33,16 @@ export async function middleware(req: NextRequest) {
 
   // API: jangan tambahkan security headers (bisa bertabrakan dengan caching),
   // tapi tetap enforce auth.
-  if (pathname.startsWith(API_AUTH_PREFIX) || PUBLIC_PATHS.includes(pathname)) {
+  const isPublicEventPath = /^\/events\/[^/]+$/.test(pathname)
+  const isPublicEventApi = /^\/api\/events\/[^/]+\/register$/.test(pathname)
+
+  if (
+    pathname.startsWith(API_AUTH_PREFIX) ||
+    PUBLIC_PATHS.includes(pathname) ||
+    PUBLIC_API_PATHS.includes(pathname) ||
+    isPublicEventPath ||
+    isPublicEventApi
+  ) {
     return NextResponse.next()
   }
 
@@ -58,11 +68,16 @@ export async function middleware(req: NextRequest) {
 export const config = {
   matcher: [
     '/',
+    '/welcome',
     '/announcements/:path*',
     '/absensi/:path*',
     '/dokumen/:path*',
     '/direktori/:path*',
     '/divisi/:path*',
+    '/proker/:path*',
+    '/izin/:path*',
+    '/events/:path*',
+    '/kalender/:path*',
     '/admin/:path*',
     '/notifikasi/:path*',
     '/api/announcements/:path*',
@@ -72,5 +87,9 @@ export const config = {
     '/api/users/:path*',
     '/api/notifications/:path*',
     '/api/approval-logs/:path*',
+    '/api/prokers/:path*',
+    '/api/tasks/:path*',
+    '/api/permissions/:path*',
+    '/api/events/:path*',
   ],
 }

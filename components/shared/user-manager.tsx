@@ -1,8 +1,8 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { useRouter } from 'next/navigation'
-import { CheckSquare, Loader2, Plus, Search, UserRoundCog, X } from 'lucide-react'
+import { CheckSquare, Loader2, Plus, Search, UserRoundCog, X, Download, Upload } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -26,6 +26,7 @@ import {
 } from '@/components/ui/dialog'
 import { toast } from '@/components/ui/use-toast'
 import { ROLE_LABELS } from '@/lib/constants'
+import Papa from 'papaparse'
 
 type ManagedUser = {
   id: string
@@ -55,6 +56,53 @@ export function UserManager({ initialUsers, divisions }: UserManagerProps) {
   const [selected, setSelected] = useState<Set<string>>(new Set())
   const [bulkBusy, setBulkBusy] = useState(false)
   const [bulkTarget, setBulkTarget] = useState<{ divisionId: string | null } | { role: string } | { isActive: boolean } | null>(null)
+  const fileInputRef = useRef<HTMLInputElement>(null)
+
+  const [statusFilter, setStatusFilter] = useState('ALL')
+
+  const handleExportCSV = () => {
+    window.open('/api/users/export', '_blank')
+  }
+
+  const handleImportCSV = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    Papa.parse(file, {
+      header: true,
+      skipEmptyLines: true,
+      complete: async (results) => {
+        const parsedUsers = results.data
+        if (parsedUsers.length === 0) {
+          toast({ title: 'File CSV kosong', variant: 'destructive' })
+          return
+        }
+
+        setBulkBusy(true)
+        try {
+          const res = await fetch('/api/users/import', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ users: parsedUsers })
+          })
+          
+          const data = await res.json()
+          if (!res.ok) throw new Error(data.error)
+          
+          toast({ title: 'Import Selesai', description: data.message, variant: 'success' })
+          router.refresh()
+        } catch (err: any) {
+          toast({ title: 'Gagal Import CSV', description: err.message, variant: 'destructive' })
+        } finally {
+          setBulkBusy(false)
+          if (fileInputRef.current) fileInputRef.current.value = ''
+        }
+      },
+      error: (error) => {
+        toast({ title: 'Gagal membaca CSV', description: error.message, variant: 'destructive' })
+      }
+    })
+  }
 
   const filtered = users.filter((u) => {
     const matchQ =
@@ -66,8 +114,35 @@ export function UserManager({ initialUsers, divisions }: UserManagerProps) {
     const matchDivision =
       divisionFilter === 'ALL' ||
       (divisionFilter === 'NONE' ? !u.division : u.division?.id === divisionFilter)
-    return matchQ && matchRole && matchDivision
+    
+    let matchStatus = true
+    if (statusFilter === 'ACTIVE') matchStatus = u.isActive
+    if (statusFilter === 'INACTIVE') matchStatus = !u.isActive && u.role !== 'ANGGOTA' // Not exactly accurate but pending usually has no division and is ANGGOTA
+    if (statusFilter === 'PENDING') matchStatus = !u.isActive && u.role === 'ANGGOTA' && !u.division
+
+    // For a cleaner status match:
+    if (statusFilter === 'PENDING') matchStatus = !u.isActive
+    if (statusFilter === 'ACTIVE') matchStatus = u.isActive
+
+    return matchQ && matchRole && matchDivision && (statusFilter === 'ALL' || matchStatus)
   })
+
+  async function deleteUser(id: string) {
+    if (!confirm('Apakah Anda yakin ingin menghapus user ini secara permanen? Tindakan ini tidak bisa dibatalkan.')) return
+
+    setBusyId(id)
+    const res = await fetch(`/api/users/${id}`, { method: 'DELETE' })
+    setBusyId(null)
+    
+    if (!res.ok) {
+      toast({ title: 'Gagal menghapus user', variant: 'destructive' })
+      return
+    }
+    
+    setUsers((prev) => prev.filter((u) => u.id !== id))
+    toast({ title: 'User dihapus', variant: 'success' })
+    router.refresh()
+  }
 
   async function updateUser(id: string, data: Record<string, unknown>) {
     setBusyId(id)
@@ -115,7 +190,6 @@ export function UserManager({ initialUsers, divisions }: UserManagerProps) {
     setBulkBusy(true)
     const results = await Promise.all(
       bulkTargets
-        .filter((u) => u.role !== 'BPH')
         .map((u) =>
           fetch(`/api/users/${u.id}`, {
             method: 'PATCH',
@@ -131,7 +205,6 @@ export function UserManager({ initialUsers, divisions }: UserManagerProps) {
     setBulkTarget(null)
     toast({
       title: failed > 0 ? `${ok} berhasil, ${failed} gagal` : `${ok} user diperbarui`,
-      description: failed > 0 ? 'Akun BPH tidak dapat diubah' : undefined,
       variant: failed > 0 ? 'default' : 'success',
     })
     router.refresh()
@@ -176,7 +249,33 @@ export function UserManager({ initialUsers, divisions }: UserManagerProps) {
             ))}
           </SelectContent>
         </Select>
-        <AddUserDialog divisions={divisions} />
+        <Select value={statusFilter} onValueChange={setStatusFilter}>
+          <SelectTrigger className="sm:w-44">
+            <SelectValue placeholder="Semua status" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="ALL">Semua status</SelectItem>
+            <SelectItem value="ACTIVE">Aktif</SelectItem>
+            <SelectItem value="INACTIVE">Nonaktif</SelectItem>
+            <SelectItem value="PENDING">Menunggu Persetujuan</SelectItem>
+          </SelectContent>
+        </Select>
+        <div className="flex items-center gap-2">
+          <Button variant="outline" size="icon" onClick={handleExportCSV} title="Export CSV">
+            <Download className="h-4 w-4" />
+          </Button>
+          <input 
+            type="file" 
+            accept=".csv" 
+            className="hidden" 
+            ref={fileInputRef} 
+            onChange={handleImportCSV} 
+          />
+          <Button variant="outline" size="icon" onClick={() => fileInputRef.current?.click()} title="Import CSV" disabled={bulkBusy}>
+            {bulkBusy ? <Loader2 className="h-4 w-4 animate-spin" /> : <Upload className="h-4 w-4" />}
+          </Button>
+          <AddUserDialog divisions={divisions} />
+        </div>
       </div>
 
       {selected.size > 0 && (
@@ -208,7 +307,7 @@ export function UserManager({ initialUsers, divisions }: UserManagerProps) {
               </SelectTrigger>
               <SelectContent>
                 {Object.entries(ROLE_LABELS).map(([value, label]) => (
-                  <SelectItem key={value} value={value} disabled={value === 'BPH'}>
+                  <SelectItem key={value} value={value}>
                     {label}
                   </SelectItem>
                 ))}
@@ -290,14 +389,14 @@ export function UserManager({ initialUsers, divisions }: UserManagerProps) {
                 <Select
                   value={u.role}
                   onValueChange={(v) => updateUser(u.id, { role: v })}
-                  disabled={busyId === u.id || u.role === 'BPH'}
+                  disabled={busyId === u.id}
                 >
                   <SelectTrigger className="w-32">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
                     {Object.entries(ROLE_LABELS).map(([value, label]) => (
-                      <SelectItem key={value} value={value} disabled={value === 'BPH'}>
+                      <SelectItem key={value} value={value}>
                         {label}
                       </SelectItem>
                     ))}
@@ -307,7 +406,7 @@ export function UserManager({ initialUsers, divisions }: UserManagerProps) {
                 <Select
                   value={u.division?.id ?? '__none__'}
                   onValueChange={(v) => updateUser(u.id, { divisionId: v === '__none__' ? null : v })}
-                  disabled={busyId === u.id || u.role === 'BPH' || u.role === 'DOSEN'}
+                  disabled={busyId === u.id || u.role === 'DOSEN'}
                 >
                   <SelectTrigger className="w-36">
                     <SelectValue placeholder="Divisi" />
@@ -326,15 +425,21 @@ export function UserManager({ initialUsers, divisions }: UserManagerProps) {
                   variant="outline"
                   size="sm"
                   onClick={() => updateUser(u.id, { isActive: !u.isActive })}
-                  disabled={busyId === u.id || u.role === 'BPH'}
+                  disabled={busyId === u.id}
                 >
                   {u.isActive ? 'Nonaktifkan' : 'Aktifkan'}
                 </Button>
-                {u.role === 'BPH' && (
-                  <Badge variant="outline" className="text-muted-foreground">
-                    Dilindungi
-                  </Badge>
-                )}
+                
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="text-destructive hover:text-destructive hover:bg-destructive/10"
+                  onClick={() => deleteUser(u.id)}
+                  disabled={busyId === u.id}
+                  title="Hapus Pengguna"
+                >
+                  <X className="h-4 w-4" />
+                </Button>
               </div>
             </div>
           ))}
@@ -374,7 +479,7 @@ function BulkConfirmDialog({
         <DialogHeader>
           <DialogTitle>Konfirmasi operasi massal</DialogTitle>
           <DialogDescription>
-            {count} user terpilih akan {describe()}. Akun BPH otomatis dilewati.
+            {count} user terpilih akan {describe()}.
           </DialogDescription>
         </DialogHeader>
         <div className="flex justify-end gap-2">

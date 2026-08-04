@@ -1,4 +1,4 @@
-# HIMASTA — Sistem Informasi & Operasional
+# HIMASTA Sistem Informasi & Operasional
 
 PWA berbasis Next.js 14 untuk operasional internal HIMASTA (portal info, absensi QR, arsip dokumen, workspace divisi).
 
@@ -13,8 +13,8 @@ PWA berbasis Next.js 14 untuk operasional internal HIMASTA (portal info, absensi
                                   └──────────────────────────────┘
 ```
 
-- **A. App** — kode aplikasi (`app/`, `components/`, `lib/`, `prisma/`). Di folder proyek ini.
-- **B. Supabase** — database + storage + studio, jalan sebagai container Docker di `~/supabase/docker`. Postgres diakses langsung via port **54322** (bukan 5432/6543 yang itu pooler Supavisor — itu minta tenant id dan bikin Prisma error).
+- **A. App** kode aplikasi (`app/`, `components/`, `lib/`, `prisma/`). Di folder proyek ini.
+- **B. Supabase** database + storage + studio, jalan sebagai container Docker di `~/supabase/docker`. Postgres diakses langsung via port **54322** (bukan 5432/6543 yang itu pooler Supavisor itu minta tenant id dan bikin Prisma error).
 
 ---
 
@@ -39,7 +39,7 @@ Windows: install **Docker Desktop** dan pastikan berjalan (WSL2 atau Hyper-V bac
 
 Urutan penting. Jalankan satu per satu.
 
-### Langkah 1 — Nyalakan Supabase
+### Langkah 1 Nyalakan Supabase
 
 ```bash
 cd ~/supabase/docker
@@ -54,7 +54,7 @@ docker ps
 
 > **Tips:** Kalau container tidak jalan karena port bentrok (54322/8000/5432), cek dulu apa yang pakai port: `netstat -ano | grep 54322` (Windows) / `ss -tlnp | grep 54322` (Linux).
 
-### Langkah 2 — Nyalakan App
+### Langkah 2 Nyalakan App
 
 ```bash
 cd "/mnt/d/1. MAIN FILE_Taufik/Downloads/Download Brave/HIMASTA"
@@ -82,9 +82,9 @@ cd ~/supabase/docker
 cp .env.example .env
 ```
 
-Buka `.env`, cari dan set **`POSTGRES_PASSWORD`** — pilih password kuat, **simpan** karena dipakai di `DATABASE_URL` app. (Default sudah ada, tapi sebaiknya ganti.)
+Buka `.env`, cari dan set **`POSTGRES_PASSWORD`** pilih password kuat, **simpan** karena dipakai di `DATABASE_URL` app. (Default sudah ada, tapi sebaiknya ganti.)
 
-Catat juga nilai **`ANON_KEY`** dan **`SERVICE_ROLE_KEY`** — dipakai di env app nanti.
+Catat juga nilai **`ANON_KEY`** dan **`SERVICE_ROLE_KEY`** dipakai di env app nanti.
 
 ### 3. Expose port Postgres langsung (wajib!)
 
@@ -101,7 +101,7 @@ Buka `docker-compose.yml`, cari service `db:` dan tambahkan blok `ports:`:
       ...
 ```
 
-> **Kenapa?** Default Supabase mengekspos `5432`/`6543` lewat Supavisor (pooler) yang butuh "tenant id" — Prisma gagal konek dengan error `no tenant identifier provided`. Port `54322` terhubung langsung ke container postgres, tanpa pooler.
+> **Kenapa?** Default Supabase mengekspos `5432`/`6543` lewat Supavisor (pooler) yang butuh "tenant id" Prisma gagal konek dengan error `no tenant identifier provided`. Port `54322` terhubung langsung ke container postgres, tanpa pooler.
 
 ### 4. Nyalakan dan verifikasi
 
@@ -125,7 +125,7 @@ npm install        # atau pnpm install
 
 ### 2. Set environment variables
 
-Buat file `.env` dan `.env.local` (keduanya wajib — `.env` dipakai Prisma CLI, `.env.local` dipakai Next.js). Salin dari template:
+Buat file `.env` dan `.env.local` (keduanya wajib `.env` dipakai Prisma CLI, `.env.local` dipakai Next.js). Salin dari template:
 
 ```bash
 cp .env.example .env
@@ -157,7 +157,7 @@ npx prisma db push
 
 Membuat semua tabel dari `prisma/schema.prisma` ke Postgres lokal. Aman dijalankan ulang.
 
-### 4. Seed data demo (idempotent — aman dijalankan ulang)
+### 4. Seed data demo (idempotent aman dijalankan ulang)
 
 ```bash
 npm run db:seed
@@ -233,17 +233,17 @@ Ada container/proses lain yang pakai port 54322/8000. Cek `docker ps`, matikan y
 
 ## Catatan Penting
 
-- **Jangan commit `.env` / `.env.local`** — berisi key. `.gitignore` sudah mencakupnya.
+- **Jangan commit `.env` / `.env.local`** berisi key. `.gitignore` sudah mencakupnya.
 - **Ganti password & key default Supabase** sebelum production. Ini setup dev lokal.
-- App diproteksi auth — semua halaman & API (kecuali `/login`) butuh session. Role: `ANGGOTA`, `KADIV`, `BPH`, `DOSEN`.
-- Rate limiter & security headers sudah aktif (in-memory — cukup untuk 1 instance dev).
+- App diproteksi auth semua halaman & API (kecuali `/login`) butuh session. Role: `ANGGOTA`, `KADIV`, `BPH`, `DOSEN`.
+- Rate limiter & security headers sudah aktif (in-memory cukup untuk 1 instance dev).
 
 ---
 
 ## Roadmap
 
 - **V1 (selesai):** auth, portal info, workspace divisi, absensi QR, arsip dokumen, direktori, notifikasi in-app, admin (approval + kelola user).
-- **V2:** proker + task, sistem perizinan, event management, kalender, push notification, anggaran ringan. Lihat `PRD_V2.md`.
-- **V3:** regenerasi periode, analytics, search lanjutan, diskusi divisi, integrasi Google. Lihat `PRD_V3.md`.
+- **V2:** proker + task, sistem perizinan, event management, kalender, push notification, anggaran ringan. Lihat `PLAN/PRD_V2.md`.
+- **V3:** regenerasi periode, analytics, search lanjutan, diskusi divisi, integrasi Google. Lihat `PLAN/PRD_V3.md`.
 
-Dokumen perancangan: `PRD.md`, `PRD_V2.md`, `PRD_V3.md`, `TDD.md`.
+Dokumen perancangan: `PLAN/PRD.md`, `PLAN/PRD_V2.md`, `PLAN/PRD_V3.md`, `PLAN/TDD.md`.

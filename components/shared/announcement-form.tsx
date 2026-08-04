@@ -6,7 +6,7 @@ import { Loader2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Textarea } from '@/components/ui/textarea'
+import { RichTextEditor } from '@/components/shared/rich-text-editor'
 import {
   Select,
   SelectContent,
@@ -25,6 +25,15 @@ type AnnouncementFormProps = {
   allowGeneral: boolean
   isBPH: boolean
   presetDivisionId?: string
+  initialData?: {
+    id: string
+    title: string
+    content: string
+    scope: AnnouncementScope
+    divisionId: string | null
+    category: string
+    visibleToDosen: boolean
+  }
 }
 
 const CATEGORIES = [
@@ -34,22 +43,25 @@ const CATEGORIES = [
   { value: 'akademik', label: 'Akademik' },
 ]
 
-export function AnnouncementForm({ divisions, defaultScope = 'DIVISION', allowGeneral, isBPH, presetDivisionId }: AnnouncementFormProps) {
+export function AnnouncementForm({ divisions, defaultScope = 'DIVISION', allowGeneral, isBPH, presetDivisionId, initialData }: AnnouncementFormProps) {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
-  const [title, setTitle] = useState('')
-  const [content, setContent] = useState('')
-  const [scope, setScope] = useState<AnnouncementScope>(defaultScope)
-  const [divisionId, setDivisionId] = useState(presetDivisionId ?? divisions[0]?.id ?? '')
-  const [category, setCategory] = useState('organisasi')
-  const [visibleToDosen, setVisibleToDosen] = useState(false)
+  const [title, setTitle] = useState(initialData?.title ?? '')
+  const [content, setContent] = useState(initialData?.content ?? '')
+  const [scope, setScope] = useState<AnnouncementScope>(initialData?.scope ?? defaultScope)
+  const [divisionId, setDivisionId] = useState(initialData?.divisionId ?? presetDivisionId ?? divisions[0]?.id ?? '')
+  const [category, setCategory] = useState(initialData?.category ?? 'organisasi')
+  const [visibleToDosen, setVisibleToDosen] = useState(initialData?.visibleToDosen ?? false)
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setLoading(true)
 
-    const res = await fetch('/api/announcements', {
-      method: 'POST',
+    const url = initialData ? `/api/announcements/${initialData.id}` : '/api/announcements'
+    const method = initialData ? 'PUT' : 'POST'
+
+    const res = await fetch(url, {
+      method,
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         title,
@@ -66,16 +78,21 @@ export function AnnouncementForm({ divisions, defaultScope = 'DIVISION', allowGe
     setLoading(false)
 
     if (!res.ok) {
-      toast({ title: 'Gagal membuat pengumuman', description: data?.error ?? 'Terjadi kesalahan', variant: 'destructive' })
+      toast({ title: initialData ? 'Gagal mengedit pengumuman' : 'Gagal membuat pengumuman', description: data?.error ?? 'Terjadi kesalahan', variant: 'destructive' })
       return
     }
 
     toast({
-      title: 'Pengumuman dibuat',
-      description: scope === 'GENERAL' && !isBPH ? 'Menunggu approval BPH untuk tayang.' : 'Pengumuman berhasil dipublikasikan.',
+      title: initialData ? 'Pengumuman diperbarui' : 'Pengumuman dibuat',
+      description: initialData ? 'Perubahan berhasil disimpan.' : scope === 'GENERAL' && !isBPH ? 'Menunggu approval BPH untuk tayang.' : 'Pengumuman berhasil dipublikasikan.',
       variant: 'success',
     })
-    router.push('/announcements')
+    
+    if (initialData) {
+      router.push(`/announcements/${initialData.id}`)
+    } else {
+      router.push('/announcements')
+    }
     router.refresh()
   }
 
@@ -148,14 +165,7 @@ export function AnnouncementForm({ divisions, defaultScope = 'DIVISION', allowGe
 
       <div className="space-y-2">
         <Label htmlFor="content">Konten</Label>
-        <Textarea
-          id="content"
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-          placeholder="Tulis isi pengumuman..."
-          rows={6}
-          required
-        />
+        <RichTextEditor value={content} onChange={setContent} />
       </div>
 
       <label className="flex items-center gap-2 text-sm">

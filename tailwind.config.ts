@@ -16,6 +16,9 @@ const config: Config = {
       },
     },
     extend: {
+      fontFamily: {
+        sans: ["var(--font-outfit)"],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -50,6 +53,24 @@ const config: Config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        pastel: {
+          red: {
+            DEFAULT: "#FDEBEC",
+            foreground: "#9F2F2D",
+          },
+          blue: {
+            DEFAULT: "#E1F3FE",
+            foreground: "#1F6C9F",
+          },
+          green: {
+            DEFAULT: "#EDF3EC",
+            foreground: "#346538",
+          },
+          yellow: {
+            DEFAULT: "#FBF3DB",
+            foreground: "#956400",
+          },
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -58,6 +79,6 @@ const config: Config = {
       },
     },
   },
-  plugins: [],
+  plugins: [require("tailwindcss-animate"), require("@tailwindcss/typography")],
 }
 export default config

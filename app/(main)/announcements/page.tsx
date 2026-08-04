@@ -34,7 +34,7 @@ export default async function AnnouncementsPage({
     <div>
       <PageHeader
         title="Pengumuman"
-        description="Informasi resmi HIMASTA — general & per divisi."
+        description="Informasi resmi HIMASTA general & per divisi."
         action={
           canCreate ? (
             <Button asChild>

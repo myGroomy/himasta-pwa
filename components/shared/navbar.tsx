@@ -1,30 +1,24 @@
 'use client'
 
-import { useState } from 'react'
+import Image from 'next/image'
 import Link from 'next/link'
-import { usePathname, useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { signOut } from 'next-auth/react'
 import {
-  GraduationCap,
-  Home,
-  Megaphone,
-  QrCode,
-  FolderOpen,
-  Users,
   Bell,
-  ShieldCheck,
-  Menu,
-  X,
   LogOut,
-  ChevronDown,
-  Building2,
+  ShieldCheck,
+  BarChart3,
+  History,
+  MessageSquarePlus,
+  Users,
 } from 'lucide-react'
-import { cn } from '@/lib/utils'
 import { ROLE_LABELS } from '@/lib/constants'
 import type { SessionUser } from '@/lib/auth'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
+import { timeAgo } from '@/lib/utils'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -33,6 +27,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { ThemeToggle } from '@/components/shared/theme-toggle'
 
 export type NavDivision = {
   id: string
@@ -44,23 +39,11 @@ type NavbarProps = {
   user: SessionUser
   divisions: NavDivision[]
   unreadCount: number
+  latestNotifications: { id: string; title: string; message: string; isRead: boolean; link: string | null; createdAt: Date }[]
 }
 
-export function Navbar({ user, divisions, unreadCount }: NavbarProps) {
-  const pathname = usePathname()
+export function Navbar({ user, unreadCount, latestNotifications }: NavbarProps) {
   const router = useRouter()
-
-  const navItems: { href: string; label: string; icon: React.ReactNode }[] = [
-    { href: '/', label: 'Portal', icon: <Home className="h-4 w-4" /> },
-    { href: '/announcements', label: 'Pengumuman', icon: <Megaphone className="h-4 w-4" /> },
-    { href: '/absensi', label: 'Absensi', icon: <QrCode className="h-4 w-4" /> },
-    { href: '/dokumen', label: 'Dokumen', icon: <FolderOpen className="h-4 w-4" /> },
-    { href: '/direktori', label: 'Direktori', icon: <Users className="h-4 w-4" /> },
-  ]
-
-  if (user.role === 'BPH') {
-    navItems.push({ href: '/admin/approval', label: 'Approval', icon: <ShieldCheck className="h-4 w-4" /> })
-  }
 
   const initials = user.name
     .split(' ')
@@ -70,111 +53,152 @@ export function Navbar({ user, divisions, unreadCount }: NavbarProps) {
     .join('')
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-14 items-center gap-4">
-        <Link href="/" className="flex items-center gap-2 font-semibold">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-            <GraduationCap className="h-5 w-5" />
+    <header className="sticky top-0 z-40 w-full border-b border-[#EAEAEA] bg-background/95 text-foreground backdrop-blur supports-[backdrop-filter]:bg-background/80">
+      <div className="container max-w-6xl mx-auto flex h-16 items-center justify-between px-4">
+        {/* Brand Header */}
+        <Link href="/" className="flex items-center gap-3 font-bold hover:opacity-90 transition-opacity">
+          <div className="relative h-9 w-9 overflow-hidden rounded-md">
+            <Image
+              src="/himasta-logo.png"
+              alt="Logo HIMASTA"
+              fill
+              className="object-contain"
+            />
           </div>
-          <span className="hidden sm:inline">HIMASTA</span>
+          <div className="flex flex-col justify-center">
+            <span className="text-xl font-extrabold tracking-tight leading-none text-foreground">HIMASTA</span>
+            <span className="text-[10px] font-medium text-muted-foreground leading-none mt-1">Sistem Informasi &amp; Operasional</span>
+          </div>
         </Link>
 
-        <nav className="hidden flex-1 items-center gap-1 md:flex">
-          {navItems.map((item) => {
-            const active =
-              item.href === '/'
-                ? pathname === '/'
-                : pathname.startsWith(item.href)
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={cn(
-                  'inline-flex items-center gap-1.5 rounded-md px-3 py-2 text-sm font-medium transition-colors',
-                  active ? 'bg-accent text-accent-foreground' : 'text-muted-foreground hover:bg-accent/50 hover:text-foreground'
-                )}
-              >
-                {item.icon}
-                {item.label}
-              </Link>
-            )
-          })}
-
-          <DropdownMenu>
+        {/* Right Actions: Theme, Notifications & Profile Avatar */}
+        <div className="flex items-center gap-2">
+          <ThemeToggle />
+          
+          <DropdownMenu modal={false}>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="sm" className="ml-2 gap-1.5 text-muted-foreground">
-                <Building2 className="h-4 w-4" />
-                Divisi
-                <ChevronDown className="h-3.5 w-3.5" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="start">
-              <DropdownMenuLabel>Workspace Divisi</DropdownMenuLabel>
-              {divisions.map((d) => (
-                <DropdownMenuItem key={d.id} asChild>
-                  <Link href={`/divisi/${d.slug}`}>{d.name}</Link>
-                </DropdownMenuItem>
-              ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </nav>
-
-        <div className="ml-auto flex items-center gap-2">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon" className="relative" aria-label="Notifikasi">
+              <Button variant="ghost" size="icon" className="relative text-muted-foreground hover:text-foreground hover:bg-secondary" aria-label="Notifikasi">
                 <Bell className="h-5 w-5" />
                 {unreadCount > 0 && (
-                  <Badge className="absolute -right-1 -top-1 h-5 min-w-5 px-1 text-xs">
+                  <Badge className="absolute -right-1 -top-1 h-5 min-w-5 px-1 text-[10px] bg-pastel-red text-pastel-red-foreground border-0">
                     {unreadCount > 99 ? '99+' : unreadCount}
                   </Badge>
                 )}
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-80">
-              <DropdownMenuLabel>Notifikasi</DropdownMenuLabel>
-              <DropdownMenuItem asChild>
-                <Link href="/notifikasi">Buka pusat notifikasi</Link>
+              <DropdownMenuLabel>Pusat Notifikasi</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              {latestNotifications.length > 0 ? (
+                <div className="max-h-[300px] overflow-y-auto">
+                  {latestNotifications.map(n => (
+                    <DropdownMenuItem key={n.id} asChild className="p-3 mb-1 cursor-pointer items-start">
+                      <Link href={n.link || '/notifikasi'} onClick={() => {
+                          if (!n.isRead) {
+                              fetch(`/api/notifications/${n.id}`, { method: 'PATCH' }).catch(() => {})
+                          }
+                      }}>
+                          <div className="flex flex-col gap-1 w-full">
+                            <div className="flex items-start justify-between w-full">
+                              <span className={`text-sm font-medium ${!n.isRead ? 'text-primary' : ''}`}>{n.title}</span>
+                              {!n.isRead && <span className="h-2 w-2 rounded-full bg-primary mt-1 shrink-0" />}
+                            </div>
+                            <span className="text-xs text-muted-foreground line-clamp-2">{n.message}</span>
+                            <span className="text-[10px] text-muted-foreground/70">{timeAgo(n.createdAt)}</span>
+                          </div>
+                      </Link>
+                    </DropdownMenuItem>
+                  ))}
+                </div>
+              ) : (
+                <div className="p-6 text-center text-sm text-muted-foreground">Belum ada notifikasi</div>
+              )}
+              <DropdownMenuSeparator />
+              <DropdownMenuItem asChild className="justify-center text-primary font-medium w-full text-center">
+                <Link href="/notifikasi">Lihat Semua Notifikasi</Link>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
 
-          <DropdownMenu>
+          <DropdownMenu modal={false}>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="gap-2 px-2">
-                <Avatar className="h-8 w-8">
-                  <AvatarFallback>{initials}</AvatarFallback>
+              <Button variant="ghost" className="gap-2 px-2 hover:bg-secondary">
+                <Avatar className="h-8 w-8 border border-[#EAEAEA]">
+                  <AvatarFallback className="bg-secondary text-foreground font-bold text-xs">
+                    {initials}
+                  </AvatarFallback>
                 </Avatar>
-                <span className="hidden text-left sm:block">
-                  <span className="block text-sm font-medium leading-tight">{user.name}</span>
-                  <span className="block text-xs text-muted-foreground leading-tight">
+                <div className="hidden text-left sm:block">
+                  <span className="block text-sm font-semibold leading-tight text-foreground">{user.name}</span>
+                  <span className="block text-[11px] text-muted-foreground leading-tight">
                     {ROLE_LABELS[user.role]}
                   </span>
-                </span>
+                </div>
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>{user.email}</DropdownMenuLabel>
+            <DropdownMenuContent align="end" className="w-56">
+              <DropdownMenuLabel className="font-normal">
+                <div className="flex flex-col space-y-1">
+                  <p className="text-sm font-semibold leading-none">{user.name}</p>
+                  <p className="text-xs leading-none text-muted-foreground">{user.email}</p>
+                </div>
+              </DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem asChild>
-                <Link href="/direktori">Profil & Direktori</Link>
+                <Link href="/profil">Profil Pengguna</Link>
               </DropdownMenuItem>
-              {user.role === 'BPH' && (
+              <DropdownMenuItem asChild>
+                <Link href="/direktori">Direktori Anggota</Link>
+              </DropdownMenuItem>
+
+              {(user.role === 'BPH' || user.role === 'KADIV') && (
                 <>
+                  <DropdownMenuSeparator />
                   <DropdownMenuItem asChild>
-                    <Link href="/admin/approval">Approval Center</Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link href="/admin/users">Kelola Anggota</Link>
+                    <Link href="/admin/approval" className="flex items-center gap-2">
+                      <ShieldCheck className="h-4 w-4 text-emerald-400" />
+                      Approval Center
+                    </Link>
                   </DropdownMenuItem>
                 </>
               )}
+
+              {user.role === 'BPH' && (
+                <>
+                  <DropdownMenuItem asChild>
+                    <Link href="/admin/analytics" className="flex items-center gap-2">
+                      <BarChart3 className="h-4 w-4 text-indigo-400" />
+                      Analytics &amp; Report
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/admin/users" className="flex items-center gap-2">
+                      <Users className="h-4 w-4 text-sky-400" />
+                      Kelola Anggota
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/admin/periode" className="flex items-center gap-2">
+                      <History className="h-4 w-4 text-violet-400" />
+                      Manajemen Periode
+                    </Link>
+                  </DropdownMenuItem>
+                </>
+              )}
+
+              <DropdownMenuSeparator />
+              <DropdownMenuItem asChild>
+                <Link href="/feedback">
+                  <MessageSquarePlus className="h-4 w-4" />
+                  Kritik &amp; Saran
+                </Link>
+              </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem
-                className="text-destructive focus:text-destructive"
+                className="text-destructive focus:text-destructive cursor-pointer"
                 onClick={async () => {
                   await signOut({ redirect: false })
-                  router.push('/login')
+                  router.push('/')
                   router.refresh()
                 }}
               >
@@ -185,64 +209,6 @@ export function Navbar({ user, divisions, unreadCount }: NavbarProps) {
           </DropdownMenu>
         </div>
       </div>
-
-      <MobileNav pathname={pathname} navItems={navItems} divisions={divisions} />
     </header>
-  )
-}
-
-function MobileNav({
-  pathname,
-  navItems,
-  divisions,
-}: {
-  pathname: string
-  navItems: { href: string; label: string; icon: React.ReactNode }[]
-  divisions: NavDivision[]
-}) {
-  const [open, setOpen] = useState(false)
-  return (
-    <div className="border-t md:hidden">
-      <button
-        onClick={() => setOpen((v) => !v)}
-        className="flex w-full items-center justify-center gap-2 py-2 text-sm text-muted-foreground"
-      >
-        {open ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
-        Menu
-      </button>
-      {open && (
-        <nav className="grid grid-cols-2 gap-1 p-2">
-          {navItems.map((item) => {
-            const active =
-              item.href === '/' ? pathname === '/' : pathname.startsWith(item.href)
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                onClick={() => setOpen(false)}
-                className={cn(
-                  'flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium',
-                  active ? 'bg-accent text-accent-foreground' : 'text-muted-foreground'
-                )}
-              >
-                {item.icon}
-                {item.label}
-              </Link>
-            )
-          })}
-          {divisions.map((d) => (
-            <Link
-              key={d.id}
-              href={`/divisi/${d.slug}`}
-              onClick={() => setOpen(false)}
-              className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-muted-foreground"
-            >
-              <Building2 className="h-4 w-4" />
-              {d.name}
-            </Link>
-          ))}
-        </nav>
-      )}
-    </div>
   )
 }

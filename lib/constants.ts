@@ -1,4 +1,15 @@
-import type { Role, AnnouncementScope, AnnouncementStatus, DocumentCategory } from '@prisma/client'
+import type {
+  Role,
+  AnnouncementScope,
+  AnnouncementStatus,
+  DocumentCategory,
+  ProkerStatus,
+  TaskStatus,
+  PermissionStatus,
+  EventStatus,
+  EventVisibility,
+  AttendanceStatus,
+} from '@prisma/client'
 
 export const ROLE_LABELS: Record<Role, string> = {
   ANGGOTA: 'Anggota',
@@ -27,8 +38,77 @@ export const DOC_CATEGORY_LABELS: Record<DocumentCategory, string> = {
 }
 
 export const DOC_CATEGORY_BADGE: Record<DocumentCategory, string> = {
-  NOTULEN: 'bg-blue-100 text-blue-800',
-  PROPOSAL: 'bg-violet-100 text-violet-800',
-  LPJ: 'bg-emerald-100 text-emerald-800',
-  LAINNYA: 'bg-slate-100 text-slate-700',
+  NOTULEN: 'bg-pastel-blue text-pastel-blue-foreground border border-[#EAEAEA]',
+  PROPOSAL: 'bg-pastel-yellow text-pastel-yellow-foreground border border-[#EAEAEA]',
+  LPJ: 'bg-pastel-green text-pastel-green-foreground border border-[#EAEAEA]',
+  LAINNYA: 'bg-secondary text-foreground border border-[#EAEAEA]',
+}
+
+export const PROKER_STATUS_LABELS: Record<ProkerStatus, string> = {
+  RENCANA: 'Rencana',
+  BERJALAN: 'Berjalan',
+  SELESAI: 'Selesai',
+  DIBATALKAN: 'Dibatalkan',
+}
+
+export const PROKER_STATUS_BADGE: Record<ProkerStatus, string> = {
+  RENCANA: 'bg-pastel-blue text-pastel-blue-foreground border border-[#EAEAEA]',
+  BERJALAN: 'bg-pastel-yellow text-pastel-yellow-foreground border border-[#EAEAEA]',
+  SELESAI: 'bg-pastel-green text-pastel-green-foreground border border-[#EAEAEA]',
+  DIBATALKAN: 'bg-secondary text-muted-foreground border border-[#EAEAEA]',
+}
+
+export const TASK_STATUS_LABELS: Record<TaskStatus, string> = {
+  BELUM: 'Belum',
+  BERJALAN: 'Berjalan',
+  SELESAI: 'Selesai',
+}
+
+export const TASK_STATUS_BADGE: Record<TaskStatus, string> = {
+  BELUM: 'bg-secondary text-muted-foreground border border-[#EAEAEA]',
+  BERJALAN: 'bg-pastel-yellow text-pastel-yellow-foreground border border-[#EAEAEA]',
+  SELESAI: 'bg-pastel-green text-pastel-green-foreground border border-[#EAEAEA]',
+}
+
+export const PERMISSION_STATUS_LABELS: Record<PermissionStatus, string> = {
+  PENDING: 'Menunggu',
+  DISETUJUI: 'Disetujui',
+  DITOLAK: 'Ditolak',
+}
+
+export const PERMISSION_STATUS_BADGE: Record<PermissionStatus, string> = {
+  PENDING: 'bg-pastel-yellow text-pastel-yellow-foreground border border-[#EAEAEA]',
+  DISETUJUI: 'bg-pastel-green text-pastel-green-foreground border border-[#EAEAEA]',
+  DITOLAK: 'bg-pastel-red text-pastel-red-foreground border border-[#EAEAEA]',
+}
+
+export const EVENT_STATUS_LABELS: Record<EventStatus, string> = {
+  DRAFT: 'Draf',
+  PENDING_APPROVAL: 'Menunggu Approval',
+  PUBLISHED: 'Tayang',
+  REJECTED: 'Ditolak',
+}
+
+export const EVENT_STATUS_BADGE: Record<EventStatus, string> = {
+  DRAFT: 'bg-secondary text-muted-foreground border border-[#EAEAEA]',
+  PENDING_APPROVAL: 'bg-pastel-yellow text-pastel-yellow-foreground border border-[#EAEAEA]',
+  PUBLISHED: 'bg-pastel-green text-pastel-green-foreground border border-[#EAEAEA]',
+  REJECTED: 'bg-pastel-red text-pastel-red-foreground border border-[#EAEAEA]',
+}
+
+export const EVENT_VISIBILITY_LABELS: Record<EventVisibility, string> = {
+  INTERNAL: 'Internal',
+  PUBLIC: 'Publik',
+}
+
+export const ATTENDANCE_STATUS_LABELS: Record<AttendanceStatus, string> = {
+  HADIR: 'Hadir',
+  IZIN: 'Izin',
+  TANPA_KETERANGAN: 'Tanpa Keterangan',
+}
+
+export const ATTENDANCE_STATUS_BADGE: Record<AttendanceStatus, string> = {
+  HADIR: 'bg-pastel-green text-pastel-green-foreground border border-[#EAEAEA]',
+  IZIN: 'bg-pastel-yellow text-pastel-yellow-foreground border border-[#EAEAEA]',
+  TANPA_KETERANGAN: 'bg-pastel-red text-pastel-red-foreground border border-[#EAEAEA]',
 }

@@ -1,9 +1,10 @@
-// Prisma Schema - HIMASTA App V1
-// Sesuai dengan TDD.md
+// Prisma Schema - HIMASTA App V1 → V3
+// Sesuai dengan TDD.md, PRD_V3.md
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 generator client {
@@ -40,6 +41,49 @@ enum DocumentCategory {
   LAINNYA
 }
 
+enum ProkerStatus {
+  RENCANA
+  BERJALAN
+  SELESAI
+  DIBATALKAN
+}
+
+enum TaskStatus {
+  BELUM
+  BERJALAN
+  SELESAI
+}
+
+enum PermissionStatus {
+  PENDING
+  DISETUJUI
+  DITOLAK
+}
+
+enum EventStatus {
+  DRAFT
+  PENDING_APPROVAL
+  PUBLISHED
+  REJECTED
+}
+
+enum EventVisibility {
+  INTERNAL
+  PUBLIC
+}
+
+enum MembershipStatus {
+  AKTIF
+  ALUMNI
+  TIDAK_AKTIF
+}
+
+enum AttendanceStatus {
+  HADIR
+  IZIN
+  TANPA_KETERANGAN
+}
+
 // ============================================
 // MODELS
 // ============================================
@@ -55,6 +99,10 @@ model Division {
   announcements Announcement[]
   documents     Document[]
   sessions      AttendanceSession[]
+  prokers       Proker[]
+  events        Event[]
+  discussionThreads DiscussionThread[]
+  memberHistories MemberHistory[]
 }
 
 model User {
@@ -79,6 +127,21 @@ model User {
   sessionsCreated       AttendanceSession[] @relation("SessionCreator")
   documentsUploaded     Document[]          @relation("DocumentUploader")
   notifications         Notification[]
+  prokersProposed       Proker[]            @relation("ProkerProposer")
+  prokersApproved       Proker[]            @relation("ProkerApprover")
+  prokersLed            Proker[]            @relation("ProkerPj")
+  tasksAssigned         Task[]
+  permissionsRequested  Permission[]        @relation("PermissionRequester")
+  permissionsApproved   Permission[]        @relation("PermissionApprover")
+  eventsCreated         Event[]
+  eventsApproved        Event[]             @relation("EventApprover")
+  eventRegistrations    EventRegistration[]
+  memberHistories       MemberHistory[]
+  prokerEvaluations     ProkerEvaluation[]
+  eventSurveys          EventSurvey[]
+  feedbacksBPH          FeedbackBPH[]
+  discussionThreads     DiscussionThread[]
+  discussionReplies     DiscussionReply[]
 }
 
 model Announcement {
@@ -147,6 +210,7 @@ model AttendanceRecord {
   session    AttendanceSession  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
   userId     String
   user       User               @relation(fields: [userId], references: [id])
+  status     AttendanceStatus   @default(HADIR)
   scannedAt  DateTime           @default(now())
 
   @@unique([sessionId, userId])   // 1 user hanya bisa absen 1x per sesi
@@ -185,4 +249,237 @@ model Notification {
   createdAt DateTime @default(now())
 
   @@index([userId, isRead])
+}
+
+// ============================================
+// V2 PROGRAM KERJA, TASK, IZIN, EVENT
+// ============================================
+
+model Proker {
+  id              String      @id @default(cuid())
+  name            String
+  description     String?     @db.Text
+  status          ProkerStatus @default(RENCANA)
+  timeline        String?                 // deskripsi ringkas timeline (misal "Mar–Mei 2026")
+  startDate       DateTime?
+  endDate         DateTime?
+  estimateBudget  Decimal?    @db.Decimal(12, 2)
+  actualBudget    Decimal?    @db.Decimal(12, 2)
+  divisionId      String
+  division        Division    @relation(fields: [divisionId], references: [id], onDelete: Cascade)
+  proposedById    String
+  proposedBy      User        @relation("ProkerProposer", fields: [proposedById], references: [id])
+  approvedById    String?
+  approvedBy      User?       @relation("ProkerApprover", fields: [approvedById], references: [id])
+  pjId            String?
+  pj              User?       @relation("ProkerPj", fields: [pjId], references: [id])
+  rejectedReason  String?     @db.Text
+  approvedAt      DateTime?
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  tasks           Task[]
+  evaluation      ProkerEvaluation?
+
+  @@index([divisionId, status])
+  @@index([proposedById])
+}
+
+model Task {
+  id          String      @id @default(cuid())
+  title       String
+  description String?     @db.Text
+  status      TaskStatus  @default(BELUM)
+  prokerId    String
+  proker      Proker      @relation(fields: [prokerId], references: [id], onDelete: Cascade)
+  assigneeId  String?
+  assignee    User?       @relation(fields: [assigneeId], references: [id], onDelete: SetNull)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  @@index([prokerId])
+  @@index([assigneeId])
+}
+
+model Permission {
+  id            String           @id @default(cuid())
+  reason        String           @db.Text
+  sessionTitle  String                      // kegiatan/rapat yang ditinggalkan
+  sessionId     String?                     // optional link ke AttendanceSession
+  startTime     DateTime?                   // waktu kegiatan (opsional)
+  status        PermissionStatus @default(PENDING)
+  requesterId   String
+  requester     User             @relation("PermissionRequester", fields: [requesterId], references: [id])
+  approvedById  String?
+  approvedBy    User?            @relation("PermissionApprover", fields: [approvedById], references: [id])
+  responseNote  String?          @db.Text   // catatan kadiv saat approve/reject
+  decidedAt     DateTime?
+  createdAt     DateTime         @default(now())
+
+  @@index([requesterId, status])
+  @@index([sessionId])
+}
+
+model Event {
+  id              String           @id @default(cuid())
+  name            String
+  description     String?          @db.Text
+  startTime       DateTime
+  endTime         DateTime?
+  location        String?
+  capacity        Int?
+  visibility      EventVisibility  @default(INTERNAL)
+  status          EventStatus      @default(DRAFT)
+  divisionId      String?                    // null jika general/publik dibuat BPH
+  division        Division?        @relation(fields: [divisionId], references: [id])
+  createdById     String
+  createdBy       User             @relation(fields: [createdById], references: [id])
+  approvedById    String?
+  approvedBy      User?            @relation("EventApprover", fields: [approvedById], references: [id])
+  rejectedReason  String?          @db.Text
+  approvedAt      DateTime?
+  publishedAt     DateTime?
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+
+  registrations   EventRegistration[]
+  surveys         EventSurvey[]
+
+  @@index([divisionId, status])
+  @@index([startTime])
+}
+
+model EventRegistration {
+  id         String   @id @default(cuid())
+  eventId    String
+  event      Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  userId     String?                      // null jika eksternal
+  user       User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  name       String                       // nama (auto dari user utk anggota)
+  email      String?                      // wajib utk eksternal
+  phone      String?
+  institution String?                     // instansi / asal universitas
+  qrToken    String?  @unique             // token absensi eksternal (jalur QR terpisah)
+  attended   Boolean  @default(false)
+  createdAt  DateTime @default(now())
+
+  @@unique([eventId, userId])
+  @@index([eventId])
+}
+
+// ============================================
+// V3 PERIODE, REGENERASI, EVALUASI, ANALYTICS
+// ============================================
+
+model Period {
+  id          String    @id @default(cuid())
+  name        String    @unique  // contoh: "2025/2026"
+  isActive    Boolean   @default(false)
+  startDate   DateTime
+  endDate     DateTime?
+  createdAt   DateTime  @default(now())
+
+  memberHistories  MemberHistory[]
+  prokerEvaluations ProkerEvaluation[]
+  feedbacksBPH      FeedbackBPH[]
+
+  @@index([isActive])
+}
+
+model MemberHistory {
+  id         String   @id @default(cuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  periodId   String
+  period     Period   @relation(fields: [periodId], references: [id], onDelete: Cascade)
+  divisionId String?
+  division   Division? @relation(fields: [divisionId], references: [id], onDelete: SetNull)
+  role       Role
+  status     MembershipStatus @default(AKTIF)
+  joinedAt   DateTime @default(now())
+  leftAt     DateTime?
+
+  @@unique([userId, periodId])
+  @@index([userId])
+  @@index([periodId])
+}
+
+model ProkerEvaluation {
+  id           String   @id @default(cuid())
+  prokerId     String   @unique
+  proker       Proker   @relation(fields: [prokerId], references: [id], onDelete: Cascade)
+  periodId     String
+  period       Period   @relation(fields: [periodId], references: [id])
+  authorId     String
+  author       User     @relation(fields: [authorId], references: [id])
+  whatWorked   String   @db.Text
+  whatFailed   String   @db.Text
+  lessons      String   @db.Text
+  overallRating Int      // 1–5
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([prokerId])
+  @@index([periodId])
+}
+
+model EventSurvey {
+  id        String   @id @default(cuid())
+  eventId   String
+  event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  rating    Int      // 1–5
+  comment   String?  @db.Text
+  isAnon    Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@unique([eventId, userId])  // 1 user 1 survey per event
+  @@index([eventId])
+}
+
+model FeedbackBPH {
+  id        String   @id @default(cuid())
+  content   String   @db.Text
+  authorId  String?
+  author    User?    @relation(fields: [authorId], references: [id], onDelete: SetNull)
+  isAnon    Boolean  @default(false)
+  periodId  String
+  period    Period   @relation(fields: [periodId], references: [id])
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([periodId, isRead])
+}
+
+model DiscussionThread {
+  id         String   @id @default(cuid())
+  title      String
+  content    String   @db.Text
+  divisionId String
+  division   Division @relation(fields: [divisionId], references: [id], onDelete: Cascade)
+  authorId   String
+  author     User     @relation(fields: [authorId], references: [id])
+  isPinned   Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  replies    DiscussionReply[]
+
+  @@index([divisionId])
+  @@index([authorId])
+}
+
+model DiscussionReply {
+  id        String          @id @default(cuid())
+  threadId  String
+  thread    DiscussionThread @relation(fields: [threadId], references: [id], onDelete: Cascade)
+  authorId  String
+  author    User             @relation(fields: [authorId], references: [id])
+  content   String          @db.Text
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
+
+  @@index([threadId])
+  @@index([authorId])
 }

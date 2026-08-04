@@ -1,17 +1,18 @@
 // Seed script HIMASTA V1
 // Menjalankan: npx prisma db seed
-// Idempotent — aman dijalankan berulang (upsert, tanpa duplikat).
+// Idempotent aman dijalankan berulang (upsert, tanpa duplikat).
 const { PrismaClient } = require('@prisma/client')
 const bcrypt = require('bcryptjs')
 
 const prisma = new PrismaClient()
 
 const DIVISIONS = [
-  { name: 'BPH', slug: 'bph', description: 'Badan Pengurus Harian — koordinasi seluruh divisi' },
+  { name: 'BPH', slug: 'bph', description: 'Badan Pengurus Harian koordinasi seluruh divisi' },
   { name: 'PSDM', slug: 'psdm', description: 'Pengembangan Sumber Daya Manusia' },
   { name: 'RION', slug: 'rion', description: 'Riset & Inovasi' },
   { name: 'PR', slug: 'pr', description: 'Public Relations' },
   { name: 'KOMINFO', slug: 'kominfo', description: 'Komunikasi & Informasi' },
+  { name: 'Akademik', slug: 'akademik', description: 'Divisi Akademik dan Keilmuan' },
 ]
 
 async function main() {
@@ -35,10 +36,12 @@ async function main() {
     { nim: '22003', email: 'kadiv.rion@himasta.id', name: 'Bima RION', role: 'KADIV', divisionSlug: 'rion' },
     { nim: '22004', email: 'kadiv.pr@himasta.id', name: 'Salsa PR', role: 'KADIV', divisionSlug: 'pr' },
     { nim: '22005', email: 'kadiv.kominfo@himasta.id', name: 'Fajar KOMINFO', role: 'KADIV', divisionSlug: 'kominfo' },
+    { nim: '22010', email: 'kadiv.akademik@himasta.id', name: 'Toni Akademik', role: 'KADIV', divisionSlug: 'akademik' },
     { nim: '22006', email: 'anggota.psdm@himasta.id', name: 'Nadia Anggota', role: 'ANGGOTA', divisionSlug: 'psdm' },
     { nim: '22007', email: 'anggota.rion@himasta.id', name: 'Arif Anggota', role: 'ANGGOTA', divisionSlug: 'rion' },
     { nim: '22008', email: 'anggota.pr@himasta.id', name: 'Mira Anggota', role: 'ANGGOTA', divisionSlug: 'pr' },
     { nim: '22009', email: 'anggota.kominfo@himasta.id', name: 'Rizky Anggota', role: 'ANGGOTA', divisionSlug: 'kominfo' },
+    { nim: '22011', email: 'anggota.akademik@himasta.id', name: 'Rina Anggota', role: 'ANGGOTA', divisionSlug: 'akademik' },
     { email: 'dosen@himasta.id', name: 'Dr. Surya Dosen', role: 'DOSEN', divisionSlug: null },
   ]
 
@@ -62,7 +65,7 @@ async function main() {
   }
   console.log(`✓ ${Object.keys(createdUsers).length} user demo siap (password: himasta123)`)
 
-  // Pengumuman contoh (upsert by unique title — cukup untuk idempotency demo)
+  // Pengumuman contoh (upsert by unique title cukup untuk idempotency demo)
   const bph = createdUsers['bph@himasta.id']
   const announcements = [
     {
@@ -170,7 +173,7 @@ async function main() {
   }
   console.log('✓ 1 sesi absensi + rekap contoh siap')
 
-  // Dokumen contoh (hanya dibuat bila belum ada — fileUrl disimpan sebagai placeholder)
+  // Dokumen contoh (hanya dibuat bila belum ada fileUrl disimpan sebagai placeholder)
   const sampleDocs = [
     {
       title: 'Notulen Rapat PSDM #1',
@@ -188,7 +191,7 @@ async function main() {
     },
     {
       title: 'LPJ Periode Berjalan (Contoh)',
-      description: 'Laporan pertanggungjawaban kegiatan BPH — contoh format.',
+      description: 'Laporan pertanggungjawaban kegiatan BPH contoh format.',
       category: 'LPJ',
       divisionSlug: 'bph',
       uploaderEmail: 'bph@himasta.id',
@@ -214,7 +217,134 @@ async function main() {
   }
   console.log('✓ 3 dokumen contoh siap')
 
-  console.log('✅ Seed selesai! (idempotent — aman dijalankan ulang)')
+  // ===== V2: Proker, Task, Izin, Event =====
+  const kadivRion = createdUsers['kadiv.rion@himasta.id']
+  const kadivPsdm = createdUsers['kadiv.psdm@himasta.id']
+  const anggotaRion = createdUsers['anggota.rion@himasta.id']
+
+  // Proker contoh (RION)
+  const proker = await prisma.proker?.findFirst({ where: { name: 'Seminar Data Science 2026' } })
+  if (proker) {
+    await prisma.task.createMany({
+      data: [
+        { title: 'Cari pembicara', status: 'SELESAI', prokerId: proker.id, assigneeId: anggotaRion.id },
+        { title: 'Booking venue', status: 'BERJALAN', prokerId: proker.id, assigneeId: anggotaRion.id },
+        { title: 'Publikasi & pendaftaran', status: 'BELUM', prokerId: proker.id },
+      ],
+      skipDuplicates: true,
+    })
+    console.log('✓ 3 task contoh utk proker seminar siap')
+  } else {
+    const createdProker = await prisma.proker.create({
+      data: {
+        name: 'Seminar Data Science 2026',
+        description: 'Seminar tahunan HIMASTA pembicara praktisi industri data.',
+        status: 'BERJALAN',
+        divisionId: createdDivisions['rion'].id,
+        proposedById: kadivRion.id,
+        approvedById: bph.id,
+        approvedAt: new Date(),
+        estimateBudget: 2500000,
+        actualBudget: 0,
+        timeline: 'Agustus–Oktober 2026',
+        startDate: new Date('2026-08-15'),
+        endDate: new Date('2026-10-15'),
+        pjId: anggotaRion.id,
+      },
+    })
+    await prisma.task.createMany({
+      data: [
+        { title: 'Cari pembicara', status: 'SELESAI', prokerId: createdProker.id, assigneeId: anggotaRion.id },
+        { title: 'Booking venue', status: 'BERJALAN', prokerId: createdProker.id, assigneeId: anggotaRion.id },
+        { title: 'Publikasi & pendaftaran', status: 'BELUM', prokerId: createdProker.id },
+      ],
+    })
+    console.log('✓ 1 proker + 3 task contoh siap')
+  }
+
+  // Proker menunggu approval (PSDM)
+  const pendingProkerExists = await prisma.proker.findFirst({ where: { name: 'Pelatihan Public Speaking' } })
+  if (!pendingProkerExists) {
+    await prisma.proker.create({
+      data: {
+        name: 'Pelatihan Public Speaking',
+        description: 'Pelatihan soft skill untuk anggota baru.',
+        status: 'RENCANA',
+        divisionId: createdDivisions['psdm'].id,
+        proposedById: kadivPsdm.id,
+        estimateBudget: 500000,
+        timeline: 'November 2026',
+      },
+    })
+    console.log('✓ 1 proker menunggu approval siap')
+  }
+
+  // Izin contoh (anggota RION, sudah diproses)
+  const permExists = await prisma.permission.findFirst({ where: { sessionTitle: 'Rapat Mingguan RION #5' } })
+  if (!permExists) {
+    await prisma.permission.create({
+      data: {
+        reason: 'Ada jadwal kuliah pengganti di jam yang sama.',
+        sessionTitle: 'Rapat Mingguan RION #5',
+        status: 'DISETUJUI',
+        requesterId: anggotaRion.id,
+        approvedById: kadivRion.id,
+        decidedAt: new Date(),
+      },
+    })
+    console.log('✓ 1 izin contoh siap')
+  }
+
+  // Event contoh (RION, publik langsung tayang)
+  const eventExists = await prisma.event.findFirst({ where: { name: 'Workshop Data Analysis' } })
+  if (!eventExists) {
+    const event = await prisma.event.create({
+      data: {
+        name: 'Workshop Data Analysis',
+        description: 'Workshop analisis data pakai Python untuk umum.',
+        startTime: new Date('2026-09-10T09:00:00Z'),
+        endTime: new Date('2026-09-10T15:00:00Z'),
+        location: 'Lab Komputer Gedung C',
+        capacity: 60,
+        visibility: 'PUBLIC',
+        status: 'PUBLISHED',
+        divisionId: createdDivisions['rion'].id,
+        createdById: kadivRion.id,
+        approvedById: bph.id,
+        approvedAt: new Date(),
+        publishedAt: new Date(),
+      },
+    })
+    // Pendaftaran anggota (unique: eventId+userId)
+    await prisma.eventRegistration.upsert({
+      where: { eventId_userId: { eventId: event.id, userId: anggotaRion.id } },
+      update: {},
+      create: {
+        eventId: event.id,
+        userId: anggotaRion.id,
+        name: anggotaRion.name,
+        email: anggotaRion.email,
+        qrToken: `demo-token-rion-${event.id}`,
+      },
+    })
+    // Pendaftaran eksternal (check by email, no unique constraint)
+    const extExists = await prisma.eventRegistration.findFirst({
+      where: { eventId: event.id, email: 'andi.eksternal@mail.com' },
+    })
+    if (!extExists) {
+      await prisma.eventRegistration.create({
+        data: {
+          eventId: event.id,
+          name: 'Andi Peserta Eksternal',
+          email: 'andi.eksternal@mail.com',
+          qrToken: `demo-token-ext-${event.id}`,
+        },
+      })
+    }
+    console.log('✓ 1 event publik + 2 pendaftaran contoh siap')
+  }
+
+  console.log('✅ Seed selesai! (idempotent aman dijalankan ulang)')
 }
 
 main()

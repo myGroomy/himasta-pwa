@@ -310,7 +310,7 @@ function RejectDialog({
             {isBulk ? `Tolak ${count} pengumuman` : 'Tolak pengumuman'}
           </DialogTitle>
           <DialogDescription>
-            Alasan penolakan wajib diisi — akan dikirim ke penulis dan dicatat di audit trail.
+            Alasan penolakan wajib diisi akan dikirim ke penulis dan dicatat di audit trail.
           </DialogDescription>
         </DialogHeader>
         <div className="space-y-2">
