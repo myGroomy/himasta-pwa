@@ -1,16 +1,13 @@
 'use client'
 
-import { Suspense, useEffect, useState } from 'react'
-import { useSearchParams } from 'next/navigation'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { ArrowLeft, CheckCircle2, Loader2, XCircle } from 'lucide-react'
 import { QrScanner } from '@/components/shared/qr-scanner'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 
-function ScanView() {
-  const searchParams = useSearchParams()
-  const token = searchParams.get('token')
+export function SessionScanView({ token }: { token: string | null }) {
   const [autoResult, setAutoResult] = useState<{ ok: boolean; message: string } | null>(null)
   const [autoLoading, setAutoLoading] = useState(!!token)
 
@@ -48,15 +45,15 @@ function ScanView() {
   return (
     <div className="mx-auto max-w-md space-y-4">
       <Button asChild variant="ghost" size="sm" className="-ml-2">
-        <Link href="/absensi">
+        <Link href="/kegiatan">
           <ArrowLeft className="h-4 w-4" />
-          Kembali ke Absensi
+          Kembali ke Kegiatan
         </Link>
       </Button>
 
       <Card>
         <CardHeader>
-          <CardTitle className="text-lg">Scan QR Absensi</CardTitle>
+          <CardTitle className="text-lg">Absen via Scan QR</CardTitle>
         </CardHeader>
         <CardContent>
           {token ? (
@@ -88,24 +85,10 @@ function ScanView() {
 
       {!token && (
         <p className="text-center text-xs text-muted-foreground">
-          Arahkan kamera ke QR yang ditampilkan Kadiv/BPH saat rapat. QR juga bisa dipindai dari kamera HP biasa
-          dan akan membuka halaman ini otomatis.
+          Arahkan kamera ke QR yang ditampilkan BPH/Kadiv saat kegiatan. QR juga bisa dipindai dari
+          kamera HP biasa dan akan membuka halaman ini otomatis.
         </p>
       )}
     </div>
-  )
-}
-
-export default function ScanPage() {
-  return (
-    <Suspense
-      fallback={
-        <div className="flex min-h-[50vh] items-center justify-center">
-          <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
-        </div>
-      }
-    >
-      <ScanView />
-    </Suspense>
   )
 }

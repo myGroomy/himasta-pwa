@@ -84,6 +84,14 @@ enum AttendanceStatus {
   TANPA_KETERANGAN
 }
 
+enum KegiatanCategory {
+  RAPAT
+  MAKRAB
+  MUBES
+  PROKER
+  LAINNYA
+}
+
 // ============================================
 // MODELS
 // ============================================
@@ -117,6 +125,8 @@ model User {
   phone          String?
   photoUrl       String?
   isActive       Boolean   @default(true)
+  pendingApproval Boolean  @default(false)   // true = registrasi baru menunggu persetujuan BPH
+  qrToken        String?   @unique          // token QR pribadi untuk absensi (di-scan BPH/Kadiv)
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
 
@@ -185,11 +195,12 @@ model ApprovalLog {
 }
 
 model AttendanceSession {
-  id          String   @id @default(cuid())
-  title       String                    // contoh: "Rapat Mingguan RION #4"
-  description String?  @db.Text
-  divisionId  String?                   // null jika sesi general/lintas divisi
-  division    Division? @relation(fields: [divisionId], references: [id])
+  id          String             @id @default(cuid())
+  title       String             // contoh: "Rapat Mingguan RION #4"
+  description String?            @db.Text
+  category    KegiatanCategory   @default(RAPAT)   // Rapat | Makrab | Mubes | Proker | Lainnya
+  divisionId  String?            // null jika sesi general/lintas divisi (scope organisasi)
+  division    Division?          @relation(fields: [divisionId], references: [id])
   qrToken     String   @unique          // token unik untuk QR
   createdById String
   createdBy   User     @relation("SessionCreator", fields: [createdById], references: [id])

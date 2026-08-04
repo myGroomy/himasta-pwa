@@ -1,14 +1,12 @@
-import Link from 'next/link'
-import { ScanLine } from 'lucide-react'
 import { requireSession } from '@/lib/permissions'
 import { prisma } from '@/lib/prisma'
-import { AttendanceDashboard } from '@/components/shared/attendance-dashboard'
+import { KegiatanDashboard } from '@/components/shared/kegiatan-dashboard'
 import { PageHeader } from '@/components/shared/page-header'
-import { Button } from '@/components/ui/button'
+import { QrCode } from 'lucide-react'
 
 export const dynamic = 'force-dynamic'
 
-export default async function AbsensiPage() {
+export default async function KegiatanPage() {
   const user = await requireSession()
 
   const sessionWhere =
@@ -55,7 +53,6 @@ export default async function AbsensiPage() {
     ...s,
     startTime: s.startTime.toISOString(),
     endTime: s.endTime?.toISOString() ?? null,
-    // breakdown status kehadiran utk rekap (Hadir / Izin / Tanpa Keterangan)
     statusCounts: s.records.reduce(
       (acc, r) => {
         acc[r.status] = (acc[r.status] ?? 0) + 1
@@ -77,19 +74,17 @@ export default async function AbsensiPage() {
   return (
     <div>
       <PageHeader
-        title="Absensi"
-        description="Absensi rapat via QR tanpa tanda tangan manual."
+        title="Kegiatan"
+        description="Pusat kegiatan HIMASTA — rapat, makrab, mubes, dan proker. Absensi via QR tanpa tanda tangan manual."
         action={
-          <Button asChild>
-            <Link href="/absensi/scan">
-              <ScanLine className="h-4 w-4" />
-              Scan QR
-            </Link>
-          </Button>
+          <span className="hidden items-center gap-2 text-sm text-muted-foreground sm:flex">
+            <QrCode className="h-4 w-4" />
+            Scan QR kegiatan / QR pribadi anggota
+          </span>
         }
       />
 
-      <AttendanceDashboard
+      <KegiatanDashboard
         user={{ id: user.id, role: user.role, divisionId: user.divisionId }}
         sessions={serializableSessions}
         myRecords={serializableRecords}

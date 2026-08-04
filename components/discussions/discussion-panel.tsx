@@ -107,9 +107,9 @@ export function DiscussionPanel({
   }
 
   const roleColor: Record<string, string> = {
-    BPH: 'bg-indigo-100 text-indigo-700',
-    KADIV: 'bg-violet-100 text-violet-700',
-    ANGGOTA: 'bg-slate-100 text-slate-700',
+    BPH: 'bg-blue-100 text-blue-700',
+    KADIV: 'bg-cyan-100 text-cyan-700',
+    ANGGOTA: 'bg-muted text-muted-foreground',
     DOSEN: 'bg-green-100 text-green-700',
   }
 

@@ -30,7 +30,7 @@ export async function GET() {
       u.phone || '',
       u.role,
       u.division?.name || 'UMUM/BPH',
-      u.isActive ? 'Aktif' : 'Nonaktif'
+      u.pendingApproval ? 'Pending' : u.isActive ? 'Aktif' : 'Nonaktif'
     ])
 
     const csvContent = [headers.join(','), ...rows.map(row => row.join(','))].join('\n')

@@ -9,6 +9,7 @@ import type {
   EventStatus,
   EventVisibility,
   AttendanceStatus,
+  KegiatanCategory,
 } from '@prisma/client'
 
 export const ROLE_LABELS: Record<Role, string> = {
@@ -111,4 +112,20 @@ export const ATTENDANCE_STATUS_BADGE: Record<AttendanceStatus, string> = {
   HADIR: 'bg-pastel-green text-pastel-green-foreground border border-[#EAEAEA]',
   IZIN: 'bg-pastel-yellow text-pastel-yellow-foreground border border-[#EAEAEA]',
   TANPA_KETERANGAN: 'bg-pastel-red text-pastel-red-foreground border border-[#EAEAEA]',
+}
+
+export const KEGIATAN_CATEGORY_LABELS: Record<KegiatanCategory, string> = {
+  RAPAT: 'Rapat',
+  MAKRAB: 'Makrab',
+  MUBES: 'Mubes',
+  PROKER: 'Proker',
+  LAINNYA: 'Lainnya',
+}
+
+export const KEGIATAN_CATEGORY_BADGE: Record<KegiatanCategory, string> = {
+  RAPAT: 'bg-pastel-blue text-pastel-blue-foreground border border-[#EAEAEA]',
+  MAKRAB: 'bg-pastel-green text-pastel-green-foreground border border-[#EAEAEA]',
+  MUBES: 'bg-pastel-yellow text-pastel-yellow-foreground border border-[#EAEAEA]',
+  PROKER: 'bg-pastel-red text-pastel-red-foreground border border-[#EAEAEA]',
+  LAINNYA: 'bg-secondary text-muted-foreground border border-[#EAEAEA]',
 }

@@ -95,7 +95,7 @@ export function EventRegistrationForm({ eventId, eventName, session }: EventRegi
             <p className="text-xl font-bold">{ticketData.name}</p>
           </div>
           
-          <div className="bg-white p-4 rounded-xl border-2 border-dashed border-[#EAEAEA] shadow-inner">
+          <div className="bg-white p-4 rounded-xl border-2 border-dashed border-border shadow-inner">
             <img src={qrImageUrl} alt="QR Code Tiket" className="w-48 h-48 mx-auto" />
           </div>
           
@@ -171,7 +171,7 @@ export function EventRegistrationForm({ eventId, eventName, session }: EventRegi
 
   if (session) {
     return (
-      <Card className="w-full max-w-md mx-auto shadow-lg border-[#EAEAEA]">
+      <Card className="w-full max-w-md mx-auto shadow-lg border-border">
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-2xl">
             <Ticket className="h-6 w-6 text-primary" />
@@ -193,7 +193,7 @@ export function EventRegistrationForm({ eventId, eventName, session }: EventRegi
         </TabsList>
         
         <TabsContent value="anggota">
-          <Card className="shadow-lg border-[#EAEAEA]">
+          <Card className="shadow-lg border-border">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-xl">
                 <Ticket className="h-5 w-5 text-primary" />
@@ -214,7 +214,7 @@ export function EventRegistrationForm({ eventId, eventName, session }: EventRegi
         </TabsContent>
         
         <TabsContent value="umum">
-          <Card className="shadow-lg border-[#EAEAEA]">
+          <Card className="shadow-lg border-border">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-xl">
                 <Ticket className="h-5 w-5 text-primary" />

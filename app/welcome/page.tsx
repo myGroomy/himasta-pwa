@@ -2,14 +2,13 @@ import Link from 'next/link'
 import Image from 'next/image'
 import {
   LogIn, Sparkles, UserPlus, Target, Users,
-  FolderOpen, QrCode, ArrowRight, LayoutGrid, CheckCircle2, Building2,
-  Calendar, MapPin, Clock
+  FolderOpen, QrCode, ArrowRight, LayoutGrid, CheckCircle2, Building2
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { prisma } from '@/lib/prisma'
-import { format } from 'date-fns'
-import { id } from 'date-fns/locale'
+import { getOptionalSession } from '@/lib/permissions'
+import { EventLandingCard } from '@/components/events/event-landing-card'
 
 import { ThemeToggle } from '@/components/shared/theme-toggle'
 
@@ -21,16 +20,29 @@ export const metadata = {
 export const dynamic = 'force-dynamic'
 
 export default async function WelcomePage() {
-  const [totalUsers, activeProkers, totalDivisions, publishedEvents] = await Promise.all([
+  const user = await getOptionalSession()
+
+  const [totalUsers, activeProkers, totalDivisions, publishedEvents, myRegistrations] = await Promise.all([
     prisma.user.count({ where: { isActive: true } }),
     prisma.proker.count({ where: { status: 'BERJALAN' } }),
     prisma.division.count(),
     prisma.event.findMany({
       where: { status: 'PUBLISHED' },
+      include: { _count: { select: { registrations: true } } },
       orderBy: { startTime: 'asc' },
       take: 3,
-    })
+    }),
+    user
+      ? prisma.eventRegistration.findMany({
+          where: { userId: user.id },
+          select: { eventId: true, qrToken: true },
+        })
+      : Promise.resolve([]),
   ])
+
+  const myRegistrationByEvent = new Map(
+    myRegistrations.map((r) => [r.eventId, r.qrToken ?? null])
+  )
 
   const benefits = [
     { 
@@ -58,7 +70,7 @@ export default async function WelcomePage() {
   const divisions = [
     { id: '01', name: 'BPH', desc: 'Pengarah Kebijakan & Koordinasi Utuh Organisasi', color: 'bg-blue-500/10 text-blue-600 border-blue-200' },
     { id: '02', name: 'PSDM', desc: 'Kaderisasi & Keakraban Anggota', color: 'bg-green-500/10 text-green-600 border-green-200' },
-    { id: '03', name: 'RION', desc: 'Pengembangan Keilmuan Sains Data & Data Analysis', color: 'bg-purple-500/10 text-purple-600 border-purple-200' },
+    { id: '03', name: 'RION', desc: 'Pengembangan Keilmuan Sains Data & Data Analysis', color: 'bg-cyan-500/10 text-cyan-600 border-cyan-200' },
     { id: '04', name: 'PR', desc: 'Hubungan Eksternal & Pengabdian Masyarakat', color: 'bg-orange-500/10 text-orange-600 border-orange-200' },
     { id: '05', name: 'KOMINFO', desc: 'Media Kreatif, Publikasi, & Infrastruktur Digital', color: 'bg-pink-500/10 text-pink-600 border-pink-200' },
     { id: '06', name: 'AKADEMIK', desc: 'Inovasi Pembelajaran & Kajian Ilmu Sains Data', color: 'bg-teal-500/10 text-teal-600 border-teal-200' },
@@ -67,7 +79,7 @@ export default async function WelcomePage() {
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col selection:bg-primary/20 selection:text-primary">
       {/* Header Bar */}
-      <header className="fixed top-0 inset-x-0 z-50 backdrop-blur-xl bg-background/70 border-b border-[#EAEAEA] transition-all">
+      <header className="fixed top-0 inset-x-0 z-50 backdrop-blur-xl bg-background/70 border-b border-border transition-all">
         <div className="container max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="relative h-9 w-9 overflow-hidden rounded-md">
@@ -78,20 +90,31 @@ export default async function WelcomePage() {
 
           <div className="flex items-center gap-2 sm:gap-4">
             <ThemeToggle />
-            <Link href="/login" className="text-sm font-semibold hover:text-primary/80 transition-colors hidden sm:block">
-              Masuk
-            </Link>
-            <Button asChild size="sm" className="rounded-full px-5 shadow-md hover:shadow-lg transition-all hover:-translate-y-0.5">
-              <Link href="/register">
-                Daftar Akun
-              </Link>
-            </Button>
+            {user ? (
+              <Button asChild size="sm" className="rounded-full px-5 shadow-md hover:shadow-lg transition-all hover:-translate-y-0.5">
+                <Link href="/">
+                  <LayoutGrid className="h-4 w-4" />
+                  Dashboard
+                </Link>
+              </Button>
+            ) : (
+              <>
+                <Link href="/login" className="text-sm font-semibold hover:text-primary/80 transition-colors hidden sm:block">
+                  Masuk
+                </Link>
+                <Button asChild size="sm" className="rounded-full px-5 shadow-md hover:shadow-lg transition-all hover:-translate-y-0.5">
+                  <Link href="/register">
+                    Daftar Akun
+                  </Link>
+                </Button>
+              </>
+            )}
           </div>
         </div>
       </header>
 
       {/* Hero Section */}
-      <section className="relative pt-32 pb-20 md:pt-40 md:pb-28 px-4 overflow-hidden border-b border-[#EAEAEA]">
+      <section className="relative pt-32 pb-20 md:pt-40 md:pb-28 px-4 overflow-hidden border-b border-border">
         {/* Dynamic Abstract Background */}
         <div className="absolute inset-0 z-0 pointer-events-none opacity-40">
           <div className="absolute -top-[20%] -left-[10%] w-[50%] h-[50%] bg-primary/20 rounded-full blur-[100px]" />
@@ -122,27 +145,45 @@ export default async function WelcomePage() {
           </p>
 
           <div className="pt-4 flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Button asChild size="lg" className="w-full sm:w-auto rounded-full px-8 h-14 text-base shadow-xl hover:shadow-2xl hover:-translate-y-1 transition-all">
-              <Link href="/register">
-                Mulai Berkontribusi
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Link>
-            </Button>
-            <Button asChild size="lg" variant="outline" className="w-full sm:w-auto rounded-full px-8 h-14 text-base bg-background/50 backdrop-blur-sm hover:bg-secondary transition-all">
-              <Link href="/login">
-                <LogIn className="mr-2 h-5 w-5" />
-                Masuk ke Portal
-              </Link>
-            </Button>
+            {user ? (
+              <>
+                <Button asChild size="lg" className="w-full sm:w-auto rounded-full px-8 h-14 text-base shadow-xl hover:shadow-2xl hover:-translate-y-1 transition-all">
+                  <Link href="/">
+                    <LayoutGrid className="mr-2 h-5 w-5" />
+                    Buka Dashboard
+                  </Link>
+                </Button>
+                <Button asChild size="lg" variant="outline" className="w-full sm:w-auto rounded-full px-8 h-14 text-base bg-background/50 backdrop-blur-sm hover:bg-secondary transition-all">
+                  <Link href="/events">
+                    Lihat Event
+                  </Link>
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button asChild size="lg" className="w-full sm:w-auto rounded-full px-8 h-14 text-base shadow-xl hover:shadow-2xl hover:-translate-y-1 transition-all">
+                  <Link href="/register">
+                    Mulai Berkontribusi
+                    <ArrowRight className="ml-2 h-5 w-5" />
+                  </Link>
+                </Button>
+                <Button asChild size="lg" variant="outline" className="w-full sm:w-auto rounded-full px-8 h-14 text-base bg-background/50 backdrop-blur-sm hover:bg-secondary transition-all">
+                  <Link href="/login">
+                    <LogIn className="mr-2 h-5 w-5" />
+                    Masuk ke Portal
+                  </Link>
+                </Button>
+              </>
+            )}
           </div>
         </div>
       </section>
 
       {/* Social Proof / Stats Section */}
-      <section className="py-12 bg-background border-b border-[#EAEAEA] relative z-20 -mt-10">
+      <section className="py-12 bg-background border-b border-border relative z-20 -mt-10">
         <div className="container max-w-5xl mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <Card className="bg-background/80 backdrop-blur-xl border-[#EAEAEA] shadow-lg hover:shadow-xl transition-all hover:-translate-y-1">
+            <Card className="bg-background/80 backdrop-blur-xl border-border shadow-lg hover:shadow-xl transition-all hover:-translate-y-1">
               <CardContent className="p-8 flex items-center gap-6">
                 <div className="p-4 bg-primary/10 text-primary rounded-2xl">
                   <Users className="w-8 h-8" />
@@ -154,7 +195,7 @@ export default async function WelcomePage() {
               </CardContent>
             </Card>
             
-            <Card className="bg-background/80 backdrop-blur-xl border-[#EAEAEA] shadow-lg hover:shadow-xl transition-all hover:-translate-y-1">
+            <Card className="bg-background/80 backdrop-blur-xl border-border shadow-lg hover:shadow-xl transition-all hover:-translate-y-1">
               <CardContent className="p-8 flex items-center gap-6">
                 <div className="p-4 bg-pastel-blue/20 text-pastel-blue-foreground rounded-2xl">
                   <Building2 className="w-8 h-8" />
@@ -166,7 +207,7 @@ export default async function WelcomePage() {
               </CardContent>
             </Card>
 
-            <Card className="bg-background/80 backdrop-blur-xl border-[#EAEAEA] shadow-lg hover:shadow-xl transition-all hover:-translate-y-1">
+            <Card className="bg-background/80 backdrop-blur-xl border-border shadow-lg hover:shadow-xl transition-all hover:-translate-y-1">
               <CardContent className="p-8 flex items-center gap-6">
                 <div className="p-4 bg-pastel-green/20 text-pastel-green-foreground rounded-2xl">
                   <Target className="w-8 h-8" />
@@ -193,7 +234,7 @@ export default async function WelcomePage() {
 
           <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
             {benefits.map((b) => (
-              <div key={b.title} className="group relative p-8 rounded-3xl bg-background border border-[#EAEAEA] hover:border-primary/50 transition-colors shadow-sm hover:shadow-md">
+              <div key={b.title} className="group relative p-8 rounded-3xl bg-background border border-border hover:border-primary/50 transition-colors shadow-sm hover:shadow-md">
                 <div className="mb-6 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-secondary text-foreground group-hover:bg-primary group-hover:text-primary-foreground transition-colors duration-300">
                   <b.icon className="h-6 w-6" />
                 </div>
@@ -207,7 +248,7 @@ export default async function WelcomePage() {
 
       {/* Events Section */}
       {publishedEvents.length > 0 && (
-        <section className="py-24 px-4 bg-background border-t border-[#EAEAEA]">
+        <section id="events" className="py-24 px-4 bg-background border-t border-border">
           <div className="container max-w-6xl mx-auto space-y-16">
             <div className="text-center max-w-2xl mx-auto space-y-4">
               <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Event & Kegiatan Terbaru</h2>
@@ -218,53 +259,31 @@ export default async function WelcomePage() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {publishedEvents.map((event) => (
-                <Link href={`/events/${event.id}`} key={event.id} className="group flex flex-col overflow-hidden rounded-3xl border border-[#EAEAEA] bg-background hover:shadow-xl transition-all duration-300 hover:-translate-y-2 cursor-pointer">
-                  <div className="relative h-48 w-full bg-secondary/50 overflow-hidden">
-                    {event.coverImage ? (
-                      <Image src={event.coverImage} alt={event.name} fill className="object-cover group-hover:scale-105 transition-transform duration-500" />
-                    ) : (
-                      <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-primary/10 to-primary/5">
-                        <Calendar className="h-12 w-12 text-primary/40" />
-                      </div>
-                    )}
-                    <div className="absolute top-4 left-4">
-                      <div className="inline-flex px-3 py-1 rounded-full text-xs font-bold bg-background/90 backdrop-blur-sm border shadow-sm">
-                        {event.visibility === 'PUBLIC' ? 'Umum' : 'Internal'}
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="flex flex-col flex-1 p-6">
-                    <h3 className="text-xl font-bold mb-3 line-clamp-2 group-hover:text-primary transition-colors">{event.name}</h3>
-                    
-                    <div className="space-y-2 mb-6 text-sm text-muted-foreground">
-                      <div className="flex items-center gap-2">
-                        <Calendar className="h-4 w-4" />
-                        <span>{format(new Date(event.startTime), 'dd MMMM yyyy', { locale: id })}</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Clock className="h-4 w-4" />
-                        <span>{format(new Date(event.startTime), 'HH:mm')} - Selesai</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <MapPin className="h-4 w-4" />
-                        <span className="truncate">{event.location}</span>
-                      </div>
-                    </div>
-                    
-                    <div className="mt-auto pt-4 border-t border-[#EAEAEA]">
-                      <div className="flex items-center justify-center w-full h-10 px-4 py-2 font-semibold border rounded-md group-hover:bg-primary group-hover:text-primary-foreground group-hover:border-primary transition-all">
-                        Lihat Detail
-                      </div>
-                    </div>
-                  </div>
-                </Link>
+                <EventLandingCard
+                  key={event.id}
+                  event={{
+                    id: event.id,
+                    name: event.name,
+                    startTime: event.startTime.toISOString(),
+                    location: event.location,
+                    visibility: event.visibility,
+                    capacity: event.capacity,
+                    _count: { registrations: event._count.registrations },
+                  }}
+                  user={
+                    user
+                      ? { id: user.id, role: user.role }
+                      : null
+                  }
+                  registered={myRegistrationByEvent.has(event.id)}
+                  qrToken={myRegistrationByEvent.get(event.id) ?? null}
+                />
               ))}
             </div>
             
             <div className="text-center pt-8">
               <Button asChild variant="ghost" className="gap-2 text-primary hover:text-primary/80">
-                <Link href="/login">
+                <Link href={user ? '/events' : '/login'}>
                   Lihat Semua Event <ArrowRight className="h-4 w-4" />
                 </Link>
               </Button>
@@ -274,7 +293,7 @@ export default async function WelcomePage() {
       )}
 
       {/* Bento Grid Divisions Section */}
-      <section className="py-24 px-4 bg-background border-y border-[#EAEAEA]">
+      <section className="py-24 px-4 bg-background border-y border-border">
         <div className="container max-w-6xl mx-auto space-y-16">
           <div className="text-center max-w-2xl mx-auto space-y-4">
             <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Ruang Berkembang Anda</h2>
@@ -285,7 +304,7 @@ export default async function WelcomePage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {divisions.map((d) => (
-              <div key={d.name} className="group relative overflow-hidden rounded-3xl border border-[#EAEAEA] bg-background p-8 hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
+              <div key={d.name} className="group relative overflow-hidden rounded-3xl border border-border bg-background p-8 hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
                 <div className={`absolute top-0 right-0 w-32 h-32 opacity-10 rounded-full blur-3xl -mr-10 -mt-10 transition-transform group-hover:scale-150 duration-700 ${d.color.split(' ')[0]}`} />
                 <div className="relative z-10">
                   <div className={`inline-flex px-3 py-1 rounded-full text-xs font-bold border mb-4 ${d.color}`}>
@@ -309,17 +328,28 @@ export default async function WelcomePage() {
             Bergabunglah sekarang, akses materi belajar, ikuti event seru, dan ukir prestasi bersama keluarga besar HIMASTA.
           </p>
           <div className="pt-8 flex flex-col sm:flex-row gap-4 justify-center">
-            <Button asChild size="lg" variant="secondary" className="rounded-full px-10 h-14 text-lg font-bold shadow-2xl hover:scale-105 transition-transform">
-              <Link href="/register">
-                <UserPlus className="mr-2 h-5 w-5" />
-                Daftar Sekarang
-              </Link>
-            </Button>
-            <Button asChild size="lg" variant="outline" className="rounded-full px-10 h-14 text-lg font-bold bg-transparent border-primary-foreground/30 hover:bg-primary-foreground/10 text-primary-foreground transition-colors">
-              <Link href="/login">
-                Sudah punya akun?
-              </Link>
-            </Button>
+            {user ? (
+              <Button asChild size="lg" variant="secondary" className="rounded-full px-10 h-14 text-lg font-bold shadow-2xl hover:scale-105 transition-transform">
+                <Link href="/">
+                  <LayoutGrid className="mr-2 h-5 w-5" />
+                  Buka Dashboard
+                </Link>
+              </Button>
+            ) : (
+              <>
+                <Button asChild size="lg" variant="secondary" className="rounded-full px-10 h-14 text-lg font-bold shadow-2xl hover:scale-105 transition-transform">
+                  <Link href="/register">
+                    <UserPlus className="mr-2 h-5 w-5" />
+                    Daftar Sekarang
+                  </Link>
+                </Button>
+                <Button asChild size="lg" variant="outline" className="rounded-full px-10 h-14 text-lg font-bold bg-transparent border-primary-foreground/30 hover:bg-primary-foreground/10 text-primary-foreground transition-colors">
+                  <Link href="/login">
+                    Sudah punya akun?
+                  </Link>
+                </Button>
+              </>
+            )}
           </div>
         </div>
       </section>

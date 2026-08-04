@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { QrCode, Plus, Target, FileClock, PartyPopper, CalendarDays, FolderOpen } from 'lucide-react'
+import { QrCode, Plus, Target, FileClock, PartyPopper, CalendarDays, FolderOpen, CalendarClock } from 'lucide-react'
 import { getOptionalSession } from '@/lib/permissions'
 import { getPublishedAnnouncements } from '@/lib/feed'
 import { AnnouncementCard } from '@/components/shared/announcement-card'
@@ -24,7 +24,7 @@ export default async function HomePage() {
   return (
     <div className="space-y-10">
       {/* Hero Section with Grid Pattern Background */}
-      <section className="relative overflow-hidden rounded-2xl border border-[#EAEAEA] bg-background text-foreground sm:p-10 p-6">
+      <section className="relative overflow-hidden rounded-2xl border border-border bg-background text-foreground sm:p-10 p-6">
         {/* CSS Grid Background replicating the user's image */}
         <div 
           className="absolute inset-0 z-0 pointer-events-none opacity-20"
@@ -53,9 +53,9 @@ export default async function HomePage() {
           </p>
           <div className="mt-4 flex flex-wrap justify-center gap-3">
             <Button asChild size="lg" className="rounded-full shadow-lg">
-              <Link href="/absensi/scan">
+              <Link href="/kegiatan/scan">
                 <QrCode className="h-5 w-5 mr-2" />
-                Scan Absensi
+                Scan Kegiatan
               </Link>
             </Button>
             {(user.role === 'KADIV' || user.role === 'BPH') && (
@@ -107,90 +107,66 @@ export default async function HomePage() {
       {/* Menu / Quick Actions Grid */}
       <section className="space-y-4">
         <h2 className="text-xl font-bold tracking-tight">Menu Utama</h2>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          <Card className="transition-all duration-200 border-[#EAEAEA] shadow-none hover:shadow-sm hover:scale-[1.02] cursor-pointer group bg-background">
-            <CardContent className="flex items-center gap-4 pt-6">
-              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg border border-[#EAEAEA] bg-pastel-blue text-pastel-blue-foreground transition-colors group-hover:bg-secondary group-hover:text-foreground">
-                <QrCode className="h-5 w-5" />
-              </div>
-              <div className="flex-1">
-                <p className="font-semibold text-foreground">Absensi QR</p>
-                <p className="text-sm text-muted-foreground">Scan untuk kehadiran rapat.</p>
-              </div>
-              <Button asChild size="sm" variant="ghost" className="group-hover:bg-secondary">
-                <Link href="/absensi">→</Link>
-              </Button>
-            </CardContent>
+        <div className="grid grid-cols-3 gap-4">
+          <Card className="transition-all duration-200 border-border shadow-none hover:shadow-sm hover:scale-[1.02] cursor-pointer group bg-background">
+            <Link href="/kegiatan" className="block">
+              <CardContent className="flex flex-col items-center gap-3 pt-6 pb-5 text-center">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg border border-border bg-pastel-blue text-pastel-blue-foreground transition-colors group-hover:bg-secondary group-hover:text-foreground">
+                  <CalendarClock className="h-5 w-5" />
+                </div>
+                <p className="font-semibold text-foreground">Kegiatan</p>
+              </CardContent>
+            </Link>
           </Card>
-          <Card className="transition-all duration-200 border-[#EAEAEA] shadow-none hover:shadow-sm hover:scale-[1.02] cursor-pointer group bg-background">
-            <CardContent className="flex items-center gap-4 pt-6">
-              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg border border-[#EAEAEA] bg-pastel-green text-pastel-green-foreground transition-colors group-hover:bg-secondary group-hover:text-foreground">
-                <FolderOpen className="h-5 w-5" />
-              </div>
-              <div className="flex-1">
+          <Card className="transition-all duration-200 border-border shadow-none hover:shadow-sm hover:scale-[1.02] cursor-pointer group bg-background">
+            <Link href="/dokumen" className="block">
+              <CardContent className="flex flex-col items-center gap-3 pt-6 pb-5 text-center">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg border border-border bg-pastel-green text-pastel-green-foreground transition-colors group-hover:bg-secondary group-hover:text-foreground">
+                  <FolderOpen className="h-5 w-5" />
+                </div>
                 <p className="font-semibold text-foreground">Dokumen</p>
-                <p className="text-sm text-muted-foreground">Arsip notulen & proposal.</p>
-              </div>
-              <Button asChild size="sm" variant="ghost" className="group-hover:bg-secondary">
-                <Link href="/dokumen">→</Link>
-              </Button>
-            </CardContent>
+              </CardContent>
+            </Link>
           </Card>
-          <Card className="transition-all duration-200 border-[#EAEAEA] shadow-none hover:shadow-sm hover:scale-[1.02] cursor-pointer group bg-background">
-            <CardContent className="flex items-center gap-4 pt-6">
-              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg border border-[#EAEAEA] bg-pastel-red text-pastel-red-foreground transition-colors group-hover:bg-secondary group-hover:text-foreground">
-                <Target className="h-5 w-5" />
-              </div>
-              <div className="flex-1">
+          <Card className="transition-all duration-200 border-border shadow-none hover:shadow-sm hover:scale-[1.02] cursor-pointer group bg-background">
+            <Link href="/proker" className="block">
+              <CardContent className="flex flex-col items-center gap-3 pt-6 pb-5 text-center">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg border border-border bg-pastel-red text-pastel-red-foreground transition-colors group-hover:bg-secondary group-hover:text-foreground">
+                  <Target className="h-5 w-5" />
+                </div>
                 <p className="font-semibold text-foreground">Proker</p>
-                <p className="text-sm text-muted-foreground">Program kerja & tugas.</p>
-              </div>
-              <Button asChild size="sm" variant="ghost" className="group-hover:bg-secondary">
-                <Link href="/proker">→</Link>
-              </Button>
-            </CardContent>
+              </CardContent>
+            </Link>
           </Card>
-          <Card className="transition-all duration-200 border-[#EAEAEA] shadow-none hover:shadow-sm hover:scale-[1.02] cursor-pointer group bg-background">
-            <CardContent className="flex items-center gap-4 pt-6">
-              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg border border-[#EAEAEA] bg-pastel-blue text-pastel-blue-foreground transition-colors group-hover:bg-secondary group-hover:text-foreground">
-                <FileClock className="h-5 w-5" />
-              </div>
-              <div className="flex-1">
+          <Card className="transition-all duration-200 border-border shadow-none hover:shadow-sm hover:scale-[1.02] cursor-pointer group bg-background">
+            <Link href="/izin" className="block">
+              <CardContent className="flex flex-col items-center gap-3 pt-6 pb-5 text-center">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg border border-border bg-pastel-blue text-pastel-blue-foreground transition-colors group-hover:bg-secondary group-hover:text-foreground">
+                  <FileClock className="h-5 w-5" />
+                </div>
                 <p className="font-semibold text-foreground">Perizinan</p>
-                <p className="text-sm text-muted-foreground">Ajukan izin rapat.</p>
-              </div>
-              <Button asChild size="sm" variant="ghost" className="group-hover:bg-secondary">
-                <Link href="/izin">→</Link>
-              </Button>
-            </CardContent>
+              </CardContent>
+            </Link>
           </Card>
-          <Card className="transition-all duration-200 border-[#EAEAEA] shadow-none hover:shadow-sm hover:scale-[1.02] cursor-pointer group bg-background">
-            <CardContent className="flex items-center gap-4 pt-6">
-              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg border border-[#EAEAEA] bg-pastel-yellow text-pastel-yellow-foreground transition-colors group-hover:bg-secondary group-hover:text-foreground">
-                <PartyPopper className="h-5 w-5" />
-              </div>
-              <div className="flex-1">
+          <Card className="transition-all duration-200 border-border shadow-none hover:shadow-sm hover:scale-[1.02] cursor-pointer group bg-background">
+            <Link href={user.role === 'BPH' || user.role === 'KADIV' ? '/events' : '/welcome'} className="block">
+              <CardContent className="flex flex-col items-center gap-3 pt-6 pb-5 text-center">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg border border-border bg-pastel-yellow text-pastel-yellow-foreground transition-colors group-hover:bg-secondary group-hover:text-foreground">
+                  <PartyPopper className="h-5 w-5" />
+                </div>
                 <p className="font-semibold text-foreground">Event</p>
-                <p className="text-sm text-muted-foreground">Seminar & workshop.</p>
-              </div>
-              <Button asChild size="sm" variant="ghost" className="group-hover:bg-secondary">
-                <Link href="/events">→</Link>
-              </Button>
-            </CardContent>
+              </CardContent>
+            </Link>
           </Card>
-          <Card className="transition-all duration-200 border-[#EAEAEA] shadow-none hover:shadow-sm hover:scale-[1.02] cursor-pointer group bg-background">
-            <CardContent className="flex items-center gap-4 pt-6">
-              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg border border-[#EAEAEA] bg-secondary text-foreground transition-colors group-hover:bg-[#EAEAEA]">
-                <CalendarDays className="h-5 w-5" />
-              </div>
-              <div className="flex-1">
+          <Card className="transition-all duration-200 border-border shadow-none hover:shadow-sm hover:scale-[1.02] cursor-pointer group bg-background">
+            <Link href="/kalender" className="block">
+              <CardContent className="flex flex-col items-center gap-3 pt-6 pb-5 text-center">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg border border-border bg-secondary text-foreground transition-colors dark:group-hover:bg-border">
+                  <CalendarDays className="h-5 w-5" />
+                </div>
                 <p className="font-semibold text-foreground">Kalender</p>
-                <p className="text-sm text-muted-foreground">Semua kegiatan.</p>
-              </div>
-              <Button asChild size="sm" variant="ghost" className="group-hover:bg-secondary">
-                <Link href="/kalender">→</Link>
-              </Button>
-            </CardContent>
+              </CardContent>
+            </Link>
           </Card>
         </div>
       </section>

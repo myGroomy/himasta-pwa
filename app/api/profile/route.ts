@@ -15,7 +15,7 @@ export async function PATCH(req: Request) {
       where: { id: user.id },
       data: {
         phone: typeof phone === 'string' ? phone : undefined,
-        image: typeof photoUrl === 'string' ? photoUrl : undefined,
+        photoUrl: typeof photoUrl === 'string' ? photoUrl : undefined,
       }
     })
 

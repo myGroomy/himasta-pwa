@@ -22,7 +22,7 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
   }
 
   const baseUrl = process.env.NEXTAUTH_URL ?? req.nextUrl.origin
-  const scanUrl = `${baseUrl}/absensi/scan?token=${encodeURIComponent(session.qrToken)}`
+  const scanUrl = `${baseUrl}/kegiatan/scan?token=${encodeURIComponent(session.qrToken)}`
 
   try {
     const qrDataUrl = await QRCode.toDataURL(scanUrl, {

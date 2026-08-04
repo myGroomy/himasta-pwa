@@ -50,7 +50,7 @@ export default async function KalenderPage() {
       startTime: s.startTime.toISOString(),
       divisionId: s.divisionId,
       divisionName: s.division?.name ?? 'General',
-      link: '/absensi',
+      link: '/kegiatan',
     })),
     ...prokers.map((p) => ({
       id: `p-${p.id}`,

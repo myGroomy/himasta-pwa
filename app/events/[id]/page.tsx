@@ -59,13 +59,9 @@ export default async function PublicEventPage({ params }: { params: { id: string
         
         {/* Cover Image */}
         <div className="relative w-full aspect-video md:aspect-[21/9] rounded-3xl overflow-hidden bg-primary/5 border shadow-sm">
-          {event.coverImage ? (
-            <Image src={event.coverImage} alt={event.name} fill className="object-cover" />
-          ) : (
-            <div className="absolute inset-0 flex items-center justify-center">
-              <Calendar className="h-20 w-20 text-primary/20" />
-            </div>
-          )}
+          <div className="absolute inset-0 flex items-center justify-center">
+            <Calendar className="h-20 w-20 text-primary/20" />
+          </div>
           <div className="absolute top-4 right-4">
             <span className="inline-flex px-4 py-1.5 rounded-full text-xs font-bold bg-background/90 backdrop-blur-sm border shadow-sm uppercase tracking-widest text-primary">
               {event.visibility === 'PUBLIC' ? 'Event Umum' : 'Event Internal'}

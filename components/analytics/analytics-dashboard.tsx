@@ -11,7 +11,7 @@ import {
   Download, Filter, RefreshCw, Award, AlertCircle
 } from 'lucide-react'
 
-const COLORS = ['#6366f1', '#22d3ee', '#f59e0b', '#ef4444', '#10b981', '#8b5cf6']
+const COLORS = ['#3b82f6', '#22d3ee', '#f59e0b', '#ef4444', '#10b981', '#64748b']
 
 type Division = { id: string; name: string; slug: string }
 
@@ -191,7 +191,7 @@ function AttendanceCharts({ data }: { data: AttendanceData }) {
     <div className="space-y-6">
       {/* Summary cards */}
       <div className="grid gap-4 sm:grid-cols-3">
-        <StatCard label="Total Sesi" value={data.totalSessions} icon={CalendarCheck} color="indigo" />
+        <StatCard label="Total Sesi" value={data.totalSessions} icon={CalendarCheck} color="blue" />
         <StatCard label="Total Presensi" value={data.totalRecords} icon={Users} color="cyan" />
         <StatCard label="Rate Hadir" value={`${hadirRate}%`} icon={TrendingUp} color="green" />
       </div>
@@ -207,7 +207,7 @@ function AttendanceCharts({ data }: { data: AttendanceData }) {
               <YAxis tick={{ fontSize: 12 }} />
               <Tooltip />
               <Legend />
-              <Bar dataKey="hadir" name="Hadir" fill="#6366f1" radius={[4,4,0,0]} />
+              <Bar dataKey="hadir" name="Hadir" fill="#3b82f6" radius={[4,4,0,0]} />
               <Bar dataKey="izin" name="Izin" fill="#f59e0b" radius={[4,4,0,0]} />
               <Bar dataKey="alph" name="Alpha" fill="#ef4444" radius={[4,4,0,0]} />
             </BarChart>
@@ -226,7 +226,7 @@ function AttendanceCharts({ data }: { data: AttendanceData }) {
               <YAxis dataKey="divisionName" type="category" width={80} tick={{ fontSize: 12 }} />
               <Tooltip />
               <Legend />
-              <Bar dataKey="hadirCount" name="Hadir" fill="#6366f1" radius={[0,4,4,0]} />
+              <Bar dataKey="hadirCount" name="Hadir" fill="#3b82f6" radius={[0,4,4,0]} />
               <Bar dataKey="izinCount" name="Izin" fill="#f59e0b" radius={[0,4,4,0]} />
               <Bar dataKey="alphCount" name="Alpha" fill="#ef4444" radius={[0,4,4,0]} />
             </BarChart>
@@ -242,7 +242,7 @@ function ProkerCharts({ data }: { data: ProkerData }) {
   return (
     <div className="space-y-6">
       <div className="grid gap-4 sm:grid-cols-3">
-        <StatCard label="Total Proker" value={data.totalProker} icon={ClipboardList} color="indigo" />
+        <StatCard label="Total Proker" value={data.totalProker} icon={ClipboardList} color="blue" />
         <StatCard label="Tingkat Selesai" value={`${data.completionRate}%`} icon={TrendingUp} color="green" />
         <StatCard
           label="Sedang Berjalan"
@@ -311,7 +311,7 @@ function ProkerCharts({ data }: { data: ProkerData }) {
             <Tooltip />
             <Legend />
             <Bar dataKey="selesai" name="Selesai" fill="#10b981" stackId="a" />
-            <Bar dataKey="berjalan" name="Berjalan" fill="#6366f1" stackId="a" />
+            <Bar dataKey="berjalan" name="Berjalan" fill="#3b82f6" stackId="a" />
             <Bar dataKey="rencana" name="Rencana" fill="#94a3b8" stackId="a" />
             <Bar dataKey="dibatalkan" name="Dibatalkan" fill="#ef4444" stackId="a" radius={[4,4,0,0]} />
           </BarChart>
@@ -394,10 +394,10 @@ function StatCard({
   label, value, icon: Icon, color
 }: {
   label: string; value: string | number
-  icon: React.ElementType; color: 'indigo' | 'cyan' | 'green' | 'amber'
+  icon: React.ElementType; color: 'blue' | 'cyan' | 'green' | 'amber'
 }) {
   const colorMap = {
-    indigo: 'bg-indigo-50 text-indigo-600',
+    blue: 'bg-blue-50 text-blue-600',
     cyan: 'bg-cyan-50 text-cyan-600',
     green: 'bg-green-50 text-green-600',
     amber: 'bg-amber-50 text-amber-600',

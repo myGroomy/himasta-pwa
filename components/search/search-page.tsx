@@ -25,7 +25,7 @@ const TYPE_ICONS: Record<string, React.ElementType> = {
 
 const TYPE_COLORS: Record<string, string> = {
   Pengumuman: 'bg-blue-100 text-blue-700',
-  Dokumen: 'bg-violet-100 text-violet-700',
+  Dokumen: 'bg-cyan-100 text-cyan-700',
   Proker: 'bg-amber-100 text-amber-700',
   Event: 'bg-green-100 text-green-700',
 }
@@ -164,7 +164,7 @@ export function SearchPage({ divisions }: { divisions: { id: string; name: strin
           <div className="space-y-2">
             {results.map(r => {
               const Icon = TYPE_ICONS[r.type] ?? Search
-              const colorClass = TYPE_COLORS[r.type] ?? 'bg-gray-100 text-gray-700'
+              const colorClass = TYPE_COLORS[r.type] ?? 'bg-muted text-muted-foreground'
               return (
                 <Link
                   key={`${r.type}-${r.id}`}

@@ -71,6 +71,7 @@ export const config = {
     '/welcome',
     '/announcements/:path*',
     '/absensi/:path*',
+    '/kegiatan/:path*',
     '/dokumen/:path*',
     '/direktori/:path*',
     '/divisi/:path*',

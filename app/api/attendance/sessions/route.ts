@@ -8,6 +8,9 @@ import type { SessionUser } from '@/lib/auth'
 const createSchema = z.object({
   title: z.string().min(3, 'Judul minimal 3 karakter').max(150),
   description: z.string().max(500).optional().nullable(),
+  category: z
+    .enum(['RAPAT', 'MAKRAB', 'MUBES', 'PROKER', 'LAINNYA'])
+    .optional(),
   divisionId: z.string().nullable().optional(),
   startTime: z.string().datetime().optional(),
   endTime: z.string().datetime().optional().nullable(),
@@ -41,7 +44,7 @@ export async function POST(req: NextRequest) {
   const parsed = createSchema.safeParse(body)
   if (!parsed.success) return badRequest(parsed.error.issues[0]?.message ?? 'Data tidak valid')
 
-  const { title, description, divisionId, startTime, endTime } = parsed.data
+  const { title, description, category, divisionId, startTime, endTime } = parsed.data
 
   if (divisionId && user.role === 'KADIV' && divisionId !== user.divisionId) {
     return NextResponse.json({ error: 'Kadiv hanya bisa membuat sesi untuk divisi sendiri' }, { status: 403 })
@@ -54,6 +57,7 @@ export async function POST(req: NextRequest) {
       data: {
         title,
         description: description ?? null,
+        category: category ?? 'RAPAT',
         divisionId: divisionId ?? null,
         qrToken: token,
         createdById: user.id,

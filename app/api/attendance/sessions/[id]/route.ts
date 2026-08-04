@@ -67,12 +67,16 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
 
   const body = await req.json().catch(() => null)
   const isActive = typeof body?.isActive === 'boolean' ? body.isActive : undefined
+  const category = ['RAPAT', 'MAKRAB', 'MUBES', 'PROKER', 'LAINNYA'].includes(body?.category)
+    ? body.category
+    : undefined
 
   try {
     const updated = await prisma.attendanceSession.update({
       where: { id: params.id },
       data: {
         ...(isActive !== undefined ? { isActive } : {}),
+        ...(category !== undefined ? { category } : {}),
         ...(body?.endTime ? { endTime: new Date(body.endTime) } : {}),
       },
     })

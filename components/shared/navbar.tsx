@@ -12,6 +12,7 @@ import {
   History,
   MessageSquarePlus,
   Users,
+  Globe,
 } from 'lucide-react'
 import { ROLE_LABELS } from '@/lib/constants'
 import type { SessionUser } from '@/lib/auth'
@@ -53,7 +54,7 @@ export function Navbar({ user, unreadCount, latestNotifications }: NavbarProps) 
     .join('')
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-[#EAEAEA] bg-background/95 text-foreground backdrop-blur supports-[backdrop-filter]:bg-background/80">
+    <header className="sticky top-0 z-40 w-full border-b border-border bg-background/95 text-foreground backdrop-blur supports-[backdrop-filter]:bg-background/80">
       <div className="container max-w-6xl mx-auto flex h-16 items-center justify-between px-4">
         {/* Brand Header */}
         <Link href="/" className="flex items-center gap-3 font-bold hover:opacity-90 transition-opacity">
@@ -123,7 +124,7 @@ export function Navbar({ user, unreadCount, latestNotifications }: NavbarProps) 
           <DropdownMenu modal={false}>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="gap-2 px-2 hover:bg-secondary">
-                <Avatar className="h-8 w-8 border border-[#EAEAEA]">
+                <Avatar className="h-8 w-8 border border-border">
                   <AvatarFallback className="bg-secondary text-foreground font-bold text-xs">
                     {initials}
                   </AvatarFallback>
@@ -150,6 +151,12 @@ export function Navbar({ user, unreadCount, latestNotifications }: NavbarProps) 
               <DropdownMenuItem asChild>
                 <Link href="/direktori">Direktori Anggota</Link>
               </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link href="/welcome">
+                  <Globe className="h-4 w-4" />
+                  Landing Page
+                </Link>
+              </DropdownMenuItem>
 
               {(user.role === 'BPH' || user.role === 'KADIV') && (
                 <>
@@ -167,7 +174,7 @@ export function Navbar({ user, unreadCount, latestNotifications }: NavbarProps) 
                 <>
                   <DropdownMenuItem asChild>
                     <Link href="/admin/analytics" className="flex items-center gap-2">
-                      <BarChart3 className="h-4 w-4 text-indigo-400" />
+                      <BarChart3 className="h-4 w-4 text-blue-400" />
                       Analytics &amp; Report
                     </Link>
                   </DropdownMenuItem>
@@ -179,7 +186,7 @@ export function Navbar({ user, unreadCount, latestNotifications }: NavbarProps) 
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
                     <Link href="/admin/periode" className="flex items-center gap-2">
-                      <History className="h-4 w-4 text-violet-400" />
+                      <History className="h-4 w-4 text-cyan-400" />
                       Manajemen Periode
                     </Link>
                   </DropdownMenuItem>

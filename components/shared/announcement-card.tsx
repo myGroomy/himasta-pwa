@@ -16,7 +16,7 @@ const CATEGORY_BADGE: Record<string, string> = {
   event: 'bg-amber-100 text-amber-900 font-semibold',
   beasiswa: 'bg-emerald-100 text-emerald-900 font-semibold',
   akademik: 'bg-sky-100 text-sky-900 font-semibold',
-  organisasi: 'bg-violet-100 text-violet-900 font-semibold',
+  organisasi: 'bg-cyan-100 text-cyan-900 font-semibold',
 }
 
 const CATEGORY_LABEL: Record<string, string> = {

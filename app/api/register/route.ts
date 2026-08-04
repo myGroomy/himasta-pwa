@@ -35,7 +35,8 @@ export async function POST(req: NextRequest) {
         password: hashedPassword,
         role: 'ANGGOTA',
         divisionId: divisionId || null,
-        isActive: false, // Menunggu persetujuan BPH
+        isActive: false, // Belum disetujui BPH
+        pendingApproval: true, // Menunggu persetujuan BPH
       },
     })
 

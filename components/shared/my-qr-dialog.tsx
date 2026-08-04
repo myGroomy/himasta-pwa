@@ -12,14 +12,12 @@ import {
 } from '@/components/ui/dialog'
 import { toast } from '@/components/ui/use-toast'
 
-type QrDialogProps = {
-  sessionId: string
-  sessionTitle: string
+type MyQrDialogProps = {
   open: boolean
   onOpenChange: (open: boolean) => void
 }
 
-export function QrDialog({ sessionId, sessionTitle, open, onOpenChange }: QrDialogProps) {
+export function MyQrDialog({ open, onOpenChange }: MyQrDialogProps) {
   const [qrDataUrl, setQrDataUrl] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -31,7 +29,7 @@ export function QrDialog({ sessionId, sessionTitle, open, onOpenChange }: QrDial
     setError(null)
     setQrDataUrl(null)
 
-    fetch(`/api/attendance/sessions/${sessionId}/qr`)
+    fetch('/api/attendance/my-qr')
       .then((res) => res.json().catch(() => null))
       .then((data) => {
         if (cancelled) return
@@ -51,14 +49,14 @@ export function QrDialog({ sessionId, sessionTitle, open, onOpenChange }: QrDial
     return () => {
       cancelled = true
     }
-  }, [open, sessionId])
+  }, [open])
 
   async function downloadQr() {
     if (!qrDataUrl) return
     try {
       const link = document.createElement('a')
       link.href = qrDataUrl
-      link.download = `qr-kegiatan-${sessionId}.png`
+      link.download = 'qr-pribadi-himasta.png'
       link.click()
     } catch {
       toast({ title: 'Gagal mengunduh QR', variant: 'destructive' })
@@ -69,8 +67,10 @@ export function QrDialog({ sessionId, sessionTitle, open, onOpenChange }: QrDial
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-sm">
         <DialogHeader>
-          <DialogTitle className="pr-6">QR Absensi</DialogTitle>
-          <DialogDescription className="line-clamp-2">{sessionTitle}</DialogDescription>
+          <DialogTitle className="pr-6">QR Absensi Saya</DialogTitle>
+          <DialogDescription>
+            Tunjukkan QR ini ke BPH/Kadiv untuk dicatat kehadirannya.
+          </DialogDescription>
         </DialogHeader>
 
         <div className="flex flex-col items-center gap-4 py-2">
@@ -94,11 +94,12 @@ export function QrDialog({ sessionId, sessionTitle, open, onOpenChange }: QrDial
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={qrDataUrl}
-                alt="QR Absensi"
+                alt="QR Pribadi"
                 className="h-64 w-64 rounded-xl border bg-white p-3"
               />
               <p className="text-center text-xs text-muted-foreground">
-                Tampilkan QR ini di layar kegiatan. Anggota memindai lewat menu Kegiatan → Absen.
+                Saat ada kegiatan, BPH/Kadiv memindai QR ini lewat menu Scan pada kartu kegiatan
+                untuk menandai kehadiran Anda.
               </p>
               <Button variant="outline" size="sm" onClick={downloadQr}>
                 <Download className="h-4 w-4" />

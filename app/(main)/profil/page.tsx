@@ -76,8 +76,8 @@ export default async function ProfilPage() {
 
         <div className="mt-6 flex items-center gap-4">
           <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-tr from-sky-500 to-blue-600 text-xl font-black text-white shadow-md relative overflow-hidden">
-            {dbUser.image ? (
-              <Image src={dbUser.image} alt={dbUser.name} fill className="object-cover" />
+            {dbUser.photoUrl ? (
+              <Image src={dbUser.photoUrl} alt={dbUser.name} fill className="object-cover" />
             ) : (
               initials
             )}
@@ -108,7 +108,7 @@ export default async function ProfilPage() {
 
       <ProfileActions 
         initialPhone={dbUser.phone || ''}
-        initialPhotoUrl={dbUser.image || ''}
+        initialPhotoUrl={dbUser.photoUrl || ''}
       />
 
       {/* Quick Performance Stats */}

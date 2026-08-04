@@ -31,7 +31,7 @@ export default async function MainLayout({ children }: { children: React.ReactNo
   ])
 
   return (
-    <div className="min-h-screen bg-background text-foreground pb-24">
+    <div className="min-h-screen bg-background text-foreground pb-32">
       <OfflineIndicator />
       <Navbar user={user} divisions={divisions} unreadCount={unreadCount} latestNotifications={latestNotifications} />
       <main className="container max-w-5xl mx-auto py-12 md:py-24 px-4">

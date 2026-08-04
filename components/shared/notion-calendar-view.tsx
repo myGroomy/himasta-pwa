@@ -39,9 +39,9 @@ type CalendarItem = {
 type DivisionOption = { id: string; name: string; slug: string }
 
 const TYPE_BADGE: Record<CalendarItem['type'], string> = {
-  Rapat: 'bg-pastel-blue text-pastel-blue-foreground border border-[#EAEAEA]',
-  Proker: 'bg-pastel-yellow text-pastel-yellow-foreground border border-[#EAEAEA]',
-  Event: 'bg-pastel-green text-pastel-green-foreground border border-[#EAEAEA]',
+  Rapat: 'bg-pastel-blue text-pastel-blue-foreground border border-border',
+  Proker: 'bg-pastel-yellow text-pastel-yellow-foreground border border-border',
+  Event: 'bg-pastel-green text-pastel-green-foreground border border-border',
 }
 
 export function NotionCalendarView({
@@ -103,7 +103,7 @@ export function NotionCalendarView({
     <div className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <Select value={divisionFilter} onValueChange={setDivisionFilter}>
-          <SelectTrigger className="w-48 bg-background border-[#EAEAEA]">
+          <SelectTrigger className="w-48 bg-background border-border">
             <SelectValue placeholder="Semua divisi" />
           </SelectTrigger>
           <SelectContent>
@@ -117,9 +117,9 @@ export function NotionCalendarView({
         </Select>
 
         <div className="flex flex-wrap items-center gap-2">
-          <Badge className="bg-pastel-blue text-pastel-blue-foreground border border-[#EAEAEA]">Rapat</Badge>
-          <Badge className="bg-pastel-yellow text-pastel-yellow-foreground border border-[#EAEAEA]">Proker</Badge>
-          <Badge className="bg-pastel-green text-pastel-green-foreground border border-[#EAEAEA]">Event</Badge>
+          <Badge className="bg-pastel-blue text-pastel-blue-foreground border border-border">Rapat</Badge>
+          <Badge className="bg-pastel-yellow text-pastel-yellow-foreground border border-border">Proker</Badge>
+          <Badge className="bg-pastel-green text-pastel-green-foreground border border-border">Event</Badge>
         </div>
       </div>
 
@@ -127,17 +127,17 @@ export function NotionCalendarView({
         {/* Kiri: Kalender Utama */}
         <div className="flex-1 space-y-4 min-w-0">
           <div className="flex items-center gap-2">
-            <Button variant="outline" size="icon" className="border-[#EAEAEA]" onClick={() => setMonth((m) => subMonths(m, 1))}>
+            <Button variant="outline" size="icon" className="border-border" onClick={() => setMonth((m) => subMonths(m, 1))}>
               <ChevronLeft className="h-4 w-4" />
             </Button>
-            <Button variant="outline" size="icon" className="border-[#EAEAEA]" onClick={() => setMonth((m) => addMonths(m, 1))}>
+            <Button variant="outline" size="icon" className="border-border" onClick={() => setMonth((m) => addMonths(m, 1))}>
               <ChevronRight className="h-4 w-4" />
             </Button>
             <h2 className="text-lg font-semibold capitalize ml-2">{format(month, 'MMMM yyyy', { locale: id })}</h2>
           </div>
 
-          <div className="rounded-xl border border-[#EAEAEA] bg-background overflow-hidden">
-            <div className="grid grid-cols-7 border-b border-[#EAEAEA]">
+          <div className="rounded-xl border border-border bg-background overflow-hidden">
+            <div className="grid grid-cols-7 border-b border-border">
               {['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'].map((d) => (
                 <div key={d} className="py-3 text-center text-xs font-semibold text-muted-foreground">
                   {d}
@@ -154,7 +154,7 @@ export function NotionCalendarView({
                 return (
                   <div
                     key={dayKey}
-                    className={`min-h-[120px] border-b border-r border-[#EAEAEA] p-2 last:border-r-0 hover:bg-secondary/20 transition-colors ${
+                    className={`min-h-[120px] border-b border-r border-border p-2 last:border-r-0 hover:bg-secondary/20 transition-colors ${
                       inMonth ? 'bg-background' : 'bg-secondary/40'
                     }`}
                   >
@@ -204,7 +204,7 @@ export function NotionCalendarView({
                     <div className="space-y-2">
                       {monthItems.map((item) => (
                         <Link key={item.id} href={item.link} className="block group">
-                          <div className="rounded-lg border border-[#EAEAEA] bg-background p-3 shadow-sm transition-all hover:border-foreground/20 hover:shadow-md">
+                          <div className="rounded-lg border border-border bg-background p-3 shadow-sm transition-all hover:border-foreground/20 hover:shadow-md">
                             <div className="mb-1.5 flex items-center justify-between">
                               <Badge className={`${TYPE_BADGE[item.type]} px-1.5 py-0 text-[10px]`}>{item.type}</Badge>
                               <span className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider">

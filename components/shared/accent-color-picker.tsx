@@ -9,7 +9,6 @@ const THEMES: { id: AccentTheme; name: string; color: string }[] = [
   { id: 'noir', name: 'Klasik', color: 'bg-zinc-900' },
   { id: 'royal', name: 'Royal', color: 'bg-blue-600' },
   { id: 'emerald', name: 'Emerald', color: 'bg-emerald-600' },
-  { id: 'amethyst', name: 'Amethyst', color: 'bg-purple-700' },
 ]
 
 export function AccentColorPicker() {
@@ -29,7 +28,7 @@ export function AccentColorPicker() {
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between rounded-xl border border-[#EAEAEA] bg-background p-3 shadow-sm transition-all hover:border-foreground/30">
+      <div className="flex items-center justify-between rounded-xl border border-border bg-background p-3 shadow-sm transition-all hover:border-foreground/30">
         <div className="flex flex-col">
           <span className="text-sm font-semibold text-foreground">Mode Gelap</span>
           <span className="text-xs text-muted-foreground">Tampilan akan disesuaikan dengan cahaya redup</span>
@@ -58,7 +57,7 @@ export function AccentColorPicker() {
             key={t.id}
             onClick={() => setAccent(t.id)}
             className={`relative flex flex-col items-center gap-2 rounded-xl border p-3 transition-all hover:border-foreground/30 ${
-              accent === t.id ? 'border-primary ring-1 ring-primary shadow-sm bg-secondary/20' : 'border-[#EAEAEA] bg-background'
+              accent === t.id ? 'border-primary ring-1 ring-primary shadow-sm bg-secondary/20' : 'border-border bg-background'
             }`}
           >
             <div className={`h-8 w-8 rounded-full shadow-sm ${t.color} flex items-center justify-center`}>

@@ -22,10 +22,10 @@ export default function AdminError({
         <AlertTriangle className="h-8 w-8 text-red-600" />
       </div>
       <div className="text-center space-y-2 max-w-md">
-        <h2 className="text-2xl font-bold text-slate-900">Kesalahan Admin Panel</h2>
-        <p className="text-slate-500">Terjadi masalah saat mengakses halaman admin.</p>
+        <h2 className="text-2xl font-bold text-foreground">Kesalahan Admin Panel</h2>
+        <p className="text-muted-foreground">Terjadi masalah saat mengakses halaman admin.</p>
         {error.message && (
-          <p className="text-sm text-slate-400 font-mono">{error.message}</p>
+          <p className="text-sm text-muted-foreground/70 font-mono">{error.message}</p>
         )}
       </div>
       <div className="flex gap-3">

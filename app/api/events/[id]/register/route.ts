@@ -8,29 +8,21 @@ export async function POST(req: Request, { params }: { params: { id: string } })
   try {
     const session = await getServerSession(authOptions)
     const bodyText = await req.text()
-    
-    if (!bodyText) {
-      return NextResponse.json({ error: 'Data pendaftaran kosong' }, { status: 400 })
-    }
-    
-    let parsedBody;
-    try {
-      parsedBody = JSON.parse(bodyText)
-    } catch (e) {
-      console.error('Failed to parse body:', bodyText)
-      return NextResponse.json({ error: 'Format data tidak valid' }, { status: 400 })
+
+    let parsedBody: any = {}
+    if (bodyText) {
+      try {
+        parsedBody = JSON.parse(bodyText)
+      } catch (e) {
+        return NextResponse.json({ error: 'Format data tidak valid' }, { status: 400 })
+      }
     }
 
-    const { name, email, phone, institution } = parsedBody
     const eventId = params.id
-
-    if (!name || !email || !phone) {
-      return NextResponse.json({ error: 'Nama, Email, dan No. HP wajib diisi' }, { status: 400 })
-    }
 
     const event = await prisma.event.findUnique({
       where: { id: eventId },
-      include: { registrations: true }
+      include: { registrations: true },
     })
 
     if (!event) {
@@ -49,7 +41,27 @@ export async function POST(req: Request, { params }: { params: { id: string } })
       return NextResponse.json({ error: 'Kuota pendaftaran event ini sudah penuh' }, { status: 400 })
     }
 
-    const userId = session?.user?.id || null
+    let userId: string | null = null
+    let name = parsedBody.name
+    let email = parsedBody.email
+    let phone = parsedBody.phone || null
+    let institution = parsedBody.institution || null
+
+    if (session?.user?.id) {
+      // Anggota yang login: daftar otomatis dari data akun bila body kosong
+      userId = session.user.id
+      if (!name || !email) {
+        const dbUser = await prisma.user.findUnique({ where: { id: userId } })
+        name = dbUser?.name || session.user.name || null
+        email = dbUser?.email || session.user.email || null
+        phone = phone || dbUser?.phone || null
+      }
+      if (!name || !email) {
+        return NextResponse.json({ error: 'Profil Anda belum lengkap. Isi nama dan email di halaman profil.' }, { status: 400 })
+      }
+    } else if (!name || !email || !phone) {
+      return NextResponse.json({ error: 'Nama, Email, dan No. HP wajib diisi' }, { status: 400 })
+    }
 
     // Cek apakah sudah pernah mendaftar
     const existingReg = await prisma.eventRegistration.findFirst({
@@ -57,9 +69,9 @@ export async function POST(req: Request, { params }: { params: { id: string } })
         eventId,
         OR: [
           ...(userId ? [{ userId }] : []),
-          { email }
-        ]
-      }
+          { email },
+        ],
+      },
     })
 
     if (existingReg) {
@@ -79,13 +91,13 @@ export async function POST(req: Request, { params }: { params: { id: string } })
         phone,
         institution,
         qrToken,
-      }
+      },
     })
 
-    return NextResponse.json({ 
+    return NextResponse.json({
       message: 'Registrasi berhasil',
       qrToken: newReg.qrToken,
-      name: newReg.name 
+      name: newReg.name,
     }, { status: 201 })
 
   } catch (error: any) {

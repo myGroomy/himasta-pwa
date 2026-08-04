@@ -13,6 +13,12 @@ const nextConfig = {
       },
     ],
   },
+  async redirects() {
+    return [
+      { source: '/absensi/scan', destination: '/kegiatan/scan', permanent: true },
+      { source: '/absensi', destination: '/kegiatan', permanent: true },
+    ]
+  },
 }
 
 module.exports = nextConfig

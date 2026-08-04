@@ -25,7 +25,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   ])
 
   return (
-    <div className="min-h-screen bg-slate-100/70 text-slate-900 pb-24">
+    <div className="min-h-screen bg-background text-foreground pb-32">
       <OfflineIndicator />
       <Navbar user={user} divisions={divisions} unreadCount={unreadCount} latestNotifications={latestNotifications} />
       <main className="container py-6 px-4">{children}</main>

@@ -29,6 +29,7 @@ export default async function UsersPage() {
     role: u.role,
     phone: u.phone,
     isActive: u.isActive,
+    pendingApproval: u.pendingApproval,
     division: u.division,
   }))
 
@@ -36,7 +37,7 @@ export default async function UsersPage() {
     <div>
       <PageHeader
         title="Kelola Anggota"
-        description="Kelola peran, divisi, dan status aktif seluruh anggota."
+        description="Setujui pendaftaran baru, kelola peran, divisi, dan status aktif anggota."
       />
       <UserManager initialUsers={serialized} divisions={divisions} />
     </div>

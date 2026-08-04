@@ -98,7 +98,7 @@ export function EventQrScanner() {
 
   return (
     <div className="space-y-4">
-      <div id={SCANNER_ID} className="overflow-hidden rounded-xl border bg-black" />
+      <div id={SCANNER_ID} className="h-72 w-full overflow-hidden rounded-xl border bg-black" />
 
       {status === 'success' && (
         <div className="flex items-center gap-2 rounded-lg bg-emerald-50 px-3 py-2 text-sm text-emerald-800">
@@ -113,11 +113,14 @@ export function EventQrScanner() {
         </div>
       )}
       {status === 'camera-denied' && (
-        <div className="flex flex-col items-center gap-3 rounded-lg bg-amber-50 px-4 py-4 text-sm text-amber-800">
+        <div className="flex flex-col items-center gap-3 rounded-lg bg-amber-50 px-4 py-4 text-sm text-amber-800 dark:bg-amber-500/10 dark:text-amber-400">
           <div className="flex items-center gap-2">
             <Camera className="h-4 w-4 shrink-0" />
             {message}
           </div>
+          <p className="text-center text-xs opacity-80">
+            Pastikan akses lewat HTTPS (ngrok) dan izinkan kamera di browser. Buka dari URL https, bukan http.
+          </p>
           <Button size="sm" variant="outline" onClick={() => window.location.reload()}>
             Coba lagi
           </Button>

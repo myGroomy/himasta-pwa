@@ -22,10 +22,10 @@ export default function Error({
         <AlertTriangle className="h-8 w-8 text-red-600" />
       </div>
       <div className="text-center space-y-2">
-        <h2 className="text-2xl font-bold text-slate-900">Terjadi Kesalahan</h2>
-        <p className="text-slate-500">Maaf, terjadi masalah saat memuat halaman ini.</p>
+        <h2 className="text-2xl font-bold text-foreground">Terjadi Kesalahan</h2>
+        <p className="text-muted-foreground">Maaf, terjadi masalah saat memuat halaman ini.</p>
         {error.message && (
-          <p className="text-sm text-slate-400 font-mono">{error.message}</p>
+          <p className="text-sm text-muted-foreground/70 font-mono">{error.message}</p>
         )}
       </div>
       <div className="flex gap-3">

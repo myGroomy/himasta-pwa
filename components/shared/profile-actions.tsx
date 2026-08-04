@@ -70,7 +70,7 @@ export function ProfileActions({ initialPhone, initialPhotoUrl }: ProfileActions
   return (
     <div className="space-y-4">
       <div className="flex gap-2">
-        <Button onClick={handleDownload} disabled={isDownloading} variant="outline" className="flex-1 gap-2 border-[#EAEAEA]">
+        <Button onClick={handleDownload} disabled={isDownloading} variant="outline" className="flex-1 gap-2 border-border">
           <Download className="h-4 w-4" />
           {isDownloading ? 'Memproses...' : 'Unduh Kartu'}
         </Button>

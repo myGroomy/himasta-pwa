@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useEffect, useState } from 'react'
 
-export type AccentTheme = 'noir' | 'royal' | 'emerald' | 'amethyst'
+export type AccentTheme = 'noir' | 'royal' | 'emerald'
 
 interface AccentThemeContextType {
   theme: AccentTheme
@@ -29,11 +29,6 @@ const themeStyles: Record<AccentTheme, { primary: string; primaryForeground: str
     primary: '158 64% 39%', // #10b981
     primaryForeground: '0 0% 100%',
     ring: '158 64% 39%',
-  },
-  amethyst: {
-    primary: '270 50% 40%', // #6b21a8
-    primaryForeground: '0 0% 100%',
-    ring: '270 50% 40%',
   },
 }
 

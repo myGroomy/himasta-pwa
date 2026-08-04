@@ -5,11 +5,11 @@ import { Html5Qrcode } from 'html5-qrcode'
 import { Camera, CheckCircle2, Loader2, XCircle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
-const SCANNER_ID = 'qr-reader-region'
+const SCANNER_ID = 'member-qr-reader-region'
 
 type ScanStatus = 'idle' | 'scanning' | 'success' | 'error' | 'camera-denied'
 
-export function QrScanner() {
+export function MemberQrScanner({ sessionId }: { sessionId: string }) {
   const [status, setStatus] = useState<ScanStatus>('idle')
   const [message, setMessage] = useState('')
   const scannerRef = useRef<Html5Qrcode | null>(null)
@@ -24,7 +24,7 @@ export function QrScanner() {
         html5Qr = new Html5Qrcode(SCANNER_ID, false)
         scannerRef.current = html5Qr
         setStatus('scanning')
-        setMessage('Arahkan kamera ke QR absensi')
+        setMessage('Arahkan kamera ke QR pribadi anggota')
 
         await html5Qr.start(
           { facingMode: 'environment' },
@@ -33,25 +33,25 @@ export function QrScanner() {
             if (processedRef.current || !active) return
             processedRef.current = true
 
-            const token = extractToken(decodedText)
-            if (!token) {
+            const memberToken = extractMemberToken(decodedText)
+            if (!memberToken) {
               setStatus('error')
-              setMessage('QR tidak dikenal. Gunakan QR dari sesi absensi HIMASTA.')
+              setMessage('QR tidak dikenal. Gunakan QR pribadi anggota HIMASTA.')
               resetAfterDelay()
               return
             }
 
             try {
-              const res = await fetch('/api/attendance/scan', {
+              const res = await fetch('/api/attendance/mark', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ token }),
+                body: JSON.stringify({ memberToken, sessionId }),
               })
               const data = await res.json().catch(() => null)
 
               if (res.ok) {
                 setStatus('success')
-                setMessage('Kehadiran tercatat! Terima kasih.')
+                setMessage(`Kehadiran tercatat untuk ${data?.member?.name ?? 'anggota'}.`)
               } else {
                 setStatus('error')
                 setMessage(data?.error ?? 'Gagal mencatat kehadiran.')
@@ -67,7 +67,7 @@ export function QrScanner() {
       } catch (err) {
         if (!active) return
         setStatus('camera-denied')
-        setMessage('Kamera tidak dapat diakses. Izinkan akses kamera atau gunakan kode dari QR di menu Absensi.')
+        setMessage('Kamera tidak dapat diakses. Izinkan akses kamera.')
         console.error(err)
       }
     }
@@ -94,7 +94,7 @@ export function QrScanner() {
           .catch(() => {})
       }
     }
-  }, [])
+  }, [sessionId])
 
   return (
     <div className="space-y-4">
@@ -136,11 +136,11 @@ export function QrScanner() {
   )
 }
 
-function extractToken(text: string): string | null {
+function extractMemberToken(text: string): string | null {
   try {
     if (/^https?:\/\//i.test(text)) {
       const url = new URL(text)
-      const token = url.searchParams.get('token')
+      const token = url.searchParams.get('member')
       return token && token.length >= 8 ? token : null
     }
     return text.length >= 8 ? text : null

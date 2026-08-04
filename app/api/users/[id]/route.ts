@@ -8,6 +8,7 @@ const updateSchema = z.object({
   role: z.enum(['ANGGOTA', 'KADIV', 'BPH', 'DOSEN']).optional(),
   divisionId: z.string().nullable().optional(),
   isActive: z.boolean().optional(),
+  pendingApproval: z.boolean().optional(),
   name: z.string().min(2).max(100).optional(),
   phone: z.string().max(20).optional().nullable(),
   password: z.string().min(6).max(100).optional(),
@@ -51,6 +52,18 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
         division: { select: { id: true, name: true, slug: true } },
       },
     })
+
+    if (target.pendingApproval && parsed.data.pendingApproval === false) {
+      await prisma.notification.create({
+        data: {
+          userId: params.id,
+          title: 'Akun Disetujui',
+          message: 'Akun HIMASTA Anda telah disetujui oleh BPH. Silakan masuk ke aplikasi.',
+          link: '/dashboard',
+        },
+      })
+    }
+
     return NextResponse.json({ user })
   } catch (error) {
     return serverError(error)
