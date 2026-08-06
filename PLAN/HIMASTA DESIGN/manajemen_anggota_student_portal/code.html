@@ -1,0 +1,208 @@
+<!DOCTYPE html><html lang="en" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Member Management - StudentOrg Portal</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-container": "#f39461",
+                        "on-surface-variant": "#444651",
+                        "on-primary-fixed-variant": "#264191",
+                        "tertiary-fixed-dim": "#ffb691",
+                        "on-secondary": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "secondary-container": "#d0e1fb",
+                        "secondary": "#505f76",
+                        "surface-tint": "#4059aa",
+                        "surface-bright": "#f7f9fb",
+                        "on-primary-container": "#90a8ff",
+                        "on-error-container": "#93000a",
+                        "tertiary-fixed": "#ffdbcb",
+                        "on-tertiary-fixed": "#341100",
+                        "on-secondary-fixed-variant": "#38485d",
+                        "inverse-surface": "#2d3133",
+                        "surface-variant": "#e0e3e5",
+                        "primary-fixed": "#dce1ff",
+                        "on-primary-fixed": "#00164e",
+                        "primary-fixed-dim": "#b6c4ff",
+                        "surface-container-low": "#f2f4f6",
+                        "tertiary-container": "#6e2c00",
+                        "surface-dim": "#d8dadc",
+                        "surface": "#f7f9fb",
+                        "on-error": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary-fixed": "#0b1c30",
+                        "on-secondary-container": "#54647a",
+                        "inverse-on-surface": "#eff1f3",
+                        "on-tertiary-fixed-variant": "#773205",
+                        "primary-container": "#1e3a8a",
+                        "inverse-primary": "#b6c4ff",
+                        "surface-container-lowest": "#ffffff",
+                        "outline": "#757682",
+                        "outline-variant": "#c5c5d3",
+                        "surface-container-highest": "#e0e3e5",
+                        "primary": "#00236f",
+                        "tertiary": "#4b1c00",
+                        "surface-container-high": "#e6e8ea",
+                        "secondary-fixed": "#d3e4fe",
+                        "error-container": "#ffdad6",
+                        "error": "#ba1a1a",
+                        "on-surface": "#191c1e",
+                        "on-background": "#191c1e",
+                        "secondary-fixed-dim": "#b7c8e1",
+                        "background": "#f7f9fb",
+                        "surface-container": "#eceef0"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "1rem",
+                        "touch-target-min": "48px",
+                        "margin-mobile": "1rem",
+                        "container-max": "1200px"
+                    },
+                    "fontFamily": {
+                        "body-sm": ["Outfit"],
+                        "body-lg": ["Outfit"],
+                        "headline-md": ["Outfit"],
+                        "headline-lg-mobile": ["Outfit"],
+                        "headline-lg": ["Outfit"],
+                        "label-caps": ["Outfit"]
+                    },
+                    "fontSize": {
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-md": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-lg min-h-screen pt-16 md:pl-80 pb-24 md:pb-0">
+<!-- TopAppBar -->
+<header class="bg-surface dark:bg-surface fixed top-0 w-full border-b border-outline-variant dark:border-outline z-40 transition-colors duration-200">
+<div class="flex items-center justify-between px-4 h-16 w-full max-w-container-max mx-auto md:ml-80">
+<div class="flex items-center gap-4">
+<button aria-label="Open Menu" class="md:hidden text-primary dark:text-primary-fixed hover:bg-surface-variant/50 dark:hover:bg-on-secondary-fixed-variant/20 p-2 rounded-full transition-colors duration-200">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<h1 class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed">StudentOrg Portal</h1>
+</div>
+<button aria-label="Search" class="text-primary dark:text-primary-fixed hover:bg-surface-variant/50 dark:hover:bg-on-secondary-fixed-variant/20 p-2 rounded-full transition-colors duration-200">
+<span class="material-symbols-outlined">search</span>
+</button>
+</div>
+</header>
+<!-- NavigationDrawer (Desktop) -->
+<nav class="hidden md:flex flex-col h-full py-gutter bg-surface dark:bg-surface w-80 fixed left-0 top-0 border-r border-outline-variant dark:border-outline z-50 pt-16 transition-all duration-200">
+<div class="px-6 py-4 flex flex-col gap-1 border-b border-outline-variant mb-4">
+<div class="flex items-center gap-4 mb-2">
+<img alt="User Profile Picture" class="w-12 h-12 rounded-full object-cover" data-alt="A professional headshot of a young male executive with short dark hair, wearing a dark blue suit jacket over a crisp white shirt. The background is a clean, bright, out-of-focus modern office setting. Lighting is soft and even, highlighting a confident expression, fitting a minimalist corporate aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBHRe1Jyydagff4-BhE0uysXMIQrfLztIWk5g-F66TxwgqoG3SIshTDs8Thy2rwA8Dl3O_DSuBQ_HGWteWms1OLAzf8nS3q5P_YQXhgTXXWO2xraR7EhfTwTU3qhqyPxgylP7CmDowT3U51dhgYsxUliCqsylFRnqtEuLXtmnLkfHiw5_20I5uaye51ha3mUckjX5DT7Hmw5y7b8wumgKK9m7HV4ztlUQFuLeTUX6muBdcEcTTWIshsJA">
+<div>
+<h2 class="font-headline-md text-headline-md text-primary font-bold">Alex Rivera</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Presidential Council</p>
+</div>
+</div>
+<p class="font-label-caps text-label-caps text-secondary">Member ID: #8821</p>
+</div>
+<ul class="flex-1 px-4 space-y-2 overflow-y-auto">
+<li class=""><a class="flex items-center gap-4 px-4 h-[48px] rounded-lg text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-high dark:hover:bg-on-secondary-fixed-variant/10 transition-all duration-200" href="#"><span class="material-symbols-outlined">dashboard</span>Dashboard</a></li>
+<li class=""><a class="flex items-center gap-4 px-4 h-[48px] rounded-lg text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-high dark:hover:bg-on-secondary-fixed-variant/10 transition-all duration-200" href="#"><span class="material-symbols-outlined">account_tree</span>My Divisions</a></li>
+<li class=""><a class="flex items-center gap-4 px-4 h-[48px] rounded-lg text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-high dark:hover:bg-on-secondary-fixed-variant/10 transition-all duration-200" href="#"><span class="material-symbols-outlined">event_available</span>Event Manager</a></li>
+<li class=""><a class="flex items-center gap-4 px-4 h-[48px] rounded-lg text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-high dark:hover:bg-on-secondary-fixed-variant/10 transition-all duration-200" href="#"><span class="material-symbols-outlined">folder_shared</span>Resource Library</a></li>
+<li class=""><a class="flex items-center gap-4 px-4 h-[48px] rounded-lg text-primary dark:text-primary-fixed bg-secondary-container/50 font-bold transition-all duration-200" href="#"><span class="material-symbols-outlined" style="font-variation-settings: &quot;FILL&quot; 1;">settings</span>Settings</a></li>
+<li class=""><a class="flex items-center gap-4 px-4 h-[48px] rounded-lg text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-high dark:hover:bg-on-secondary-fixed-variant/10 transition-all duration-200" href="#"><span class="material-symbols-outlined">help</span>Support</a></li>
+</ul>
+</nav>
+<!-- Main Content Canvas -->
+<main class="max-w-container-max mx-auto px-margin-mobile md:px-gutter py-6">
+<header class="mb-6 flex flex-col md:flex-row md:items-end justify-between gap-4">
+<div>
+<h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary mb-1">Member Management</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Review, approve, and manage organization members.</p>
+</div>
+<div class="flex gap-3"><button class="h-touch-target-min px-6 rounded-lg bg-primary-container text-on-primary font-headline-md text-body-lg hover:bg-primary transition-colors flex items-center gap-2"><span class="material-symbols-outlined">upload_file</span> Import Anggota</button>
+<button class="h-touch-target-min px-6 rounded-lg border border-outline-variant text-primary font-headline-md text-body-lg hover:border-primary transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined">filter_list</span> Filter
+                </button>
+<button class="h-touch-target-min px-6 rounded-lg bg-primary-container text-on-primary font-headline-md text-body-lg hover:bg-primary transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined">add</span> Add Member
+                </button>
+</div>
+</header>
+<!-- Import Section -->
+
+<!-- Member List Table -->
+<section class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="border-b border-outline-variant bg-surface-container-low font-label-caps text-label-caps text-on-surface-variant">
+<th class="p-4 font-semibold uppercase tracking-wider">Name</th>
+<th class="p-4 font-semibold uppercase tracking-wider">Role</th>
+<th class="p-4 font-semibold uppercase tracking-wider">Status</th>
+<th class="p-4 font-semibold uppercase tracking-wider text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="font-body-lg text-body-lg text-on-surface divide-y divide-outline-variant"><tr class="hover:bg-surface-bright transition-colors group h-[56px]"><td class="p-4 flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-secondary-container text-on-primary-fixed-variant flex items-center justify-center font-bold font-headline-md">SJ</div><div><p class="font-semibold text-primary">Sarah Jenkins</p><p class="font-body-sm text-body-sm text-on-surface-variant">sarah.j@studentorg.edu</p></div></td><td class="p-4">Treasurer</td><td class="p-4"><span class="inline-flex items-center px-3 py-1 rounded-full bg-[#e6f4ea] text-[#137333] font-label-caps text-label-caps">Active</span></td><td class="p-4 text-right space-x-2"><label class="relative inline-flex items-center cursor-pointer align-middle mr-2"><input checked="" class="sr-only peer" type="checkbox" value=""><div class="w-11 h-6 bg-outline-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div></label><button aria-label="Edit Member" class="text-secondary hover:text-primary transition-colors p-2"><span class="material-symbols-outlined text-[20px]">edit</span></button></td></tr><tr class="hover:bg-surface-bright transition-colors group h-[56px]"><td class="p-4 flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-surface-variant text-on-surface-variant flex items-center justify-center font-bold font-headline-md">MK</div><div><p class="font-semibold text-primary">Michael Kwan</p><p class="font-body-sm text-body-sm text-on-surface-variant">m.kwan@studentorg.edu</p></div></td><td class="p-4">General Member</td><td class="p-4"><span class="inline-flex items-center px-3 py-1 rounded-full bg-error-container text-on-error-container font-label-caps text-label-caps">Pending Approval</span></td><td class="p-4 text-right space-x-2"><button class="h-touch-target-min px-4 rounded-lg bg-primary-container text-on-primary font-headline-md text-body-sm hover:bg-primary transition-colors inline-flex items-center gap-1"><span class="material-symbols-outlined text-[18px]">check_circle</span> Approve</button><button aria-label="Reject Member" class="text-secondary hover:text-error transition-colors p-2"><span class="material-symbols-outlined text-[20px]">cancel</span></button></td></tr><tr class="hover:bg-surface-bright transition-colors group h-[56px]"><td class="p-4 flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-secondary-container text-on-primary-fixed-variant flex items-center justify-center font-bold font-headline-md">EL</div><div><p class="font-semibold text-primary">Emma Lee</p><p class="font-body-sm text-body-sm text-on-surface-variant">emma.l@studentorg.edu</p></div></td><td class="p-4">Event Coordinator</td><td class="p-4"><span class="inline-flex items-center px-3 py-1 rounded-full bg-surface-variant text-on-surface-variant font-label-caps text-label-caps">Inactive</span></td><td class="p-4 text-right space-x-2"><label class="relative inline-flex items-center cursor-pointer align-middle mr-2"><input class="sr-only peer" type="checkbox" value=""><div class="w-11 h-6 bg-outline-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div></label><button aria-label="Edit Member" class="text-secondary hover:text-primary transition-colors p-2"><span class="material-symbols-outlined text-[20px]">edit</span></button></td></tr><tr class="hover:bg-surface-bright transition-colors group h-[56px]"><td class="p-4 flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-secondary-container text-on-primary-fixed-variant flex items-center justify-center font-bold font-headline-md">DC</div><div><p class="font-semibold text-primary">David Chen</p><p class="font-body-sm text-body-sm text-on-surface-variant">d.chen@studentorg.edu</p></div></td><td class="p-4">Secretary</td><td class="p-4"><span class="inline-flex items-center px-3 py-1 rounded-full bg-[#e6f4ea] text-[#137333] font-label-caps text-label-caps">Active</span></td><td class="p-4 text-right space-x-2"><label class="relative inline-flex items-center cursor-pointer align-middle mr-2"><input checked="" class="sr-only peer" type="checkbox" value=""><div class="w-11 h-6 bg-outline-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div></label><button aria-label="Edit Member" class="text-secondary hover:text-primary transition-colors p-2"><span class="material-symbols-outlined text-[20px]">edit</span></button></td></tr><tr class="hover:bg-surface-bright transition-colors group h-[56px]"><td class="p-4 flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-secondary-container text-on-primary-fixed-variant flex items-center justify-center font-bold font-headline-md">AK</div><div><p class="font-semibold text-primary">Aisha Khan</p><p class="font-body-sm text-body-sm text-on-surface-variant">a.khan@studentorg.edu</p></div></td><td class="p-4">Member</td><td class="p-4"><span class="inline-flex items-center px-3 py-1 rounded-full bg-[#e6f4ea] text-[#137333] font-label-caps text-label-caps">Active</span></td><td class="p-4 text-right space-x-2"><label class="relative inline-flex items-center cursor-pointer align-middle mr-2"><input checked="" class="sr-only peer" type="checkbox" value=""><div class="w-11 h-6 bg-outline-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div></label><button aria-label="Edit Member" class="text-secondary hover:text-primary transition-colors p-2"><span class="material-symbols-outlined text-[20px]">edit</span></button></td></tr><tr class="hover:bg-surface-bright transition-colors group h-[56px]"><td class="p-4 flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-surface-variant text-on-surface-variant flex items-center justify-center font-bold font-headline-md">RT</div><div><p class="font-semibold text-primary">Robert Taylor</p><p class="font-body-sm text-body-sm text-on-surface-variant">r.taylor@studentorg.edu</p></div></td><td class="p-4">Member</td><td class="p-4"><span class="inline-flex items-center px-3 py-1 rounded-full bg-error-container text-on-error-container font-label-caps text-label-caps">Pending Approval</span></td><td class="p-4 text-right space-x-2"><button class="h-touch-target-min px-4 rounded-lg bg-primary-container text-on-primary font-headline-md text-body-sm hover:bg-primary transition-colors inline-flex items-center gap-1"><span class="material-symbols-outlined text-[18px]">check_circle</span> Approve</button><button aria-label="Reject Member" class="text-secondary hover:text-error transition-colors p-2"><span class="material-symbols-outlined text-[20px]">cancel</span></button></td></tr><tr class="hover:bg-surface-bright transition-colors group h-[56px]"><td class="p-4 flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-secondary-container text-on-primary-fixed-variant flex items-center justify-center font-bold font-headline-md">ER</div><div><p class="font-semibold text-primary">Elena Rodriguez</p><p class="font-body-sm text-body-sm text-on-surface-variant">e.rodriguez@studentorg.edu</p></div></td><td class="p-4">Member</td><td class="p-4"><span class="inline-flex items-center px-3 py-1 rounded-full bg-[#e6f4ea] text-[#137333] font-label-caps text-label-caps">Active</span></td><td class="p-4 text-right space-x-2"><label class="relative inline-flex items-center cursor-pointer align-middle mr-2"><input checked="" class="sr-only peer" type="checkbox" value=""><div class="w-11 h-6 bg-outline-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div></label><button aria-label="Edit Member" class="text-secondary hover:text-primary transition-colors p-2"><span class="material-symbols-outlined text-[20px]">edit</span></button></td></tr><tr class="hover:bg-surface-bright transition-colors group h-[56px]"><td class="p-4 flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-secondary-container text-on-primary-fixed-variant flex items-center justify-center font-bold font-headline-md">JW</div><div><p class="font-semibold text-primary">James Wilson</p><p class="font-body-sm text-body-sm text-on-surface-variant">j.wilson@studentorg.edu</p></div></td><td class="p-4">Member</td><td class="p-4"><span class="inline-flex items-center px-3 py-1 rounded-full bg-[#e6f4ea] text-[#137333] font-label-caps text-label-caps">Active</span></td><td class="p-4 text-right space-x-2"><label class="relative inline-flex items-center cursor-pointer align-middle mr-2"><input checked="" class="sr-only peer" type="checkbox" value=""><div class="w-11 h-6 bg-outline-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div></label><button aria-label="Edit Member" class="text-secondary hover:text-primary transition-colors p-2"><span class="material-symbols-outlined text-[20px]">edit</span></button></td></tr><tr class="hover:bg-surface-bright transition-colors group h-[56px]"><td class="p-4 flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-surface-variant text-on-surface-variant flex items-center justify-center font-bold font-headline-md">LM</div><div><p class="font-semibold text-primary">Linda Martinez</p><p class="font-body-sm text-body-sm text-on-surface-variant">l.martinez@studentorg.edu</p></div></td><td class="p-4">Member</td><td class="p-4"><span class="inline-flex items-center px-3 py-1 rounded-full bg-surface-variant text-on-surface-variant font-label-caps text-label-caps">Inactive</span></td><td class="p-4 text-right space-x-2"><label class="relative inline-flex items-center cursor-pointer align-middle mr-2"><input class="sr-only peer" type="checkbox" value=""><div class="w-11 h-6 bg-outline-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div></label><button aria-label="Edit Member" class="text-secondary hover:text-primary transition-colors p-2"><span class="material-symbols-outlined text-[20px]">edit</span></button></td></tr><tr class="hover:bg-surface-bright transition-colors group h-[56px]"><td class="p-4 flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-secondary-container text-on-primary-fixed-variant flex items-center justify-center font-bold font-headline-md">KP</div><div><p class="font-semibold text-primary">Kevin Park</p><p class="font-body-sm text-body-sm text-on-surface-variant">k.park@studentorg.edu</p></div></td><td class="p-4">Member</td><td class="p-4"><span class="inline-flex items-center px-3 py-1 rounded-full bg-[#e6f4ea] text-[#137333] font-label-caps text-label-caps">Active</span></td><td class="p-4 text-right space-x-2"><label class="relative inline-flex items-center cursor-pointer align-middle mr-2"><input checked="" class="sr-only peer" type="checkbox" value=""><div class="w-11 h-6 bg-outline-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div></label><button aria-label="Edit Member" class="text-secondary hover:text-primary transition-colors p-2"><span class="material-symbols-outlined text-[20px]">edit</span></button></td></tr></tbody>
+</table>
+</div>
+<div class="p-4 border-t border-outline-variant bg-surface-container-lowest flex items-center justify-between">
+<p class="font-body-sm text-body-sm text-on-surface-variant">Showing 1 to 10 of 124 entries</p>
+<div class="flex gap-2">
+<button class="p-2 border border-outline-variant rounded hover:border-primary text-secondary transition-colors disabled:opacity-50" disabled="">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<button class="p-2 border border-outline-variant rounded hover:border-primary text-secondary transition-colors">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar (Mobile) -->
+<nav class="md:hidden bg-surface/80 dark:bg-surface/80 backdrop-blur-md fixed bottom-4 left-4 right-4 rounded-xl border border-outline-variant dark:border-outline shadow-sm fixed bottom-0 w-full px-margin-mobile pb-4 pt-2 z-50 flex justify-around items-center">
+<a class="flex flex-col items-center justify-center text-secondary dark:text-secondary-fixed-dim hover:bg-secondary-container/30 dark:hover:bg-secondary-container/10 rounded-lg active:scale-95 transition-transform duration-150 p-2 w-16" href="#">
+<span class="material-symbols-outlined mb-1">home</span>
+<span class="font-label-caps text-label-caps">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-secondary dark:text-secondary-fixed-dim hover:bg-secondary-container/30 dark:hover:bg-secondary-container/10 rounded-lg active:scale-95 transition-transform duration-150 p-2 w-16" href="#">
+<span class="material-symbols-outlined mb-1">calendar_today</span>
+<span class="font-label-caps text-label-caps">Calendar</span>
+</a>
+<a class="flex flex-col items-center justify-center text-secondary dark:text-secondary-fixed-dim hover:bg-secondary-container/30 dark:hover:bg-secondary-container/10 rounded-lg active:scale-95 transition-transform duration-150 p-2 w-16" href="#">
+<span class="material-symbols-outlined mb-1">groups</span>
+<span class="font-label-caps text-label-caps">Directory</span>
+</a>
+<a class="flex flex-col items-center justify-center text-secondary dark:text-secondary-fixed-dim hover:bg-secondary-container/30 dark:hover:bg-secondary-container/10 rounded-lg active:scale-95 transition-transform duration-150 p-2 w-16" href="#">
+<span class="material-symbols-outlined mb-1">notifications</span>
+<span class="font-label-caps text-label-caps">Inbox</span>
+</a>
+<a class="flex flex-col items-center justify-center text-primary dark:text-primary-fixed font-bold hover:bg-secondary-container/30 dark:hover:bg-secondary-container/10 rounded-lg active:scale-95 transition-transform duration-150 p-2 w-16" href="#">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: &quot;FILL&quot; 1;">account_circle</span>
+<span class="font-label-caps text-label-caps">Profile</span>
+</a>
+</nav>
+
+
+</body></html>

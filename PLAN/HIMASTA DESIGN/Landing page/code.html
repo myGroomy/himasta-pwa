@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>HIMASTA - Himpunan Mahasiswa Statistika</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+<script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-secondary-fixed": "#0b1c30",
+            "surface-variant": "#e0e3e5",
+            "surface": "#f7f9fb",
+            "on-primary": "#ffffff",
+            "on-surface-variant": "#444651",
+            "secondary": "#505f76",
+            "surface-container-high": "#e6e8ea",
+            "surface-bright": "#f7f9fb",
+            "background": "#f7f9fb",
+            "surface-container-highest": "#e0e3e5",
+            "on-primary-container": "#90a8ff",
+            "inverse-on-surface": "#eff1f3",
+            "inverse-primary": "#b6c4ff",
+            "surface-container-low": "#f2f4f6",
+            "primary-fixed-dim": "#b6c4ff",
+            "error-container": "#ffdad6",
+            "surface-container-lowest": "#ffffff",
+            "tertiary-fixed-dim": "#ffb691",
+            "on-tertiary": "#ffffff",
+            "on-tertiary-fixed-variant": "#773205",
+            "on-secondary-fixed-variant": "#38485d",
+            "on-error": "#ffffff",
+            "surface-container": "#eceef0",
+            "on-secondary-container": "#54647a",
+            "on-primary-fixed-variant": "#264191",
+            "inverse-surface": "#2d3133",
+            "tertiary-fixed": "#ffdbcb",
+            "tertiary": "#4b1c00",
+            "on-primary-fixed": "#00164e",
+            "outline-variant": "#c5c5d3",
+            "primary-fixed": "#dce1ff",
+            "on-surface": "#191c1e",
+            "outline": "#757682",
+            "secondary-container": "#d0e1fb",
+            "secondary-fixed-dim": "#b7c8e1",
+            "surface-dim": "#d8dadc",
+            "secondary-fixed": "#d3e4fe",
+            "primary-container": "#1e3a8a",
+            "primary": "#00236f",
+            "on-tertiary-fixed": "#341100",
+            "on-tertiary-container": "#f39461",
+            "tertiary-container": "#6e2c00",
+            "on-error-container": "#93000a",
+            "error": "#ba1a1a",
+            "on-background": "#191c1e",
+            "surface-tint": "#4059aa",
+            "on-secondary": "#ffffff"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.5rem",
+            "full": "9999px"
+          },
+          "fontFamily": {
+            sans: ['Outfit', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+<style data-purpose="base-styles">
+    body {
+      font-family: 'Outfit', sans-serif;
+      color: #191c1e;
+      background-color: #f7f9fb;
+    }
+    .section-padding {
+      padding-top: 5rem;
+      padding-bottom: 5rem;
+    }
+    .hide-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .hide-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+</head>
+<body class="antialiased">
+<!-- BEGIN: TopBar -->
+<div class="bg-primary text-white text-sm py-2 px-6 flex justify-between items-center">
+<div class="flex items-center gap-6">
+<span class=""><i class="fa-solid fa-location-dot mr-2"></i> Jl. Kolonel Masturi No.71, Cimahi</span>
+<span class=""><i class="fa-solid fa-envelope mr-2"></i> info@himasta.org</span>
+</div>
+<div class="flex items-center gap-4">
+<a class="hover:text-primary-fixed-dim" href="#"><i class="fa-brands fa-facebook-f"></i></a>
+<a class="hover:text-primary-fixed-dim" href="#"><i class="fa-brands fa-twitter"></i></a>
+<a class="hover:text-primary-fixed-dim" href="#"><i class="fa-brands fa-instagram"></i></a>
+<a class="hover:text-primary-fixed-dim" href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+</div>
+</div>
+<!-- END: TopBar -->
+<!-- BEGIN: MainHeader -->
+<header class="bg-surface-container-lowest shadow-sm sticky top-0 z-50 px-6 py-4 flex justify-between items-center">
+<div class="flex items-center">
+<!-- Logo Placeholder -->
+<div class="text-2xl font-bold text-primary flex items-center gap-2">
+<i class="fa-solid fa-chart-pie text-tertiary-container"></i> HIMASTA
+      </div>
+</div>
+<nav class="hidden md:flex items-center gap-8 font-medium">
+<a class="text-primary border-b-2 border-primary pb-1" href="#">Beranda</a>
+<a class="text-on-surface-variant hover:text-primary transition" href="#">Tentang Kami</a>
+<a class="text-on-surface-variant hover:text-primary transition" href="#">Event</a>
+<a class="text-on-surface-variant hover:text-primary transition" href="#">Berita</a>
+<a class="text-on-surface-variant hover:text-primary transition" href="#">Kontak</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="text-on-surface-variant hover:text-primary"><i class="fa-solid fa-magnifying-glass"></i></button>
+<button class="bg-primary text-on-primary px-6 py-2 rounded-xl hover:bg-primary/90 transition">Gabung Sekarang</button>
+</div>
+</header>
+<!-- END: MainHeader -->
+<!-- BEGIN: HeroSection -->
+<section class="relative bg-inverse-surface h-[600px] flex items-center justify-center text-center px-6 bg-primary">
+<!-- Background Image -->
+<img alt="Background" class="absolute inset-0 w-full h-full object-cover opacity-60 mix-blend-overlay backdrop-blur-sm" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAT_OdGlMzr19vRbBvFbVm2wlUHLsyd-Qpm0Q2Z8NDf5_P0pCTsIDt6pePoW9JFrRJ_NGiTwPknOfzx0xGNrSyIl9x7MsvSoxdjsM1QBwEse38V-5SJBN6fSi2sTsTaJooDLvlwgX-M8IhtwGmCbTpWFDoWET8aN867vE6pntxMwHSpxzh-4Ehya7BMek7qc87fcFuLHCB2MTNccGiwOAG9piEcskVDLDG3INY0nUUcj_bV6gDWi_U7mA"/>
+<div class="relative z-10 max-w-4xl text-white">
+<h1 class="text-5xl md:text-6xl font-bold leading-tight mb-6">Navigasi Masa Depan Lewat Kekuatan Data</h1>
+<p class="text-lg md:text-xl text-inverse-on-surface mb-8 max-w-3xl mx-auto">Wadah kolaborasi mahasiswa Data Science untuk mengembangkan potensi teknis, kepemimpinan, dan dampak nyata bagi industri.</p>
+<div class="flex flex-col sm:flex-row gap-4 justify-center">
+<button class="bg-primary text-on-primary px-8 py-3 rounded-xl font-medium hover:bg-primary/90 transition flex items-center justify-center gap-2">
+          Bergabung Sekarang <i class="fa-solid fa-arrow-right"></i>
+</button>
+<button class="bg-surface-container-lowest text-primary px-8 py-3 rounded-xl font-medium hover:bg-surface-container-low transition flex items-center justify-center gap-2">
+<i class="fa-solid fa-circle-play text-xl"></i> Tonton Video
+        </button>
+</div>
+</div>
+</section>
+<!-- END: HeroSection -->
+<!-- BEGIN: AboutSection -->
+<section class="section-padding bg-surface">
+<div class="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
+<div class="relative">
+<img alt="Students" class="rounded-xl shadow-lg w-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAu2XXbhcKE7caIYGy6jRDgv2KW5uBOU9q9Nl6K419UHIHWN_itqUHfbVWwzFu63hx-SRp5uftBRG3lCa3I4V2S8uPxaxgnSo4lmOT8QTOfbgWO3FZu0rOB0GBBr22lUPjTnMgRPK9WcW4--_zlZGyJWccptwda2xHO80pN3gMA0B8tfoMchYGqTeunqrHHKH5iOzMSWr1HmEvTHwGRCozLOqsa4kt2Kerp5FsUyLwffvS6rC-3VzF3Rg"/>
+<div class="absolute -bottom-6 -right-6 bg-surface-container-lowest p-6 rounded-xl shadow-xl border border-surface-container-highest flex items-center gap-4">
+<div class="bg-primary-container text-on-primary-container p-4 rounded-full">
+<i class="fa-solid fa-award text-2xl"></i>
+</div>
+<div>
+<div class="text-3xl font-bold text-on-surface">15+</div>
+<div class="text-sm text-on-surface-variant font-medium">Tahun Pengalaman</div>
+</div>
+</div>
+</div>
+<div>
+<div class="text-primary font-semibold tracking-wider text-sm mb-2 uppercase">Tentang Kami</div>
+<h2 class="text-4xl font-bold text-on-surface mb-6">Pusat Keunggulan Mahasiswa Data Science</h2>
+<p class="text-on-surface-variant mb-8 leading-relaxed">HIMASTA hadir sebagai episentrum inovasi, tempat talenta terbaik Data Science mengasah kemampuan analisis, berkolaborasi secara global, dan menjunjung tinggi integritas akademik untuk menjawab tantangan industri.</p>
+<div class="space-y-4 mb-8">
+<div class="flex items-start gap-4">
+<div class="text-primary mt-1"><i class="fa-solid fa-check-circle"></i></div>
+<div>
+<h4 class="font-bold text-on-surface">Inovasi Data</h4>
+<p class="text-sm text-on-surface-variant">Mendorong penemuan dan solusi mutakhir melalui analisis data mendalam.</p>
+</div>
+</div>
+<div class="flex items-start gap-4">
+<div class="text-primary mt-1"><i class="fa-solid fa-check-circle"></i></div>
+<div>
+<h4 class="font-bold text-on-surface">Kolaborasi Global</h4>
+<p class="text-sm text-on-surface-variant">Membangun sinergi tanpa batas dengan praktisi dan institusi internasional.</p>
+</div>
+</div>
+<div class="flex items-start gap-4">
+<div class="text-primary mt-1"><i class="fa-solid fa-check-circle"></i></div>
+<div>
+<h4 class="font-bold text-on-surface">Integritas Akademik</h4>
+<p class="text-sm text-on-surface-variant">Menjunjung etika keilmuan tinggi dalam setiap riset dan karya.</p>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-3 gap-6 mb-8 border-t border-surface-variant pt-6">
+<div class="text-center">
+<div class="text-3xl font-bold text-primary mb-1">500+</div>
+<div class="text-xs text-on-surface-variant uppercase tracking-wider font-semibold">Anggota Aktif</div>
+</div>
+<div class="text-center border-l border-surface-variant">
+<div class="text-3xl font-bold text-primary mb-1">20+</div>
+<div class="text-xs text-on-surface-variant uppercase tracking-wider font-semibold">Proyek Riset</div>
+</div>
+<div class="text-center border-l border-surface-variant">
+<div class="text-3xl font-bold text-primary mb-1">50+</div>
+<div class="text-xs text-on-surface-variant uppercase tracking-wider font-semibold">Mitra Industri</div>
+</div>
+</div>
+<button class="bg-primary text-on-primary px-8 py-3 rounded-xl font-medium hover:bg-primary/90 transition">Pelajari Lebih Lanjut</button>
+</div>
+</div>
+</section>
+<!-- END: AboutSection -->
+<!-- BEGIN: DivisionsSection -->
+<section class="section-padding bg-surface-container-lowest">
+<div class="max-w-7xl mx-auto px-6">
+<div class="text-center mb-16">
+<div class="text-primary font-semibold tracking-wider text-sm mb-2 uppercase">Program Kerja &amp; Divisi</div>
+<h2 class="text-4xl font-bold text-on-surface">Pilar Utama Organisasi Kami</h2>
+</div>
+<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+<!-- Division 1: BPH -->
+<div class="bg-surface text-center p-6 rounded-xl border border-surface-variant hover:shadow-md transition">
+<div class="w-14 h-14 bg-primary-container text-on-primary-container rounded-full flex items-center justify-center mx-auto mb-4 text-xl">
+<i class="fa-solid fa-shield"></i>
+</div>
+<h3 class="font-bold text-on-surface mb-2">BPH (Badan Pengurus Harian)</h3>
+<p class="text-sm text-on-surface-variant">Manajemen Organisasi, Pengambil Kebijakan, Administrasi &amp; Keuangan</p>
+</div>
+<!-- Division 2: PSDM -->
+<div class="bg-surface text-center p-6 rounded-xl border border-surface-variant hover:shadow-md transition">
+<div class="w-14 h-14 bg-primary-container text-on-primary-container rounded-full flex items-center justify-center mx-auto mb-4 text-xl">
+<i class="fa-solid fa-users"></i>
+</div>
+<h3 class="font-bold text-on-surface mb-2">PSDM</h3>
+<p class="text-sm text-on-surface-variant">Kaderisasi Anggota, Pelatihan Soft Skills, Internal Bonding</p>
+</div>
+<!-- Division 3: RION -->
+<div class="bg-surface text-center p-6 rounded-xl border border-surface-variant hover:shadow-md transition">
+<div class="w-14 h-14 bg-primary-container text-on-primary-container rounded-full flex items-center justify-center mx-auto mb-4 text-xl">
+<i class="fa-solid fa-flask"></i>
+</div>
+<h3 class="font-bold text-on-surface mb-2">RION (Riset &amp; Inovasi)</h3>
+<p class="text-sm text-on-surface-variant">Projek Data Riil, Kompetisi Akademik, Eksplorasi Keilmuan</p>
+</div>
+<!-- Division 4: PR -->
+<div class="bg-surface text-center p-6 rounded-xl border border-surface-variant hover:shadow-md transition">
+<div class="w-14 h-14 bg-primary-container text-on-primary-container rounded-full flex items-center justify-center mx-auto mb-4 text-xl">
+<i class="fa-solid fa-bullhorn"></i>
+</div>
+<h3 class="font-bold text-on-surface mb-2">PR (Hubungan Masyarakat)</h3>
+<p class="text-sm text-on-surface-variant">Kemitraan Industri, Relasi Alumni, Branding Eksternal</p>
+</div>
+<!-- Division 5: KOMINFO -->
+<div class="bg-surface text-center p-6 rounded-xl border border-surface-variant hover:shadow-md transition">
+<div class="w-14 h-14 bg-primary-container text-on-primary-container rounded-full flex items-center justify-center mx-auto mb-4 text-xl">
+<i class="fa-solid fa-desktop"></i>
+</div>
+<h3 class="font-bold text-on-surface mb-2">KOMINFO</h3>
+<p class="text-sm text-on-surface-variant">Publikasi Kreatif, Pengelolaan PWA, Sosial Media Branding</p>
+</div>
+<!-- Division 6: AKADEMIK -->
+<div class="bg-surface text-center p-6 rounded-xl border border-surface-variant hover:shadow-md transition">
+<div class="w-14 h-14 bg-primary-container text-on-primary-container rounded-full flex items-center justify-center mx-auto mb-4 text-xl">
+<i class="fa-solid fa-book"></i>
+</div>
+<h3 class="font-bold text-on-surface mb-2">AKADEMIK</h3>
+<p class="text-sm text-on-surface-variant">Mentoring Belajar, Modul &amp; Bank Soal, Asistensi Praktikum</p>
+</div>
+</div>
+<div class="text-center mb-12 mt-16">
+<h2 class="text-3xl font-bold text-on-surface">Program Kerja Unggulan</h2>
+</div><div class="grid md:grid-cols-3 gap-8">
+<!-- Activity Card 1 -->
+<div class="bg-surface-container rounded-xl p-8 hover:shadow-xl transition group border border-surface-variant">
+<div class="w-16 h-16 bg-surface-container-lowest rounded-xl flex items-center justify-center text-primary text-2xl mb-6 shadow-sm group-hover:bg-primary group-hover:text-on-primary transition">
+<i class="fa-solid fa-laptop-code"></i>
+</div>
+<h3 class="text-xl font-bold text-on-surface mb-3">Data Science Boot Camp</h3>
+<p class="text-on-surface-variant mb-4 line-clamp-3">Pelatihan intensif bagi anggota untuk menguasai tools dan algoritma terkini dalam analisis data.</p>
+<a class="text-primary font-medium hover:underline flex items-center gap-2" href="#">Selengkapnya <i class="fa-solid fa-arrow-right text-sm"></i></a>
+</div>
+<!-- Activity Card 2 -->
+<div class="bg-primary text-on-primary rounded-xl p-8 shadow-xl transform md:-translate-y-4">
+<div class="w-16 h-16 bg-white/20 rounded-xl flex items-center justify-center text-white text-2xl mb-6 backdrop-blur-sm">
+<i class="fa-solid fa-building"></i>
+</div>
+<h3 class="text-xl font-bold mb-3">Industrial Visit 2024</h3>
+<p class="text-primary-fixed-dim mb-4 line-clamp-3">Kunjungan langsung ke perusahaan teknologi terkemuka untuk memahami praktik industri nyata.</p>
+<a class="text-on-primary font-medium hover:underline flex items-center gap-2" href="#">Selengkapnya <i class="fa-solid fa-arrow-right text-sm"></i></a>
+</div>
+<!-- Activity Card 3 -->
+<div class="bg-surface-container rounded-xl p-8 hover:shadow-xl transition group border border-surface-variant">
+<div class="w-16 h-16 bg-surface-container-lowest rounded-xl flex items-center justify-center text-primary text-2xl mb-6 shadow-sm group-hover:bg-primary group-hover:text-on-primary transition">
+<i class="fa-solid fa-lightbulb"></i>
+</div>
+<h3 class="text-xl font-bold text-on-surface mb-3">HIMASTA Hackathon</h3>
+<p class="text-on-surface-variant mb-4 line-clamp-3">Kompetisi inovasi berbasis data untuk memecahkan masalah nyata di berbagai sektor.</p>
+<a class="text-primary font-medium hover:underline flex items-center gap-2" href="#">Selengkapnya <i class="fa-solid fa-arrow-right text-sm"></i></a>
+</div>
+</div>
+</div>
+</section>
+<!-- END: DivisionsSection -->
+<!-- BEGIN: BenefitsTestimonialsSection -->
+<section class="section-padding bg-surface">
+<div class="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16">
+<!-- Benefits -->
+<div>
+<div class="text-primary font-semibold tracking-wider text-sm mb-2 uppercase">Mengapa Bergabung?</div>
+<h2 class="text-4xl font-bold text-on-surface mb-8">Benefit Anggota HIMASTA</h2>
+<div class="grid sm:grid-cols-2 gap-6">
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-surface-variant">
+<i class="fa-solid fa-network-wired text-3xl text-primary mb-4"></i>
+<h4 class="font-bold text-on-surface mb-2">Networking Eksklusif</h4>
+<p class="text-sm text-on-surface-variant">Koneksi luas dengan alumni, profesional, dan pakar industri data.</p>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-surface-variant">
+<i class="fa-solid fa-certificate text-3xl text-primary mb-4"></i>
+<h4 class="font-bold text-on-surface mb-2">Sertifikasi Profesional</h4>
+<p class="text-sm text-on-surface-variant">Fasilitasi persiapan sertifikasi keahlian data science bergengsi.</p>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-surface-variant">
+<i class="fa-solid fa-folder-open text-3xl text-primary mb-4"></i>
+<h4 class="font-bold text-on-surface mb-2">Portofolio Proyek</h4>
+<p class="text-sm text-on-surface-variant">Kesempatan terlibat dalam proyek riset riil yang memperkuat CV.</p>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-surface-variant">
+<i class="fa-solid fa-chess-king text-3xl text-primary mb-4"></i>
+<h4 class="font-bold text-on-surface mb-2">Kepemimpinan</h4>
+<p class="text-sm text-on-surface-variant">Wadah mengasah soft skills melalui kepanitiaan dan pengurusan.</p>
+</div>
+</div>
+</div>
+<!-- Testimonials -->
+<div>
+<div class="text-primary font-semibold tracking-wider text-sm mb-2 uppercase">Kisah Sukses</div>
+<h2 class="text-4xl font-bold text-on-surface mb-8">Apa Kata Alumni Kami</h2>
+<div class="space-y-6">
+<!-- Testimonial 1 -->
+<div class="bg-surface-container p-6 rounded-xl relative">
+<i class="fa-solid fa-quote-right text-4xl text-surface-variant absolute top-6 right-6"></i>
+<p class="text-on-surface-variant italic mb-6 relative z-10">"HIMASTA memberikan saya fondasi teknis yang kuat sekaligus kemampuan problem-solving yang tajam. Pengalaman riset di himpunan menjadi nilai jual utama saat saya melamar pekerjaan pertama."</p>
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 bg-primary-container rounded-full flex items-center justify-center text-on-primary-container font-bold text-xl">B</div>
+<div>
+<div class="font-bold text-on-surface">Budi Santoso</div>
+<div class="text-sm text-primary">Data Analyst di Tech Giant</div>
+</div>
+</div>
+</div>
+<!-- Testimonial 2 -->
+<div class="bg-surface-container p-6 rounded-xl relative">
+<i class="fa-solid fa-quote-right text-4xl text-surface-variant absolute top-6 right-6"></i>
+<p class="text-on-surface-variant italic mb-6 relative z-10">"Jaringan alumni HIMASTA sangat luar biasa. Melalui program mentoring himpunan, saya mendapatkan arahan karir yang tepat hingga akhirnya bisa memimpin tim data science."</p>
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 bg-tertiary-container rounded-full flex items-center justify-center text-on-tertiary-container font-bold text-xl">A</div>
+<div>
+<div class="font-bold text-on-surface">Anisa Rahma</div>
+<div class="text-sm text-tertiary">Senior Data Scientist</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- END: BenefitsTestimonialsSection -->
+<!-- BEGIN: NewsEventsSection -->
+<section class="section-padding bg-surface-container-lowest">
+<div class="max-w-7xl mx-auto px-6">
+<div class="flex justify-between items-end mb-12 border-b border-surface-variant pb-6">
+<div>
+<div class="text-primary font-semibold tracking-wider text-sm mb-2 uppercase">Update Terkini</div>
+<h2 class="text-4xl font-bold text-on-surface">Event &amp; Berita Terbaru</h2>
+</div>
+<a class="hidden md:flex items-center gap-2 text-primary font-medium hover:underline" href="#">Lihat Semua <i class="fa-solid fa-arrow-right"></i></a>
+</div>
+<div class="relative group">
+<div class="flex overflow-x-auto gap-8 snap-x snap-mandatory hide-scrollbar pb-4">
+<!-- Upcoming Event -->
+<div class="w-full md:w-[calc(50%-1rem)] flex-none snap-start flex flex-col md:flex-row bg-surface rounded-xl border border-surface-variant overflow-hidden hover:shadow-md transition">
+<div class="bg-primary text-center p-6 flex flex-col justify-center min-w-[120px]">
+<div class="text-on-primary-fixed-variant font-bold text-sm uppercase">Okt</div>
+<div class="text-3xl font-bold text-on-primary">25</div>
+</div>
+<div class="p-6">
+<div class="text-xs text-primary font-semibold mb-2 uppercase tracking-wide">Upcoming Event</div>
+<h3 class="text-xl font-bold text-on-surface mb-2">Workshop Machine Learning: From Zero to Hero</h3>
+<p class="text-on-surface-variant text-sm mb-4">Pelajari fundamental machine learning dengan studi kasus nyata bersama praktisi ahli.</p>
+<a class="text-primary font-medium text-sm hover:underline" href="#">Daftar Sekarang →</a>
+</div>
+</div>
+<!-- News -->
+<div class="w-full md:w-[calc(50%-1rem)] flex-none snap-start flex flex-col md:flex-row bg-surface rounded-xl border border-surface-variant overflow-hidden hover:shadow-md transition">
+<div class="h-48 md:h-auto md:w-1/3 bg-surface-container flex items-center justify-center text-primary text-4xl">
+<i class="fa-solid fa-trophy"></i>
+</div>
+<div class="p-6 md:w-2/3">
+<div class="text-xs text-tertiary font-semibold mb-2 uppercase tracking-wide">Berita Utama</div>
+<h3 class="text-xl font-bold text-on-surface mb-2">HIMASTA Juara 1 National Data Competition</h3>
+<p class="text-on-surface-variant text-sm mb-4">Tim delegasi HIMASTA berhasil menyisihkan 50+ universitas lain dalam kompetisi data nasional.</p>
+<a class="text-primary font-medium text-sm hover:underline" href="#">Baca Selengkapnya →</a>
+</div>
+</div>
+</div>
+<button class="absolute -left-5 top-1/2 -translate-y-1/2 bg-surface-container-lowest text-primary w-12 h-12 rounded-full shadow-lg flex items-center justify-center hover:bg-primary hover:text-on-primary transition opacity-0 group-hover:opacity-100 hidden md:flex z-10 border border-surface-variant focus:outline-none">
+<i class="fa-solid fa-chevron-left"></i>
+</button>
+<button class="absolute -right-5 top-1/2 -translate-y-1/2 bg-surface-container-lowest text-primary w-12 h-12 rounded-full shadow-lg flex items-center justify-center hover:bg-primary hover:text-on-primary transition opacity-0 group-hover:opacity-100 hidden md:flex z-10 border border-surface-variant focus:outline-none">
+<i class="fa-solid fa-chevron-right"></i>
+</button>
+</div>
+</div>
+</section>
+<!-- END: NewsEventsSection -->
+<!-- BEGIN: FinalCTA -->
+<section class="py-20 bg-primary text-center px-6">
+<div class="max-w-3xl mx-auto">
+<h2 class="text-4xl md:text-5xl font-bold text-on-primary mb-6">Siap Menjadi Bagian dari Revolusi Data?</h2>
+<p class="text-xl text-primary-fixed-dim mb-10">Kembangkan potensimu dan wujudkan inovasi berdampak nyata bersama komunitas data science terbaik.</p>
+<button class="bg-on-primary text-primary px-10 py-4 rounded-xl font-bold text-lg hover:bg-surface-container-lowest transition shadow-lg">
+      Bergabung dengan HIMASTA Sekarang
+    </button>
+</div>
+</section>
+<!-- END: FinalCTA -->
+<!-- BEGIN: Footer -->
+<footer class="bg-inverse-surface text-inverse-on-surface pt-16 pb-8 border-t border-gray-800">
+<div class="max-w-7xl mx-auto px-6">
+<div class="grid md:grid-cols-4 gap-12 mb-12">
+<div class="col-span-1 md:col-span-1">
+<div class="text-2xl font-bold text-white mb-6 flex items-center gap-2">
+<i class="fa-solid fa-chart-pie text-primary-fixed-dim"></i> HIMASTA
+          </div>
+<p class="text-gray-400 mb-6 text-sm">Wadah kolaborasi mahasiswa Data Science untuk mengembangkan potensi teknis, kepemimpinan, dan dampak nyata bagi industri.</p>
+<div class="flex gap-4">
+<a class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-primary transition" href="#"><i class="fa-brands fa-facebook-f"></i></a>
+<a class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-primary transition" href="#"><i class="fa-brands fa-twitter"></i></a>
+<a class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-primary transition" href="#"><i class="fa-brands fa-instagram"></i></a>
+<a class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-primary transition" href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+</div>
+</div>
+<div>
+<h4 class="text-lg font-bold text-white mb-6">Tautan Cepat</h4>
+<ul class="space-y-3 text-gray-400 text-sm">
+<li class=""><a class="hover:text-white transition" href="#">Beranda</a></li>
+<li class=""><a class="hover:text-white transition" href="#">Tentang Kami</a></li>
+<li class=""><a class="hover:text-white transition" href="#">Program Kerja</a></li>
+<li class=""><a class="hover:text-white transition" href="#">Berita &amp; Event</a></li>
+</ul>
+</div>
+<div>
+<h4 class="text-lg font-bold text-white mb-6">Informasi</h4>
+<ul class="space-y-3 text-gray-400 text-sm">
+<li class=""><a class="hover:text-white transition" href="#">Kebijakan Privasi</a></li>
+<li class=""><a class="hover:text-white transition" href="#">Syarat &amp; Ketentuan</a></li>
+<li class=""><a class="hover:text-white transition" href="#">FAQ</a></li>
+</ul>
+</div>
+<div>
+<h4 class="text-lg font-bold text-white mb-6">Hubungi Kami</h4>
+<ul class="space-y-4 text-gray-400 text-sm">
+<li class="flex items-start gap-3">
+<i class="fa-solid fa-location-dot mt-1 text-primary-fixed-dim"></i>
+<span class="">Gedung Jurusan Statistika, Kampus Pusat.<br/>Jl. Kolonel Masturi No.71, Cimahi.</span>
+</li>
+<li class="flex items-center gap-3">
+<i class="fa-solid fa-envelope text-primary-fixed-dim"></i>
+<span class="">info@himasta.org</span>
+</li>
+<li class="flex items-center gap-3">
+<i class="fa-solid fa-phone text-primary-fixed-dim"></i>
+<span class="">+62 123 4567 890</span>
+</li>
+</ul>
+</div>
+</div>
+<div class="text-center text-gray-500 text-sm pt-8 border-t border-gray-800">
+        © 2024 HIMASTA Data Science. All rights reserved.
+      </div>
+</div>
+</footer>
+<!-- END: Footer -->
+</body></html>

@@ -85,8 +85,8 @@ export function SessionScanView({ token }: { token: string | null }) {
 
       {!token && (
         <p className="text-center text-xs text-muted-foreground">
-          Arahkan kamera ke QR yang ditampilkan BPH/Kadiv saat kegiatan. QR juga bisa dipindai dari
-          kamera HP biasa dan akan membuka halaman ini otomatis.
+          Pindai QR kegiatan yang ditampilkan panitia atau BPH. Kamera HP biasa pun cukup, halaman
+          absensi akan terbuka dan kehadiran Anda tercatat otomatis.
         </p>
       )}
     </div>

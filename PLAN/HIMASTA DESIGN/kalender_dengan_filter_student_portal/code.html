@@ -1,0 +1,267 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Organization Calendar</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-high": "#e6e8ea",
+                        "on-secondary-container": "#54647a",
+                        "primary": "#00236f",
+                        "surface-variant": "#e0e3e5",
+                        "secondary": "#505f76",
+                        "primary-fixed-dim": "#b6c4ff",
+                        "background": "#f7f9fb",
+                        "tertiary-container": "#6e2c00",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-highest": "#e0e3e5",
+                        "tertiary-fixed-dim": "#ffb691",
+                        "surface-bright": "#f7f9fb",
+                        "primary-fixed": "#dce1ff",
+                        "inverse-surface": "#2d3133",
+                        "surface": "#f7f9fb",
+                        "error-container": "#ffdad6",
+                        "on-tertiary-container": "#f39461",
+                        "on-primary-container": "#90a8ff",
+                        "on-error": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary-fixed-variant": "#38485d",
+                        "tertiary-fixed": "#ffdbcb",
+                        "surface-container": "#eceef0",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary-fixed-variant": "#773205",
+                        "on-surface": "#191c1e",
+                        "outline-variant": "#c5c5d3",
+                        "on-tertiary-fixed": "#341100",
+                        "on-background": "#191c1e",
+                        "inverse-primary": "#b6c4ff",
+                        "tertiary": "#4b1c00",
+                        "secondary-fixed": "#d3e4fe",
+                        "on-primary-fixed": "#00164e",
+                        "surface-dim": "#d8dadc",
+                        "on-surface-variant": "#444651",
+                        "on-primary-fixed-variant": "#264191",
+                        "secondary-fixed-dim": "#b7c8e1",
+                        "primary-container": "#1e3a8a",
+                        "error": "#ba1a1a",
+                        "surface-tint": "#4059aa",
+                        "secondary-container": "#d0e1fb",
+                        "surface-container-low": "#f2f4f6",
+                        "on-error-container": "#93000a",
+                        "outline": "#757682",
+                        "on-secondary-fixed": "#0b1c30",
+                        "inverse-on-surface": "#eff1f3",
+                        "on-primary": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "1rem",
+                        "container-max": "1200px",
+                        "margin-mobile": "1rem",
+                        "touch-target-min": "48px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Outfit"],
+                        "label-caps": ["Outfit"],
+                        "body-sm": ["Outfit"],
+                        "headline-md": ["Outfit"],
+                        "headline-lg-mobile": ["Outfit"],
+                        "body-lg": ["Outfit"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "headline-md": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-background font-body-lg md:flex min-h-screen">
+<!-- TopAppBar (Web & Mobile) -->
+<header class="bg-surface text-primary font-headline-md fixed top-0 w-full border-b border-outline-variant transition-colors duration-200 flex items-center justify-between px-4 h-16 max-w-container-max mx-auto z-50">
+<div class="flex items-center gap-4">
+<button class="md:hidden flex items-center justify-center w-12 h-12 hover:bg-surface-variant/50 rounded-full transition-colors">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<span class="font-headline-md font-bold text-primary">StudentOrg Portal</span>
+</div>
+<button class="flex items-center justify-center w-12 h-12 hover:bg-surface-variant/50 rounded-full transition-colors">
+<span class="material-symbols-outlined">search</span>
+</button>
+</header>
+<!-- NavigationDrawer (Web only) -->
+<nav class="hidden md:flex flex-col h-full w-80 bg-surface border-r border-outline-variant py-gutter fixed left-0 top-16 z-40 transition-all duration-200">
+<div class="px-6 py-4 flex items-center gap-4 mb-6">
+<img class="w-12 h-12 rounded-full object-cover" data-alt="A professional headshot of a young male student leader wearing a crisp navy blazer over a light blue button-down shirt. The background is a clean, out-of-focus modern campus building. Soft natural lighting emphasizes a friendly and approachable expression, fitting a minimalist corporate aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBMuoR_soG7XhVfvUzKgZ-6UrYnN9WvcbNUFuE6UWzEQCNQ7Miv_DD6lhDwFgbvWUKmeoo1ManNqsgeN5hUVB3_FmbN7G37_BRRlTEDKDCmSoY2xMjcGfgVWsg3zN6Ihw8-30h6LZncnUFpaPxJhJnvu-cEXlSH3EFdYRDD9eeTIiTyCRyRLhDcxJQAYCwD2g461zzMK5ouzORxpEn5-Awc1jDBV6J0j2bXgry4yAZSNvMxGuWY3qKPQA">
+<div>
+<div class="font-headline-md text-primary font-bold">Alex Rivera</div>
+<div class="font-body-sm text-secondary">Presidential Council</div>
+<div class="font-label-caps text-outline mt-1">Member ID: #8821</div>
+</div>
+</div>
+<ul class="flex flex-col gap-1 px-4">
+<li class=""><a class="flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors" href="#"><span class="material-symbols-outlined">dashboard</span> <span class="font-body-lg">Dashboard</span></a></li>
+<li class=""><a class="flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors" href="#"><span class="material-symbols-outlined">account_tree</span> <span class="font-body-lg">My Divisions</span></a></li>
+<li class=""><a class="flex items-center gap-4 px-4 py-3 rounded-lg text-primary bg-secondary-container/50 font-bold hover:bg-surface-container-high transition-colors" href="#"><span class="material-symbols-outlined">event_available</span> <span class="font-body-lg">Event Manager</span></a></li>
+<li class=""><a class="flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors" href="#"><span class="material-symbols-outlined">folder_shared</span> <span class="font-body-lg">Resource Library</span></a></li>
+<li class=""><a class="flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors" href="#"><span class="material-symbols-outlined">settings</span> <span class="font-body-lg">Settings</span></a></li>
+<li class=""><a class="flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors" href="#"><span class="material-symbols-outlined">help</span> <span class="font-body-lg">Support</span></a></li>
+</ul>
+</nav>
+<!-- Main Content -->
+<main class="flex-1 mt-16 mb-24 md:mb-0 md:ml-80 p-margin-mobile md:p-8 max-w-container-max mx-auto w-full">
+<div class="flex flex-col gap-8">
+<!-- Calendar Section -->
+<section class="bg-surface-container-lowest border border-outline-variant rounded-xl p-6">
+<div class="flex justify-between items-center mb-6">
+<h2 class="font-headline-lg-mobile md:font-headline-lg text-primary">October 2023</h2>
+<div class="flex gap-2">
+<button class="w-10 h-10 border border-outline-variant rounded flex items-center justify-center hover:bg-surface-container-high hover:border-primary transition-colors">
+<span class="material-symbols-outlined text-secondary">chevron_left</span>
+</button>
+<button class="w-10 h-10 border border-outline-variant rounded flex items-center justify-center hover:bg-surface-container-high hover:border-primary transition-colors">
+<span class="material-symbols-outlined text-secondary">chevron_right</span>
+</button>
+</div>
+</div><div class="flex gap-2 overflow-x-auto pb-4 mb-4 no-scrollbar">
+<button class="flex-shrink-0 px-4 py-2 rounded-full bg-primary-container text-on-primary font-label-caps min-h-touch-target-min flex items-center justify-center transition-colors">
+    Semua
+  </button>
+
+<button class="flex-shrink-0 px-4 py-2 rounded-full border border-outline-variant text-on-surface-variant font-label-caps min-h-touch-target-min flex items-center justify-center hover:bg-surface-container-high transition-colors">
+    Divisi
+  </button>
+<button class="flex-shrink-0 px-4 py-2 rounded-full border border-outline-variant text-on-surface-variant font-label-caps min-h-touch-target-min flex items-center justify-center hover:bg-surface-container-high transition-colors">
+    Akademik
+  </button>
+</div>
+<div class="grid grid-cols-7 gap-2 mb-2">
+<div class="text-center font-label-caps text-secondary">Sun</div>
+<div class="text-center font-label-caps text-secondary">Mon</div>
+<div class="text-center font-label-caps text-secondary">Tue</div>
+<div class="text-center font-label-caps text-secondary">Wed</div>
+<div class="text-center font-label-caps text-secondary">Thu</div>
+<div class="text-center font-label-caps text-secondary">Fri</div>
+<div class="text-center font-label-caps text-secondary">Sat</div>
+</div>
+<div class="grid grid-cols-7 gap-2">
+<!-- Blank days for start of month -->
+<div class="aspect-square p-2 border border-transparent"></div>
+<div class="aspect-square p-2 border border-transparent"></div>
+<!-- Days -->
+<div class="aspect-square p-2 border border-outline-variant rounded hover:border-primary cursor-pointer transition-colors flex flex-col items-center justify-center"><span class="font-body-lg">1</span></div>
+<div class="aspect-square p-2 border border-outline-variant rounded hover:border-primary cursor-pointer transition-colors flex flex-col items-center justify-center"><span class="font-body-lg">2</span></div>
+<div class="aspect-square p-2 border border-outline-variant rounded hover:border-primary cursor-pointer transition-colors flex flex-col items-center justify-center"><span class="font-body-lg">3</span></div>
+<div class="aspect-square p-2 border border-outline-variant rounded hover:border-primary cursor-pointer transition-colors flex flex-col items-center justify-center relative">
+<span class="font-body-lg">4</span>
+<span class="w-1.5 h-1.5 bg-primary rounded-full absolute bottom-2"></span>
+</div>
+<div class="aspect-square p-2 border border-outline-variant rounded hover:border-primary cursor-pointer transition-colors flex flex-col items-center justify-center"><span class="font-body-lg">5</span></div>
+<div class="aspect-square p-2 border border-outline-variant rounded hover:border-primary cursor-pointer transition-colors flex flex-col items-center justify-center"><span class="font-body-lg">6</span></div>
+<div class="aspect-square p-2 border border-outline-variant rounded hover:border-primary cursor-pointer transition-colors flex flex-col items-center justify-center"><span class="font-body-lg">7</span></div>
+<div class="aspect-square p-2 border border-outline-variant rounded hover:border-primary cursor-pointer transition-colors flex flex-col items-center justify-center"><span class="font-body-lg">8</span></div>
+<div class="aspect-square p-2 border border-outline-variant rounded hover:border-primary cursor-pointer transition-colors flex flex-col items-center justify-center"><span class="font-body-lg">9</span></div>
+<div class="aspect-square p-2 border border-outline-variant rounded hover:border-primary cursor-pointer transition-colors flex flex-col items-center justify-center"><span class="font-body-lg">10</span></div>
+<div class="aspect-square p-2 border border-outline-variant rounded hover:border-primary cursor-pointer transition-colors flex flex-col items-center justify-center relative">
+<span class="font-body-lg">11</span>
+<span class="w-1.5 h-1.5 bg-primary rounded-full absolute bottom-2"></span>
+</div>
+<div class="aspect-square p-2 border border-outline-variant rounded hover:border-primary cursor-pointer transition-colors flex flex-col items-center justify-center"><span class="font-body-lg">12</span></div>
+<div class="aspect-square p-2 border border-primary bg-primary/10 rounded cursor-pointer transition-colors flex flex-col items-center justify-center relative">
+<span class="font-body-lg font-bold text-primary">13</span>
+<span class="w-1.5 h-1.5 bg-primary rounded-full absolute bottom-2"></span>
+</div>
+<div class="aspect-square p-2 border border-outline-variant rounded hover:border-primary cursor-pointer transition-colors flex flex-col items-center justify-center"><span class="font-body-lg">14</span></div>
+<div class="aspect-square p-2 border border-outline-variant rounded hover:border-primary cursor-pointer transition-colors flex flex-col items-center justify-center"><span class="font-body-lg">15</span></div>
+</div>
+</section>
+<!-- Agenda Section -->
+<section class="flex flex-col gap-4">
+<h3 class="font-headline-md text-primary border-b border-outline-variant pb-2">Upcoming Agenda</h3>
+<div class="flex flex-col gap-0 border border-outline-variant rounded-xl overflow-hidden bg-surface-container-lowest">
+<div class="flex flex-col md:flex-row items-start md:items-center p-4 border-b border-outline-variant min-h-[72px] hover:bg-surface-container-low transition-colors">
+<div class="flex items-center gap-4 w-full md:w-auto mb-2 md:mb-0">
+<div class="w-12 h-12 rounded bg-secondary-container flex flex-col items-center justify-center flex-shrink-0">
+<span class="font-label-caps text-on-secondary-container">OCT</span>
+<span class="font-body-lg font-bold text-on-secondary-container leading-none">13</span>
+</div>
+<div class="flex-1">
+<h4 class="font-body-lg font-bold text-on-surface">Executive Board Meeting</h4>
+<p class="font-body-sm text-secondary">10:00 AM - 11:30 AM • Room 302</p>
+</div>
+</div>
+<div class="md:ml-auto w-full md:w-auto flex justify-end gap-2">
+<span class="px-3 py-1 rounded-full bg-primary-fixed text-on-primary-fixed-variant font-label-caps flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">business</span> Required
+                             </span>
+</div>
+</div>
+<div class="flex flex-col md:flex-row items-start md:items-center p-4 border-b border-outline-variant min-h-[72px] hover:bg-surface-container-low transition-colors">
+<div class="flex items-center gap-4 w-full md:w-auto mb-2 md:mb-0">
+<div class="w-12 h-12 rounded bg-surface-variant flex flex-col items-center justify-center flex-shrink-0 border border-outline-variant">
+<span class="font-label-caps text-secondary">OCT</span>
+<span class="font-body-lg font-bold text-secondary leading-none">15</span>
+</div>
+<div class="flex-1">
+<h4 class="font-body-lg font-bold text-on-surface">Budget Review Q3</h4>
+<p class="font-body-sm text-secondary">2:00 PM - 3:00 PM • Virtual</p>
+</div>
+</div>
+<div class="md:ml-auto w-full md:w-auto flex justify-end gap-2">
+<span class="px-3 py-1 rounded-full bg-surface-variant text-on-surface-variant font-label-caps flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">videocam</span> Online
+                             </span>
+</div>
+</div>
+</div>
+</section>
+</div>
+</main>
+<!-- BottomNavBar (Mobile only) -->
+<nav class="md:hidden fixed bottom-0 w-full px-margin-mobile pb-4 pt-2 z-50 flex justify-around items-center bg-surface/80 backdrop-blur-md rounded-t-xl border-t border-outline-variant shadow-sm transition-transform duration-150">
+<a class="flex flex-col items-center justify-center text-secondary font-label-caps hover:bg-secondary-container/30 rounded-lg p-2 min-w-[64px] active:scale-95" href="#">
+<span class="material-symbols-outlined mb-1">home</span>
+            Home
+        </a>
+<a class="flex flex-col items-center justify-center text-primary font-bold font-label-caps hover:bg-secondary-container/30 rounded-lg p-2 min-w-[64px] active:scale-95" href="#">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: &quot;FILL&quot; 1;">calendar_today</span>
+            Calendar
+        </a>
+<a class="flex flex-col items-center justify-center text-secondary font-label-caps hover:bg-secondary-container/30 rounded-lg p-2 min-w-[64px] active:scale-95" href="#">
+<span class="material-symbols-outlined mb-1">groups</span>
+            Directory
+        </a>
+<a class="flex flex-col items-center justify-center text-secondary font-label-caps hover:bg-secondary-container/30 rounded-lg p-2 min-w-[64px] active:scale-95" href="#">
+<span class="material-symbols-outlined mb-1">notifications</span>
+            Inbox
+        </a>
+<a class="flex flex-col items-center justify-center text-secondary font-label-caps hover:bg-secondary-container/30 rounded-lg p-2 min-w-[64px] active:scale-95" href="#">
+<span class="material-symbols-outlined mb-1">account_circle</span>
+            Profile
+        </a>
+</nav>
+
+
+</body></html>

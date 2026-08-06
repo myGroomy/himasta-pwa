@@ -1,15 +1,13 @@
 'use client'
 
-import Image from 'next/image'
 import Link from 'next/link'
 import { useState } from 'react'
 import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
-import { Loader2, Eye, EyeOff, ArrowLeft } from 'lucide-react'
+import { Loader2, Eye, EyeOff, School, User, Lock } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 
 export default function LoginPage() {
   const router = useRouter()
@@ -33,7 +31,9 @@ export default function LoginPage() {
     setLoading(false)
 
     if (result?.error) {
-      setError('NIM/email atau password salah. Pastikan akun Anda aktif.')
+      setError(
+        'Email atau password salah. Jika baru mendaftar, akun Anda mungkin masih menunggu persetujuan.'
+      )
       return
     }
 
@@ -42,89 +42,105 @@ export default function LoginPage() {
   }
 
   return (
-    <Card className="shadow-2xl border-slate-200/80 rounded-3xl overflow-hidden">
-      <CardHeader className="items-center text-center bg-slate-900 text-white pb-8 pt-8">
-        <Link href="/welcome" className="self-start text-xs text-slate-400 hover:text-white flex items-center gap-1 mb-2 transition-colors">
-          <ArrowLeft className="h-3.5 w-3.5" />
-          Halaman Utama
-        </Link>
-
-        <div className="relative mb-3 h-20 w-20 overflow-hidden rounded-2xl bg-slate-800 p-2 shadow-inner border border-slate-700">
-          <Image
-            src="/himasta-logo.png"
-            alt="Logo HIMASTA"
-            fill
-            className="object-contain p-1"
-            priority
-          />
-        </div>
-        <CardTitle className="text-2xl font-bold tracking-tight">HIMASTA</CardTitle>
-        <CardDescription className="text-slate-400 text-xs mt-0.5">
-          Sistem Informasi &amp; Operasional PWA
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="identifier">NIM atau Email</Label>
-            <Input
-              id="identifier"
-              type="text"
-              placeholder="misal: 22001 atau bph@himasta.id"
-              value={identifier}
-              onChange={(e) => setIdentifier(e.target.value)}
-              required
-              autoFocus
-            />
+    <div className="flex-1 flex flex-col justify-center px-6 py-12 bg-[#001035] text-white">
+      <div className="w-full max-w-sm mx-auto space-y-8">
+        {/* Header Section */}
+        <div className="text-center flex flex-col items-center">
+          {/* Logo Placeholder */}
+          <div className="w-16 h-16 bg-white/10 rounded border border-white/20 flex items-center justify-center mb-6">
+            <School className="h-8 w-8 text-white" />
           </div>
-          <div className="space-y-2">
-            <Label htmlFor="password">Password</Label>
-            <div className="relative">
-              <Input
-                id="password"
-                type={showPassword ? 'text' : 'password'}
-                placeholder="••••••••"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                className="pr-10"
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword((v) => !v)}
-                className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-                aria-label={showPassword ? 'Sembunyikan password' : 'Tampilkan password'}
-              >
-                {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-              </button>
+          <h1 className="text-2xl font-bold tracking-tight text-white mb-2">
+            Masuk ke akun Anda
+          </h1>
+          <p className="text-xs text-slate-300">
+            Gunakan NIM atau Email kepengurusan HIMASTA
+          </p>
+        </div>
+
+        {/* Form Section */}
+        <div className="bg-[#001c55] border border-white/10 p-6 rounded shadow-lg space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-4">
+            {/* NIM / Email */}
+            <div className="space-y-2 text-left">
+              <Label className="text-[10px] font-bold uppercase tracking-wider text-slate-300" htmlFor="identifier">
+                NIM / Email
+              </Label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                  <User className="h-4 w-4" />
+                </div>
+                <Input
+                  id="identifier"
+                  type="text"
+                  placeholder="Masukkan NIM atau Email"
+                  value={identifier}
+                  onChange={(e) => setIdentifier(e.target.value)}
+                  required
+                  className="block w-full pl-10 pr-3 py-3 border border-white/10 bg-[#001035] text-white placeholder:text-slate-500 focus:border-white/40 focus:ring-0 transition-colors min-h-[48px] text-sm rounded"
+                />
+              </div>
             </div>
+
+            {/* Password */}
+            <div className="space-y-2 text-left">
+              <div className="flex justify-between items-center">
+                <Label className="text-[10px] font-bold uppercase tracking-wider text-slate-300" htmlFor="password">
+                  Password
+                </Label>
+                <Link href="/forgot-password" className="text-xs font-semibold text-white/80 hover:text-white hover:underline">
+                  Lupa Password?
+                </Link>
+              </div>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                  <Lock className="h-4 w-4" />
+                </div>
+                <Input
+                  id="password"
+                  type={showPassword ? 'text' : 'password'}
+                  placeholder="Masukkan Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  className="block w-full pl-10 pr-12 py-3 border border-white/10 bg-[#001035] text-white placeholder:text-slate-500 focus:border-white/40 focus:ring-0 transition-colors min-h-[48px] text-sm rounded"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((v) => !v)}
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-white transition-colors focus:outline-none"
+                >
+                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                </button>
+              </div>
+            </div>
+
+            {error && (
+              <p className="rounded bg-red-500/20 px-3 py-2 text-xs text-red-200 text-left leading-relaxed border border-red-500/30">
+                {error}
+              </p>
+            )}
+
+            {/* Action Button */}
+            <Button
+              type="submit"
+              className="w-full bg-white hover:bg-slate-100 text-[#001035] font-bold py-3 px-4 rounded transition-colors min-h-[48px] flex justify-center items-center mt-2 border-0"
+              disabled={loading}
+            >
+              {loading && <Loader2 className="h-4 w-4 animate-spin mr-2" />}
+              Masuk
+            </Button>
+          </form>
+
+          {/* Footer Navigation */}
+          <div className="text-center text-xs text-slate-400 pt-4 border-t border-white/10">
+            Belum punya akun?{' '}
+            <Link href="/register" className="font-bold text-white hover:underline">
+              Daftar disini
+            </Link>
           </div>
-
-          {error && (
-            <p className="rounded-md bg-destructive/10 px-3 py-2 text-sm text-destructive">{error}</p>
-          )}
-
-          <Button type="submit" className="w-full" disabled={loading}>
-            {loading && <Loader2 className="h-4 w-4 animate-spin" />}
-            Masuk
-          </Button>
-        </form>
-
-        <div className="mt-4 text-center text-sm">
-          <span className="text-muted-foreground">Belum punya akun?</span>{' '}
-          <Link href="/register" className="font-semibold text-primary hover:underline">
-            Daftar di sini
-          </Link>
         </div>
-
-        <div className="mt-6 rounded-lg border border-dashed bg-muted/50 p-3 text-xs text-muted-foreground">
-          <p className="mb-1 font-semibold text-foreground">Akun demo (password: himasta123)</p>
-          <p>• BPH: bph@himasta.id</p>
-          <p>• Kadiv PSDM: kadiv.psdm@himasta.id</p>
-          <p>• Anggota RION: anggota.rion@himasta.id</p>
-          <p>• Dosen: dosen@himasta.id</p>
-        </div>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   )
 }

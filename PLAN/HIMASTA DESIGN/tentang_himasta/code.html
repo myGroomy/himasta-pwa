@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Tentang Organisasi - Student Portal</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-primary": "#ffffff",
+                    "on-primary-container": "#90a8ff",
+                    "on-secondary": "#ffffff",
+                    "tertiary-fixed": "#ffdbcb",
+                    "on-primary-fixed-variant": "#264191",
+                    "on-primary-fixed": "#00164e",
+                    "inverse-on-surface": "#eff1f3",
+                    "on-tertiary-fixed": "#341100",
+                    "surface-variant": "#e0e3e5",
+                    "inverse-surface": "#2d3133",
+                    "on-error-container": "#93000a",
+                    "secondary-fixed": "#d3e4fe",
+                    "on-secondary-fixed-variant": "#38485d",
+                    "error-container": "#ffdad6",
+                    "surface": "#f7f9fb",
+                    "primary-container": "#1e3a8a",
+                    "surface-container-low": "#f2f4f6",
+                    "on-tertiary-fixed-variant": "#773205",
+                    "on-tertiary-container": "#f39461",
+                    "on-secondary-container": "#54647a",
+                    "on-surface-variant": "#444651",
+                    "primary-fixed-dim": "#b6c4ff",
+                    "surface-container-high": "#e6e8ea",
+                    "secondary": "#505f76",
+                    "outline-variant": "#c5c5d3",
+                    "surface-tint": "#4059aa",
+                    "on-surface": "#191c1e",
+                    "error": "#ba1a1a",
+                    "surface-dim": "#d8dadc",
+                    "on-secondary-fixed": "#0b1c30",
+                    "surface-bright": "#f7f9fb",
+                    "on-background": "#191c1e",
+                    "on-tertiary": "#ffffff",
+                    "primary-fixed": "#dce1ff",
+                    "secondary-container": "#d0e1fb",
+                    "tertiary": "#4b1c00",
+                    "primary": "#00236f",
+                    "background": "#f7f9fb",
+                    "secondary-fixed-dim": "#b7c8e1",
+                    "surface-container-highest": "#e0e3e5",
+                    "inverse-primary": "#b6c4ff",
+                    "surface-container": "#eceef0",
+                    "tertiary-fixed-dim": "#ffb691",
+                    "on-error": "#ffffff",
+                    "tertiary-container": "#6e2c00",
+                    "outline": "#757682",
+                    "surface-container-lowest": "#ffffff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "gutter": "1rem",
+                    "margin-mobile": "1rem",
+                    "container-max": "1200px",
+                    "touch-target-min": "48px"
+            },
+            "fontFamily": {
+                    "body-lg": [
+                            "Outfit"
+                    ],
+                    "label-caps": [
+                            "Outfit"
+                    ],
+                    "headline-md": [
+                            "Outfit"
+                    ],
+                    "headline-lg-mobile": [
+                            "Outfit"
+                    ],
+                    "body-sm": [
+                            "Outfit"
+                    ],
+                    "headline-lg": [
+                            "Outfit"
+                    ]
+            },
+            "fontSize": {
+                    "body-lg": [
+                            "16px",
+                            {
+                                    "lineHeight": "24px",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "label-caps": [
+                            "12px",
+                            {
+                                    "lineHeight": "16px",
+                                    "letterSpacing": "0.05em",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "headline-md": [
+                            "20px",
+                            {
+                                    "lineHeight": "28px",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "headline-lg-mobile": [
+                            "24px",
+                            {
+                                    "lineHeight": "32px",
+                                    "letterSpacing": "-0.01em",
+                                    "fontWeight": "700"
+                            }
+                    ],
+                    "body-sm": [
+                            "14px",
+                            {
+                                    "lineHeight": "20px",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "headline-lg": [
+                            "32px",
+                            {
+                                    "lineHeight": "40px",
+                                    "letterSpacing": "-0.02em",
+                                    "fontWeight": "700"
+                            }
+                    ]
+            }
+    },
+        },
+      }
+    </script>
+</head>
+<body class="bg-background text-on-background font-body-lg min-h-screen">
+<!-- TopAppBar -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-4 h-14 bg-surface dark:bg-inverse-surface border-b border-outline-variant dark:border-outline">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary dark:text-primary-fixed-dim" style="font-variation-settings: 'FILL' 0;">school</span>
+<h1 class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed-dim">Student Portal</h1>
+</div>
+<div class="flex items-center">
+<button class="p-2 text-primary dark:text-primary-fixed-dim hover:bg-surface-container dark:hover:bg-on-surface-variant rounded-full transition-colors duration-200 ease-in-out h-[48px] w-[48px] flex items-center justify-center">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">account_circle</span>
+</button>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="pt-20 pb-24 px-margin-mobile md:max-w-container-max md:mx-auto space-y-6">
+<!-- Page Header -->
+<section class="mb-8">
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile md:font-headline-lg md:text-headline-lg text-on-surface mb-2">Tentang Organisasi</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Informasi fundamental mengenai visi, misi, dan struktur kepengurusan saat ini.</p>
+</section>
+<!-- Visi & Misi Bento Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<!-- Visi Card -->
+<section class="bg-surface-container-lowest border border-outline-variant rounded-xl p-6 h-full flex flex-col">
+<div class="flex items-center gap-3 mb-4">
+<div class="h-10 w-10 bg-primary-container rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary-container" style="font-variation-settings: 'FILL' 1;">visibility</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface">Visi</h3>
+</div>
+<p class="font-body-lg text-body-lg text-on-surface-variant flex-grow">
+                    Menjadi organisasi mahasiswa yang inklusif, inovatif, dan berintegritas dalam mengembangkan potensi akademik serta karakter kepemimpinan mahasiswa tingkat global.
+                </p>
+</section>
+<!-- Misi Card -->
+<section class="bg-surface-container-lowest border border-outline-variant rounded-xl p-6 h-full flex flex-col">
+<div class="flex items-center gap-3 mb-4">
+<div class="h-10 w-10 bg-secondary-container rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-on-secondary-container" style="font-variation-settings: 'FILL' 1;">target</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface">Misi</h3>
+</div>
+<ul class="space-y-3 font-body-sm text-body-sm text-on-surface-variant flex-grow list-none">
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-primary text-[18px] mt-0.5">check_circle</span>
+<span>Menyelenggarakan program pengembangan kapasitas kepemimpinan yang berkelanjutan.</span>
+</li>
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-primary text-[18px] mt-0.5">check_circle</span>
+<span>Membangun ekosistem kolaboratif antar elemen mahasiswa dan pihak rektorat.</span>
+</li>
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-primary text-[18px] mt-0.5">check_circle</span>
+<span>Meningkatkan advokasi kesejahteraan mahasiswa melalui platform digital terintegrasi.</span>
+</li>
+</ul>
+</section>
+</div>
+<!-- Struktur BPH Section -->
+<section class="mt-8">
+<div class="mb-4 flex items-center justify-between">
+<h3 class="font-headline-md text-headline-md text-on-surface">Struktur BPH</h3>
+<span class="font-label-caps text-label-caps px-3 py-1 bg-surface-container-high text-on-surface-variant rounded-full border border-outline-variant">Periode 2024-2025</span>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl divide-y divide-outline-variant">
+<!-- Ketua -->
+<div class="p-4 flex items-center gap-4 min-h-[72px]">
+<div class="h-12 w-12 rounded-full overflow-hidden bg-surface-container border border-outline-variant flex-shrink-0">
+<img class="w-full h-full object-cover" data-alt="A professional headshot portrait of a young male student leader in a corporate minimalist setting. The lighting is soft and high-key, illuminating a clean, modern aesthetic. He wears a crisp navy blue shirt against a pristine white background. The mood is confident, approachable, and structured." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDZ-cO8sZbeE66o_v9vqMBUY7_0UdV8xXHx3Ac7N58qKaFBirP3A4gKk7g5TWZDuYzQLjzkWakSuVeUJW27Su8Mf65Xq5lJ1G0JkQ6Av_cK7SHfNXJnDCNnsQj7nI_HBRFHzDvTXM-dZ3H7LFBU0HYFslqYAglxEARs4avwkzajhAznwZVKFJmhoBhmQ71MVZJSmi_e7BXaDkh8b75CrIOd5cArf-S75SPw-0hKl2iEwcVRN0fYeIs-_Q"/>
+</div>
+<div class="flex-grow">
+<p class="font-headline-md text-[16px] leading-[24px] text-on-surface">Budi Santoso</p>
+<p class="font-body-sm text-body-sm text-primary">Ketua Umum</p>
+</div>
+<button class="h-[48px] px-4 font-label-caps text-label-caps text-primary border border-outline-variant rounded-lg hover:border-primary hover:bg-surface-container transition-colors">
+                        Profil
+                    </button>
+</div>
+<!-- Wakil -->
+<div class="p-4 flex items-center gap-4 min-h-[72px]">
+<div class="h-12 w-12 rounded-full overflow-hidden bg-surface-container border border-outline-variant flex-shrink-0">
+<img class="w-full h-full object-cover" data-alt="A professional headshot portrait of a young female student leader in a corporate minimalist setting. The lighting is soft and high-key, illuminating a clean, modern aesthetic. She wears a crisp white blouse against a light grey background. The mood is confident, approachable, and structured." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDs5cEtwD5FdqidclyMZZoQsZ0kylsxyt6UTdqenxkycYG-W_0rByipkRKX4pjP686KXO_ea3M_8lgjJaaU7tYWaJltrvvd8ITcVZcMn7LUY5-CS5JYpNbnZ6U_1ck_f4nGrB-Xv3DrvRr-11k4ZPCFCpyHt5FDDx5ktZ9wkwgP5FbaTgFYRbvxCwOVpvid6kaWTNz8jdEwHTs70GcD1VClTmp1DxcnImCi8kjvqhnNhTq7CL2ei8ECJg"/>
+</div>
+<div class="flex-grow">
+<p class="font-headline-md text-[16px] leading-[24px] text-on-surface">Siti Rahmawati</p>
+<p class="font-body-sm text-body-sm text-primary">Wakil Ketua</p>
+</div>
+<button class="h-[48px] px-4 font-label-caps text-label-caps text-primary border border-outline-variant rounded-lg hover:border-primary hover:bg-surface-container transition-colors">
+                        Profil
+                    </button>
+</div>
+<!-- Sekretaris -->
+<div class="p-4 flex items-center gap-4 min-h-[72px]">
+<div class="h-12 w-12 rounded-full overflow-hidden bg-surface-container border border-outline-variant flex-shrink-0 flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">person</span>
+</div>
+<div class="flex-grow">
+<p class="font-headline-md text-[16px] leading-[24px] text-on-surface">Andi Wijaya</p>
+<p class="font-body-sm text-body-sm text-secondary">Sekretaris Jenderal</p>
+</div>
+</div>
+<!-- Bendahara -->
+<div class="p-4 flex items-center gap-4 min-h-[72px]">
+<div class="h-12 w-12 rounded-full overflow-hidden bg-surface-container border border-outline-variant flex-shrink-0 flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">person</span>
+</div>
+<div class="flex-grow">
+<p class="font-headline-md text-[16px] leading-[24px] text-on-surface">Diana Kusuma</p>
+<p class="font-body-sm text-body-sm text-secondary">Bendahara Umum</p>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-16 px-gutter pb-safe bg-surface dark:bg-inverse-surface border-t border-outline-variant dark:border-outline md:hidden">
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant px-3 py-1 hover:bg-surface-container-high dark:hover:bg-on-surface-variant scale-95 active:scale-90 transition-transform duration-150 h-full w-full" href="#">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 0;">home</span>
+<span class="font-label-caps text-[10px] leading-none">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-xl px-3 py-1 scale-95 active:scale-90 transition-transform duration-150 h-full w-full" href="#">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">info</span>
+<span class="font-label-caps text-[10px] leading-none">About</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant px-3 py-1 hover:bg-surface-container-high dark:hover:bg-on-surface-variant scale-95 active:scale-90 transition-transform duration-150 h-full w-full" href="#">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 0;">event</span>
+<span class="font-label-caps text-[10px] leading-none">Events</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant px-3 py-1 hover:bg-surface-container-high dark:hover:bg-on-surface-variant scale-95 active:scale-90 transition-transform duration-150 h-full w-full" href="#">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 0;">person</span>
+<span class="font-label-caps text-[10px] leading-none">Profile</span>
+</a>
+</nav>
+</body></html>

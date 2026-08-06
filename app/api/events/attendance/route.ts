@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
-import { requireApiSession, isApiResponse, badRequest, notFound, serverError } from '@/lib/api'
+import { requireApiSession, isApiResponse, badRequest, notFound, serverError, forbidden } from '@/lib/api'
+import type { SessionUser } from '@/lib/auth'
 import { z } from 'zod'
 
 // Absensi peserta event via QR token. Member bisa lewat akun (auto resolve),
@@ -12,6 +13,7 @@ const checkInSchema = z.object({
 export async function POST(req: NextRequest) {
   const result = await requireApiSession(['KADIV', 'BPH'])
   if (isApiResponse(result)) return result
+  const user = result as SessionUser
 
   const body = await req.json().catch(() => null)
   const parsed = checkInSchema.safeParse(body)
@@ -19,9 +21,13 @@ export async function POST(req: NextRequest) {
 
   const registration = await prisma.eventRegistration.findUnique({
     where: { qrToken: parsed.data.token },
-    include: { event: { select: { id: true, name: true } } },
+    include: { event: { select: { id: true, name: true, divisionId: true, createdById: true } } },
   })
   if (!registration) return notFound('QR tidak terdaftar untuk event manapun')
+
+  if (user.role === 'KADIV' && registration.event.divisionId !== user.divisionId && registration.event.createdById !== user.id) {
+    return forbidden('Kadiv hanya bisa check-in peserta untuk event divisi sendiri')
+  }
 
   try {
     const updated = await prisma.eventRegistration.update({

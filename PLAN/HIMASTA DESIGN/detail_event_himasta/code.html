@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Detail Event Publik</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary": "#ffffff",
+                        "on-primary-container": "#90a8ff",
+                        "on-secondary": "#ffffff",
+                        "tertiary-fixed": "#ffdbcb",
+                        "on-primary-fixed-variant": "#264191",
+                        "on-primary-fixed": "#00164e",
+                        "inverse-on-surface": "#eff1f3",
+                        "on-tertiary-fixed": "#341100",
+                        "surface-variant": "#e0e3e5",
+                        "inverse-surface": "#2d3133",
+                        "on-error-container": "#93000a",
+                        "secondary-fixed": "#d3e4fe",
+                        "on-secondary-fixed-variant": "#38485d",
+                        "error-container": "#ffdad6",
+                        "surface": "#f7f9fb",
+                        "primary-container": "#1e3a8a",
+                        "surface-container-low": "#f2f4f6",
+                        "on-tertiary-fixed-variant": "#773205",
+                        "on-tertiary-container": "#f39461",
+                        "on-secondary-container": "#54647a",
+                        "on-surface-variant": "#444651",
+                        "primary-fixed-dim": "#b6c4ff",
+                        "surface-container-high": "#e6e8ea",
+                        "secondary": "#505f76",
+                        "outline-variant": "#c5c5d3",
+                        "surface-tint": "#4059aa",
+                        "on-surface": "#191c1e",
+                        "error": "#ba1a1a",
+                        "surface-dim": "#d8dadc",
+                        "on-secondary-fixed": "#0b1c30",
+                        "surface-bright": "#f7f9fb",
+                        "on-background": "#191c1e",
+                        "on-tertiary": "#ffffff",
+                        "primary-fixed": "#dce1ff",
+                        "secondary-container": "#d0e1fb",
+                        "tertiary": "#4b1c00",
+                        "primary": "#00236f",
+                        "background": "#f7f9fb",
+                        "secondary-fixed-dim": "#b7c8e1",
+                        "surface-container-highest": "#e0e3e5",
+                        "inverse-primary": "#b6c4ff",
+                        "surface-container": "#eceef0",
+                        "tertiary-fixed-dim": "#ffb691",
+                        "on-error": "#ffffff",
+                        "tertiary-container": "#6e2c00",
+                        "outline": "#757682",
+                        "surface-container-lowest": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "1rem",
+                        "margin-mobile": "1rem",
+                        "container-max": "1200px",
+                        "touch-target-min": "48px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Outfit"],
+                        "label-caps": ["Outfit"],
+                        "headline-md": ["Outfit"],
+                        "headline-lg-mobile": ["Outfit"],
+                        "body-sm": ["Outfit"],
+                        "headline-lg": ["Outfit"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "headline-md": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background font-body-lg antialiased">
+<!-- Top Navigation (Mobile Friendly) -->
+<nav class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-4 h-14 bg-surface border-b border-outline-variant flat no shadows transition-colors duration-200 ease-in-out">
+<div class="flex items-center gap-2 text-primary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">school</span>
+<span class="font-headline-md text-headline-md font-bold text-primary">Student Portal</span>
+</div>
+</nav>
+<!-- Main Content Area -->
+<main class="pt-16 pb-24 px-margin-mobile md:px-gutter max-w-container-max mx-auto min-h-screen">
+<!-- Back Action -->
+<div class="mb-4 pt-4">
+<a class="inline-flex items-center gap-2 text-secondary hover:text-primary transition-colors text-body-sm font-body-sm" href="#">
+<span class="material-symbols-outlined text-xl">arrow_back</span>
+                Kembali ke Event
+            </a>
+</div>
+<!-- Event Hero Image -->
+<div class="w-full h-48 md:h-80 rounded-xl overflow-hidden mb-6 border border-outline-variant bg-surface-container-low">
+<img class="w-full h-full object-cover" data-alt="A professional photograph of a large corporate business seminar taking place in a modern, brightly lit auditorium. The stage features a minimalist podium and a large projection screen displaying sleek graphics in navy blue and crisp white. The audience is composed of young professionals attentively listening, seated in modern ergonomic chairs. The overall lighting is bright and clean, reflecting a professional and inspiring corporate minimalist aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCZ8hWnrYlYtH5ncVRGXl0YDm-06afKrbGwwUqTxiFh1BnoJxPkuiY1AeEdrVWVraT5C61f4L58k6dOI8edBSjhpXy4NdnaJYysXnOlyhS7FJb8RKIAIDWuV4G0oKNE68rbBqHLBS1pnYiNJhMQGzEio6hX2Akw3mdwgKk99mI9yGwuWw3Xl6miAHjccHachJjZWfcgyYzh6xcEd5ROhuM88na2ltS9gS2_j4OAq9EhdtsOL9WBuWIo-g"/>
+</div>
+<!-- Event Details Header -->
+<div class="mb-8 border-b border-outline-variant pb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="inline-flex items-center justify-center px-3 py-1 rounded-full bg-secondary-container text-on-secondary-container font-label-caps text-label-caps uppercase">Seminar Publik</span>
+<span class="inline-flex items-center justify-center px-3 py-1 rounded-full bg-error-container text-on-error-container font-label-caps text-label-caps uppercase">Sisa 50 Kuota</span>
+</div>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile md:font-headline-lg md:text-headline-lg text-on-background mb-4">
+                Strategi Kepemimpinan Era Digital: Membangun Organisasi Resilien
+            </h1>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-secondary font-body-sm text-body-sm">
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined mt-0.5 text-on-surface-variant">calendar_today</span>
+<div>
+<p class="font-bold text-on-surface-variant">24 November 2024</p>
+<p>09:00 - 15:00 WIB</p>
+</div>
+</div>
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined mt-0.5 text-on-surface-variant">location_on</span>
+<div>
+<p class="font-bold text-on-surface-variant">Auditorium Utama Gedung Rektorat</p>
+<p>Lantai 3, Kampus Sudirman</p>
+</div>
+</div>
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined mt-0.5 text-on-surface-variant">payments</span>
+<div>
+<p class="font-bold text-on-surface-variant">Gratis</p>
+<p>Untuk Umum &amp; Mahasiswa</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Event Description -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-8">
+<div class="md:col-span-8 space-y-6">
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface mb-3">Deskripsi Event</h2>
+<div class="text-on-surface-variant space-y-4 font-body-lg text-body-lg">
+<p>
+                            Dalam menghadapi dinamika bisnis dan organisasi di era digital, kepemimpinan tidak lagi hanya tentang arahan, melainkan adaptasi dan ketahanan (resiliensi). Seminar ini dirancang untuk membekali peserta dengan kerangka kerja praktis dalam memimpin tim melalui transformasi digital.
+                        </p>
+<p>
+                            Peserta akan diajak untuk memahami studi kasus nyata dari para pemimpin industri terkemuka mengenai bagaimana mereka menavigasi perubahan teknologi yang cepat sambil mempertahankan budaya kerja yang positif dan produktif.
+                        </p>
+</div>
+</div>
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface mb-3">Apa yang akan Anda pelajari:</h2>
+<ul class="space-y-3 font-body-lg text-body-lg text-on-surface-variant list-none">
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-primary mt-0.5">check_circle</span>
+<span>Kerangka kerja kepemimpinan adaptif untuk lingkungan kerja hybrid.</span>
+</li>
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-primary mt-0.5">check_circle</span>
+<span>Strategi komunikasi efektif dalam manajemen krisis digital.</span>
+</li>
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-primary mt-0.5">check_circle</span>
+<span>Membangun indikator kinerja utama (KPI) yang relevan untuk tim modern.</span>
+</li>
+</ul>
+</div>
+</div>
+<!-- Sidebar / Floating Action Container for Desktop -->
+<div class="md:col-span-4">
+<div class="bg-surface border border-outline-variant rounded-xl p-6 sticky top-20">
+<h3 class="font-headline-md text-headline-md text-on-surface mb-2">Pendaftaran Ditutup</h3>
+<p class="text-secondary font-body-sm text-body-sm mb-6">20 November 2024, 23:59 WIB</p>
+<button class="w-full bg-primary-container text-on-primary-container font-headline-md text-headline-md h-touch-target-min rounded-lg flex items-center justify-center hover:bg-surface-tint hover:text-on-primary transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2">
+                        Daftar Sekarang
+                    </button>
+<p class="text-center text-secondary font-label-caps text-label-caps mt-4">
+                        Pendaftaran terbuka untuk umum tanpa login.
+                    </p>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Sticky Action Bar (Mobile Only) -->
+<div class="fixed bottom-0 left-0 w-full bg-surface border-t border-outline-variant p-4 md:hidden z-50">
+<button class="w-full bg-primary-container text-on-primary-container font-headline-md text-headline-md h-touch-target-min rounded-lg flex items-center justify-center hover:bg-surface-tint hover:text-on-primary transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 shadow-sm">
+            Daftar Sekarang
+        </button>
+</div>
+</body></html>

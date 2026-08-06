@@ -72,6 +72,7 @@ export function EventDashboard({ user, events, myEventIds, myQrByEvent }: EventD
   const [externalEvent, setExternalEvent] = useState<EventData | null>(null)
   const [certData, setCertData] = useState<any>(null)
   const [loadingCert, setLoadingCert] = useState<string | null>(null)
+  const [detailEvent, setDetailEvent] = useState<EventData | null>(null)
 
   const visibleEvents = events.filter((e) => e.status === 'PUBLISHED')
   const upcoming = visibleEvents.filter((e) => e.isUpcoming)
@@ -138,6 +139,7 @@ export function EventDashboard({ user, events, myEventIds, myQrByEvent }: EventD
                 onRegister={() => register(e.id)}
                 onShowQr={(token) => setQrEvent({ id: e.id, name: e.name, token })}
                 onExternal={() => setExternalEvent(e)}
+                onDetail={() => setDetailEvent(e)}
                 canManage={canManage && (isBPH || e.division?.id === user.divisionId)}
               />
             ))}
@@ -160,6 +162,7 @@ export function EventDashboard({ user, events, myEventIds, myQrByEvent }: EventD
                 onRegister={() => { }}
                 onShowQr={() => { }}
                 onExternal={() => { }}
+                onDetail={() => setDetailEvent(e)}
                 canManage={canManage && (isBPH || e.division?.id === user.divisionId)}
                 onDownloadCert={() => downloadCertificate(e.id)}
                 loadingCert={loadingCert === e.id}
@@ -212,6 +215,19 @@ export function EventDashboard({ user, events, myEventIds, myQrByEvent }: EventD
         }}
       />
 
+      <EventDetailDialog
+        event={detailEvent}
+        onOpenChange={(o) => !o && setDetailEvent(null)}
+        isRegistered={detailEvent ? myEventIds.includes(detailEvent.id) : false}
+        myQr={detailEvent ? myQrByEvent[detailEvent.id] : undefined}
+        registering={detailEvent ? registering === detailEvent.id : false}
+        onRegister={detailEvent ? () => register(detailEvent.id) : () => {}}
+        onShowQr={(token) => detailEvent && setQrEvent({ id: detailEvent.id, name: detailEvent.name, token })}
+        onExternal={() => detailEvent && setExternalEvent(detailEvent)}
+        onDownloadCert={detailEvent && !detailEvent.isUpcoming ? () => downloadCertificate(detailEvent.id) : undefined}
+        loadingCert={detailEvent ? loadingCert === detailEvent.id : false}
+      />
+
       <CertificateModal
         isOpen={!!certData}
         onClose={() => setCertData(null)}
@@ -229,6 +245,7 @@ function EventCard({
   onRegister,
   onShowQr,
   onExternal,
+  onDetail,
   canManage,
   onDownloadCert,
   loadingCert,
@@ -240,6 +257,7 @@ function EventCard({
   onRegister: () => void
   onShowQr: (token: string) => void
   onExternal: () => void
+  onDetail: () => void
   canManage: boolean
   onDownloadCert?: () => void
   loadingCert?: boolean
@@ -247,7 +265,11 @@ function EventCard({
   return (
     <Card>
       <CardContent className="flex flex-col gap-3 pt-6 sm:flex-row sm:items-center sm:justify-between">
-        <div className="min-w-0">
+        <button
+          type="button"
+          onClick={onDetail}
+          className="min-w-0 flex-1 cursor-pointer rounded-lg text-left transition-colors hover:bg-muted/50 p-2 -m-2"
+        >
           <div className="flex flex-wrap items-center gap-2">
             <p className="font-semibold">{e.name}</p>
             <Badge variant={e.visibility === 'PUBLIC' ? 'info' : 'secondary'}>
@@ -275,7 +297,7 @@ function EventCard({
             </span>
             <span>{e.division?.name ?? 'General'}</span>
           </p>
-        </div>
+        </button>
 
         <div className="flex shrink-0 items-center gap-2">
           {e.status === 'PUBLISHED' && e.isUpcoming && (
@@ -522,6 +544,127 @@ function QrDialog({
               <p className="text-center text-xs text-muted-foreground">
                 Tunjukkan QR ini di hari-H untuk absensi. Panitia memindai lewat menu Kelola Peserta.
               </p>
+            </>
+          )}
+        </div>
+      </DialogContent>
+    </Dialog>
+  )
+}
+
+function EventDetailDialog({
+  event,
+  onOpenChange,
+  isRegistered,
+  myQr,
+  registering,
+  onRegister,
+  onShowQr,
+  onExternal,
+  onDownloadCert,
+  loadingCert,
+}: {
+  event: EventData | null
+  onOpenChange: (open: boolean) => void
+  isRegistered: boolean
+  myQr?: MyQr
+  registering: boolean
+  onRegister: () => void
+  onShowQr: (token: string) => void
+  onExternal: () => void
+  onDownloadCert?: () => void
+  loadingCert: boolean
+}) {
+  if (!event) return null
+
+  const e = event
+
+  return (
+    <Dialog open={!!event} onOpenChange={onOpenChange}>
+      <DialogContent className="sm:max-w-2xl max-h-[85vh] overflow-y-auto">
+        <DialogHeader>
+          <div className="mb-2 flex flex-wrap items-center gap-2">
+            <Badge variant={e.visibility === 'PUBLIC' ? 'info' : 'secondary'}>
+              {EVENT_VISIBILITY_LABELS[e.visibility]}
+            </Badge>
+            <Badge variant={e.isUpcoming ? 'success' : 'outline'}>
+              {e.isUpcoming ? 'Akan datang' : 'Selesai'}
+            </Badge>
+            <Badge className={EVENT_STATUS_BADGE[e.status]}>
+              {EVENT_STATUS_LABELS[e.status]}
+            </Badge>
+          </div>
+          <DialogTitle className="text-2xl leading-snug text-left">{e.name}</DialogTitle>
+          <DialogDescription className="text-left">
+            <span className="flex items-center gap-1.5">
+              <CalendarDays className="h-3.5 w-3.5" />
+              {formatDateTime(e.startTime)}
+              {e.endTime && ` — ${formatDateTime(e.endTime)}`}
+            </span>
+            {e.location && (
+              <span className="mt-1 flex items-center gap-1.5">
+                <MapPin className="h-3.5 w-3.5" />
+                {e.location}
+              </span>
+            )}
+            <span className="mt-1 flex items-center gap-1.5">
+              <Users className="h-3.5 w-3.5" />
+              {e._count.registrations} terdaftar
+              {e.capacity ? ` / ${e.capacity} kuota` : ''}
+            </span>
+            <span className="mt-1 flex items-center gap-1.5">
+              {e.division?.name ?? 'General'}
+              {e.createdBy ? ` · Dibuat oleh ${e.createdBy.name}` : ''}
+            </span>
+          </DialogDescription>
+        </DialogHeader>
+
+        {e.description && (
+          <div className="border-t border-border pt-4">
+            <h4 className="mb-2 text-sm font-semibold">Deskripsi Event</h4>
+            <p className="whitespace-pre-wrap text-sm leading-6 text-muted-foreground">
+              {e.description}
+            </p>
+          </div>
+        )}
+
+        <div className="flex flex-wrap gap-2 border-t border-border pt-4">
+          {e.status === 'PUBLISHED' && e.isUpcoming && (
+            <>
+              {isRegistered && myQr ? (
+                <Button variant="outline" onClick={() => onShowQr(myQr.qrToken)}>
+                  <QrCode className="h-4 w-4" /> QR Saya
+                </Button>
+              ) : (
+                <Button onClick={onRegister} disabled={registering}>
+                  {registering ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    <Ticket className="h-4 w-4" />
+                  )}
+                  Daftar
+                </Button>
+              )}
+              <Button variant="outline" onClick={onExternal}>
+                Daftar Eksternal
+              </Button>
+            </>
+          )}
+
+          {!e.isUpcoming && (
+            <>
+              <EventSurveyDialog eventId={e.id} eventName={e.name} />
+              {isRegistered && myQr?.attended && onDownloadCert && (
+                <Button
+                  variant="default"
+                  className="bg-sky-600 hover:bg-sky-500"
+                  onClick={onDownloadCert}
+                  disabled={loadingCert}
+                >
+                  {loadingCert ? <Loader2 className="h-4 w-4 animate-spin" /> : <Award className="h-4 w-4" />}
+                  Sertifikat
+                </Button>
+              )}
             </>
           )}
         </div>

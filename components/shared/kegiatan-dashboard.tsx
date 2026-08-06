@@ -5,8 +5,6 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import {
   CalendarClock,
-  ChevronDown,
-  ChevronUp,
   Plus,
   QrCode,
   ScanLine,
@@ -18,6 +16,7 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { ATTENDANCE_STATUS_LABELS, KEGIATAN_CATEGORY_LABELS, KEGIATAN_CATEGORY_BADGE } from '@/lib/constants'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import {
   Select,
@@ -74,7 +73,7 @@ export function KegiatanDashboard({ user, sessions, myRecords, divisions }: Kegi
   const [qrSession, setQrSession] = useState<SessionData | null>(null)
   const [myQrOpen, setMyQrOpen] = useState(false)
   const [closingId, setClosingId] = useState<string | null>(null)
-  const [expanded, setExpanded] = useState<Set<string>>(new Set())
+  const [detailSession, setDetailSession] = useState<SessionData | null>(null)
   const [divisionFilter, setDivisionFilter] = useState('all')
 
   const activeSessions = sessions.filter((s) => s.isActive)
@@ -103,17 +102,17 @@ export function KegiatanDashboard({ user, sessions, myRecords, divisions }: Kegi
     }
   }
 
-  function toggleExpand(id: string) {
-    setExpanded((prev) => {
-      const next = new Set(prev)
-      if (next.has(id)) next.delete(id)
-      else next.add(id)
-      return next
-    })
-  }
-
   return (
     <div className="space-y-6">
+      <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-border bg-muted/30 px-4 py-3">
+        <p className="text-sm text-muted-foreground">
+          Cara absen: pindai QR kegiatan yang ditampilkan panitia, atau tunjukkan QR Saya ke BPH/Kadiv.
+        </p>
+        <Button variant="outline" size="sm" onClick={() => setMyQrOpen(true)}>
+          <QrCode className="h-4 w-4" /> QR Saya
+        </Button>
+      </div>
+
       {canManage && (
         <Card>
           <CardHeader>
@@ -163,8 +162,7 @@ export function KegiatanDashboard({ user, sessions, myRecords, divisions }: Kegi
                   onShowMyQr={() => setMyQrOpen(true)}
                   onClose={() => closeSession(s.id)}
                   closing={closingId === s.id}
-                  expanded={expanded.has(s.id)}
-                  onToggleExpand={() => toggleExpand(s.id)}
+                  onDetail={() => setDetailSession(s)}
                 />
               ))}
             </div>
@@ -210,8 +208,7 @@ export function KegiatanDashboard({ user, sessions, myRecords, divisions }: Kegi
                   onShowMyQr={() => setMyQrOpen(true)}
                   onClose={() => closeSession(s.id)}
                   closing={closingId === s.id}
-                  expanded={expanded.has(s.id)}
-                  onToggleExpand={() => toggleExpand(s.id)}
+                  onDetail={() => setDetailSession(s)}
                 />
               ))}
             </div>
@@ -231,20 +228,19 @@ export function KegiatanDashboard({ user, sessions, myRecords, divisions }: Kegi
               />
             ) : (
               <div className="space-y-3">
-                {pastSessions.map((s) => (
-                  <SessionCard
-                    key={s.id}
-                    session={s}
-                    canManage={canManage}
-                    canScanMember={canScanMember}
-                    onShowQr={() => {}}
-                    onShowMyQr={() => setMyQrOpen(true)}
-                    onClose={() => {}}
-                    closing={false}
-                    expanded={expanded.has(s.id)}
-                    onToggleExpand={() => toggleExpand(s.id)}
-                  />
-                ))}
+              {pastSessions.map((s) => (
+                <SessionCard
+                  key={s.id}
+                  session={s}
+                  canManage={canManage}
+                  canScanMember={canScanMember}
+                  onShowQr={() => {}}
+                  onShowMyQr={() => setMyQrOpen(true)}
+                  onClose={() => {}}
+                  closing={false}
+                  onDetail={() => setDetailSession(s)}
+                />
+              ))}
               </div>
             )}
           </div>
@@ -288,7 +284,138 @@ export function KegiatanDashboard({ user, sessions, myRecords, divisions }: Kegi
       />
 
       <MyQrDialog open={myQrOpen} onOpenChange={setMyQrOpen} />
+
+      <SessionDetailDialog
+        session={detailSession}
+        onOpenChange={(open) => !open && setDetailSession(null)}
+        canManage={canManage}
+        canScanMember={canScanMember}
+        onShowQr={() => detailSession && setQrSession(detailSession)}
+        onShowMyQr={() => setMyQrOpen(true)}
+        onClose={() => detailSession && closeSession(detailSession.id)}
+        closing={closingId === detailSession?.id}
+      />
     </div>
+  )
+}
+
+function SessionDetailDialog({
+  session,
+  onOpenChange,
+  canManage,
+  canScanMember,
+  onShowQr,
+  onShowMyQr,
+  onClose,
+  closing,
+}: {
+  session: SessionData | null
+  onOpenChange: (open: boolean) => void
+  canManage: boolean
+  canScanMember: boolean
+  onShowQr: () => void
+  onShowMyQr: () => void
+  onClose: () => void
+  closing: boolean
+}) {
+  if (!session) return null
+
+  const category = (KEGIATAN_CATEGORY_LABELS as Record<string, string>)[session.category] ?? session.category
+
+  return (
+    <Dialog open={!!session} onOpenChange={onOpenChange}>
+      <DialogContent className="sm:max-w-lg max-h-[85vh] overflow-y-auto">
+        <DialogHeader>
+          <div className="mb-2 flex flex-wrap items-center gap-2">
+            <span className="flex items-center gap-1.5">
+              <span
+                className={`h-2.5 w-2.5 rounded-full ${
+                  session.isActive ? 'bg-emerald-500' : 'bg-muted-foreground/40'
+                }`}
+              />
+              {session.isActive ? 'Berlangsung' : 'Selesai'}
+            </span>
+            <Badge className={KEGIATAN_CATEGORY_BADGE[session.category as keyof typeof KEGIATAN_CATEGORY_BADGE]}>
+              {category}
+            </Badge>
+          </div>
+          <DialogTitle className="text-xl leading-snug text-left">{session.title}</DialogTitle>
+          <DialogDescription className="text-left">
+            <span className="flex items-center gap-1.5">
+              <CalendarClock className="h-3.5 w-3.5" />
+              {formatDateTime(session.startTime)}
+              {session.endTime && ` — ${formatDateTime(session.endTime)}`}
+            </span>
+            <span className="mt-1 flex items-center gap-1.5">
+              <Users className="h-3.5 w-3.5" />
+              {session._count.records} hadir
+            </span>
+            <span className="mt-1 flex items-center gap-1.5">
+              <UserRound className="h-3.5 w-3.5" />
+              {session.division?.name ?? 'Organisasi'}
+            </span>
+            <span className="mt-1 flex items-center gap-1.5">
+              Dibuat oleh {session.createdBy.name}
+            </span>
+          </DialogDescription>
+        </DialogHeader>
+
+        {session.description && (
+          <div className="border-t border-border pt-4">
+            <p className="whitespace-pre-wrap text-sm leading-6 text-muted-foreground">
+              {session.description}
+            </p>
+          </div>
+        )}
+
+        {session.statusCounts && canManage && (
+          <div className="flex flex-wrap gap-2 border-t border-border pt-4">
+            {(['HADIR', 'IZIN', 'TANPA_KETERANGAN'] as const).map((s) => (
+              <Badge
+                key={s}
+                variant={s === 'HADIR' ? 'success' : s === 'IZIN' ? 'info' : 'destructive'}
+              >
+                {ATTENDANCE_STATUS_LABELS[s]}: {session.statusCounts?.[s] ?? 0}
+              </Badge>
+            ))}
+          </div>
+        )}
+
+        <div className="flex flex-wrap gap-2 border-t border-border pt-4">
+          {session.isActive && (
+            <>
+              {canScanMember ? (
+                <Button asChild variant="outline" size="sm">
+                  <Link href={`/kegiatan/scan?session=${session.id}`}>
+                    <ScanLine className="h-4 w-4" /> Scan
+                  </Link>
+                </Button>
+              ) : (
+                <Button asChild variant="outline" size="sm">
+                  <Link href="/kegiatan/scan">
+                    <ScanLine className="h-4 w-4" /> Absen
+                  </Link>
+                </Button>
+              )}
+              {canManage ? (
+                <Button variant="outline" size="sm" onClick={onShowQr}>
+                  <QrCode className="h-4 w-4" /> QR
+                </Button>
+              ) : (
+                <Button variant="outline" size="sm" onClick={onShowMyQr}>
+                  <QrCode className="h-4 w-4" /> QR Saya
+                </Button>
+              )}
+              {canManage && (
+                <Button variant="outline" size="sm" onClick={onClose} disabled={closing}>
+                  <Square className="h-3.5 w-3.5" /> Tutup
+                </Button>
+              )}
+            </>
+          )}
+        </div>
+      </DialogContent>
+    </Dialog>
   )
 }
 
@@ -300,8 +427,7 @@ function SessionCard({
   onShowMyQr,
   onClose,
   closing,
-  expanded,
-  onToggleExpand,
+  onDetail,
 }: {
   session: SessionData
   canManage: boolean
@@ -310,15 +436,18 @@ function SessionCard({
   onShowMyQr: () => void
   onClose: () => void
   closing: boolean
-  expanded: boolean
-  onToggleExpand: () => void
+  onDetail: () => void
 }) {
   const category = (KEGIATAN_CATEGORY_LABELS as Record<string, string>)[session.category] ?? session.category
 
   return (
     <Card>
       <CardContent className="flex flex-col gap-3 pt-6 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex items-start gap-3">
+        <button
+          type="button"
+          onClick={onDetail}
+          className="flex flex-1 cursor-pointer items-start gap-3 rounded-lg p-2 -m-2 text-left transition-colors hover:bg-muted/50"
+        >
           <div
             className={`mt-0.5 h-2.5 w-2.5 shrink-0 rounded-full ${
               session.isActive ? 'bg-emerald-500' : 'bg-muted-foreground/40'
@@ -346,7 +475,7 @@ function SessionCard({
               </span>
             </p>
           </div>
-        </div>
+        </button>
 
         <div className="flex shrink-0 items-center gap-2">
           {session.isActive && (
@@ -380,34 +509,8 @@ function SessionCard({
               )}
             </>
           )}
-          <Button variant="ghost" size="icon" onClick={onToggleExpand} aria-label="Detail kegiatan">
-            {expanded ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
-          </Button>
         </div>
       </CardContent>
-
-      {expanded && (
-        <CardContent className="border-t pt-4">
-          {session.description && (
-            <p className="mb-3 text-sm text-muted-foreground">{session.description}</p>
-          )}
-          {session.statusCounts && canManage && (
-            <div className="mb-3 flex flex-wrap gap-2">
-              {(['HADIR', 'IZIN', 'TANPA_KETERANGAN'] as const).map((s) => (
-                <Badge
-                  key={s}
-                  variant={s === 'HADIR' ? 'success' : s === 'IZIN' ? 'info' : 'destructive'}
-                >
-                  {ATTENDANCE_STATUS_LABELS[s]}: {session.statusCounts?.[s] ?? 0}
-                </Badge>
-              ))}
-            </div>
-          )}
-          <p className="mb-2 text-xs font-medium uppercase tracking-wide text-muted-foreground">
-            Dibuat oleh {session.createdBy.name}
-          </p>
-        </CardContent>
-      )}
     </Card>
   )
 }

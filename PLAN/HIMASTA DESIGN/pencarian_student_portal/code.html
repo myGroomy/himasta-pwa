@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>StudentOrg Portal - Search</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Config -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-high": "#e6e8ea",
+                        "on-secondary-container": "#54647a",
+                        "primary": "#00236f",
+                        "surface-variant": "#e0e3e5",
+                        "secondary": "#505f76",
+                        "primary-fixed-dim": "#b6c4ff",
+                        "background": "#f7f9fb",
+                        "tertiary-container": "#6e2c00",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-highest": "#e0e3e5",
+                        "tertiary-fixed-dim": "#ffb691",
+                        "surface-bright": "#f7f9fb",
+                        "primary-fixed": "#dce1ff",
+                        "inverse-surface": "#2d3133",
+                        "surface": "#f7f9fb",
+                        "error-container": "#ffdad6",
+                        "on-tertiary-container": "#f39461",
+                        "on-primary-container": "#90a8ff",
+                        "on-error": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary-fixed-variant": "#38485d",
+                        "tertiary-fixed": "#ffdbcb",
+                        "surface-container": "#eceef0",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary-fixed-variant": "#773205",
+                        "on-surface": "#191c1e",
+                        "outline-variant": "#c5c5d3",
+                        "on-tertiary-fixed": "#341100",
+                        "on-background": "#191c1e",
+                        "inverse-primary": "#b6c4ff",
+                        "tertiary": "#4b1c00",
+                        "secondary-fixed": "#d3e4fe",
+                        "on-primary-fixed": "#00164e",
+                        "surface-dim": "#d8dadc",
+                        "on-surface-variant": "#444651",
+                        "on-primary-fixed-variant": "#264191",
+                        "secondary-fixed-dim": "#b7c8e1",
+                        "primary-container": "#1e3a8a",
+                        "error": "#ba1a1a",
+                        "surface-tint": "#4059aa",
+                        "secondary-container": "#d0e1fb",
+                        "surface-container-low": "#f2f4f6",
+                        "on-error-container": "#93000a",
+                        "outline": "#757682",
+                        "on-secondary-fixed": "#0b1c30",
+                        "inverse-on-surface": "#eff1f3",
+                        "on-primary": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "1rem",
+                        "container-max": "1200px",
+                        "margin-mobile": "1rem",
+                        "touch-target-min": "48px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Outfit"],
+                        "label-caps": ["Outfit"],
+                        "body-sm": ["Outfit"],
+                        "headline-md": ["Outfit"],
+                        "headline-lg-mobile": ["Outfit"],
+                        "body-lg": ["Outfit"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "headline-md": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background min-h-screen pb-32">
+<!-- Header / TopAppBar -->
+<header class="bg-surface text-primary border-b border-outline-variant font-headline-md text-headline-md transition-colors duration-200 fixed top-0 w-full z-40">
+<div class="flex items-center justify-between px-4 h-16 w-full max-w-container-max mx-auto">
+<div class="flex items-center">
+<button class="p-2 mr-2 hover:bg-surface-variant/50 rounded-full transition-colors duration-200">
+<span class="material-symbols-outlined text-on-surface-variant">menu</span>
+</button>
+<h1 class="font-headline-md text-headline-md font-bold text-primary">StudentOrg Portal</h1>
+</div>
+<div class="flex items-center gap-2">
+<!-- Search is active here, but we'll show the search input below in the body -->
+</div>
+</div>
+</header>
+<!-- Main Content -->
+<main class="pt-24 px-margin-mobile md:px-gutter max-w-container-max mx-auto">
+<!-- Search Input Section -->
+<div class="mb-8 relative">
+<div class="relative w-full">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline">search</span>
+<input autofocus="" class="w-full h-14 pl-12 pr-4 bg-surface-container-lowest border border-outline-variant rounded-xl font-body-lg text-body-lg focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all shadow-sm" placeholder="Search portal..." type="text"/>
+</div>
+</div>
+<!-- Filter Chips -->
+<div class="flex gap-3 overflow-x-auto pb-4 mb-6 scrollbar-hide">
+<button class="flex-shrink-0 px-4 h-10 rounded-full bg-primary-container text-on-primary-container font-label-caps text-label-caps border border-primary-container transition-colors">
+                All Results
+            </button>
+<button class="flex-shrink-0 px-4 h-10 rounded-full bg-surface-container-lowest text-on-surface-variant font-label-caps text-label-caps border border-outline-variant hover:border-primary transition-colors">
+                Pengumuman
+            </button>
+<button class="flex-shrink-0 px-4 h-10 rounded-full bg-surface-container-lowest text-on-surface-variant font-label-caps text-label-caps border border-outline-variant hover:border-primary transition-colors">
+                Dokumen
+            </button>
+<button class="flex-shrink-0 px-4 h-10 rounded-full bg-surface-container-lowest text-on-surface-variant font-label-caps text-label-caps border border-outline-variant hover:border-primary transition-colors">
+                Proker
+            </button>
+<button class="flex-shrink-0 px-4 h-10 rounded-full bg-surface-container-lowest text-on-surface-variant font-label-caps text-label-caps border border-outline-variant hover:border-primary transition-colors">
+                Event
+            </button>
+</div>
+<!-- Results Area - Bento Grid approach for professional feel -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-4">
+<!-- Result Card 1: Pengumuman -->
+<article class="col-span-1 md:col-span-8 bg-surface-container-lowest border border-outline-variant rounded-xl p-6 hover:border-primary transition-colors group cursor-pointer">
+<div class="flex items-center gap-2 mb-3">
+<span class="px-2 py-1 rounded bg-secondary-container text-on-secondary-container font-label-caps text-label-caps">Pengumuman</span>
+<span class="text-outline font-body-sm text-body-sm">Today, 09:00 AM</span>
+</div>
+<h2 class="font-headline-md text-headline-md text-on-surface mb-2 group-hover:text-primary transition-colors">Rapat Umum Anggota Semester Ganjil</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2 mb-4">
+                    Pemberitahuan kepada seluruh anggota aktif untuk menghadiri Rapat Umum Anggota (RUA) yang akan membahas evaluasi program kerja paruh pertama dan rencana strategis.
+                </p>
+<div class="flex items-center gap-4 text-outline font-body-sm text-body-sm">
+<div class="flex items-center gap-1"><span class="material-symbols-outlined text-[18px]">location_on</span> Ruang Aula Utama</div>
+</div>
+</article>
+<!-- Result Card 2: Dokumen -->
+<article class="col-span-1 md:col-span-4 bg-surface-container-lowest border border-outline-variant rounded-xl p-6 hover:border-primary transition-colors group cursor-pointer flex flex-col justify-between">
+<div>
+<div class="flex items-center gap-2 mb-3">
+<span class="px-2 py-1 rounded bg-tertiary-container text-on-tertiary-container font-label-caps text-label-caps">Dokumen</span>
+</div>
+<h2 class="font-headline-md text-headline-md text-on-surface mb-2 group-hover:text-primary transition-colors">SOP Keuangan 2024.pdf</h2>
+</div>
+<div class="flex items-center justify-between mt-4 border-t border-outline-variant pt-4">
+<span class="font-body-sm text-body-sm text-on-surface-variant">2.4 MB</span>
+<button class="material-symbols-outlined text-primary">download</button>
+</div>
+</article>
+<!-- Result Card 3: Proker -->
+<article class="col-span-1 md:col-span-6 bg-surface-container-lowest border border-outline-variant rounded-xl p-6 hover:border-primary transition-colors group cursor-pointer">
+<div class="flex items-center gap-2 mb-3">
+<span class="px-2 py-1 rounded bg-surface-variant text-on-surface-variant font-label-caps text-label-caps">Proker</span>
+<span class="text-outline font-body-sm text-body-sm">Status: In Progress</span>
+</div>
+<h2 class="font-headline-md text-headline-md text-on-surface mb-2 group-hover:text-primary transition-colors">Bakti Sosial Desa Binaan</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-4">
+                    Program kerja unggulan divisi Pengabdian Masyarakat untuk pembangunan fasilitas air bersih.
+                </p>
+<div class="w-full bg-surface-container-high rounded-full h-2 mb-2">
+<div class="bg-primary h-2 rounded-full" style="width: 45%"></div>
+</div>
+<span class="font-body-sm text-body-sm text-outline">45% Completed</span>
+</article>
+<!-- Result Card 4: Event -->
+<article class="col-span-1 md:col-span-6 bg-surface-container-lowest border border-outline-variant rounded-xl p-0 hover:border-primary transition-colors group cursor-pointer overflow-hidden flex flex-col sm:flex-row">
+<div class="w-full sm:w-1/3 h-32 sm:h-auto bg-surface-container-high relative">
+<img class="w-full h-full object-cover" data-alt="A professional corporate event poster abstract background with deep blue and soft grey tones, geometric shapes, well lit, conveying networking and tech seminar vibes in a minimalist enterprise aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBFFkbxaJ5A2ADZLW_C-xsO9L_Skz-F6RaWe3ssQ-hxRpMkCq584akkfakqLxR4oKz0xE0E-jn90BpYmlhIEagt8JHp_f_sn50-Gqfpp-oL9si1ajwiwnlnfaLo49zWyn1Cm-yftcC0Rbz6jiXAf4DNAI2WyLkhv-iCDQXsCPegWv25AqLr-aLlyyYFCKJCgOAwIsFiTdN15lxBSXgdfrEWRLhWorioKNbUw0lzBFhda3ODKWL8BkIFgw"/>
+</div>
+<div class="p-6 flex-1 flex flex-col justify-center">
+<div class="flex items-center gap-2 mb-2">
+<span class="px-2 py-1 rounded bg-primary-fixed-dim text-on-primary-fixed font-label-caps text-label-caps">Event</span>
+</div>
+<h2 class="font-headline-md text-headline-md text-on-surface mb-1 group-hover:text-primary transition-colors">Tech Leadership Summit</h2>
+<p class="font-body-sm text-body-sm text-outline flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">calendar_today</span> 15 Nov 2024</p>
+</div>
+</article>
+</div>
+</main>
+<!-- Bottom Navigation Shell (Mobile) -->
+<nav class="md:hidden fixed bottom-4 left-4 right-4 rounded-xl bg-surface/80 backdrop-blur-md border border-outline-variant shadow-sm z-50">
+<div class="fixed bottom-0 w-full px-margin-mobile pb-4 pt-2 z-50 flex justify-around items-center">
+<a class="flex flex-col items-center justify-center text-secondary font-label-caps text-label-caps hover:bg-secondary-container/30 rounded-lg active:scale-95 transition-transform duration-150 p-2" href="#">
+<span class="material-symbols-outlined mb-1">home</span>
+<span>Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-secondary font-label-caps text-label-caps hover:bg-secondary-container/30 rounded-lg active:scale-95 transition-transform duration-150 p-2" href="#">
+<span class="material-symbols-outlined mb-1">calendar_today</span>
+<span>Calendar</span>
+</a>
+<!-- Search intent roughly maps to Directory/Explore in this context if we strictly need to highlight something, but often search is a transient state. We'll leave them inactive as it's a global search overlay, or default to Home if returning. Let's keep all inactive for search page unless it maps directly. The prompt says 'Global Search Page'. Directory is closest to finding things. -->
+<a class="flex flex-col items-center justify-center text-primary font-bold font-label-caps text-label-caps hover:bg-secondary-container/30 rounded-lg active:scale-95 transition-transform duration-150 p-2" href="#">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">groups</span>
+<span>Directory</span>
+</a>
+<a class="flex flex-col items-center justify-center text-secondary font-label-caps text-label-caps hover:bg-secondary-container/30 rounded-lg active:scale-95 transition-transform duration-150 p-2" href="#">
+<span class="material-symbols-outlined mb-1">notifications</span>
+<span>Inbox</span>
+</a>
+<a class="flex flex-col items-center justify-center text-secondary font-label-caps text-label-caps hover:bg-secondary-container/30 rounded-lg active:scale-95 transition-transform duration-150 p-2" href="#">
+<span class="material-symbols-outlined mb-1">account_circle</span>
+<span>Profile</span>
+</a>
+</div>
+</nav>
+<!-- Style for hiding scrollbar in filter chips -->
+<style>
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</body></html>

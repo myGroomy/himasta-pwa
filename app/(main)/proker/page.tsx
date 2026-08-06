@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { Plus } from 'lucide-react'
-import { requireSession } from '@/lib/permissions'
+import { requireRole } from '@/lib/permissions'
 import { prisma } from '@/lib/prisma'
 import { PageHeader } from '@/components/shared/page-header'
 import { Button } from '@/components/ui/button'
@@ -10,14 +10,9 @@ import { getApiUserList } from './data'
 export const dynamic = 'force-dynamic'
 
 export default async function ProkerPage() {
-  const user = await requireSession()
+  const user = await requireRole(['BPH', 'KADIV'])
 
-  const where =
-    user.role === 'BPH'
-      ? {}
-      : user.role === 'KADIV'
-        ? { divisionId: user.divisionId ?? undefined }
-        : { OR: [{ divisionId: user.divisionId ?? undefined }, { pjId: user.id }] }
+  const where = user.role === 'BPH' ? {} : { divisionId: user.divisionId ?? undefined }
 
   const prokers = await prisma.proker.findMany({
     where,

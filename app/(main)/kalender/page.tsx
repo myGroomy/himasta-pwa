@@ -48,6 +48,7 @@ export default async function KalenderPage() {
       type: 'Rapat' as const,
       title: s.title,
       startTime: s.startTime.toISOString(),
+      endTime: s.endTime?.toISOString(),
       divisionId: s.divisionId,
       divisionName: s.division?.name ?? 'General',
       link: '/kegiatan',
@@ -57,6 +58,7 @@ export default async function KalenderPage() {
       type: 'Proker' as const,
       title: p.name,
       startTime: p.startDate?.toISOString() ?? p.createdAt.toISOString(),
+      endTime: p.endDate?.toISOString(),
       divisionId: p.divisionId,
       divisionName: p.division.name,
       link: '/proker',
@@ -66,6 +68,7 @@ export default async function KalenderPage() {
       type: 'Event' as const,
       title: e.name,
       startTime: e.startTime.toISOString(),
+      endTime: e.endTime?.toISOString(),
       divisionId: e.divisionId,
       divisionName: e.division?.name ?? 'General',
       link: '/events',
@@ -76,7 +79,7 @@ export default async function KalenderPage() {
     <div>
       <PageHeader
         title="Kalender"
-        description="Semua kegiatan HIMASTA (rapat, proker, dan event) dalam satu tampilan."
+        description="Semua kegiatan HIMASTA (Rapat, Proker, dan Event)."
       />
       <NotionCalendarView divisions={divisions} items={items} />
     </div>

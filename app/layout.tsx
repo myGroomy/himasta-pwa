@@ -46,7 +46,7 @@ export const metadata: Metadata = {
 }
 
 export const viewport: Viewport = {
-  themeColor: '#1d4ed8',
+  themeColor: '#1e3a8a',
   width: 'device-width',
   initialScale: 1,
 }
@@ -71,7 +71,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta name="format-detection" content="telephone=no" />
       </head>
       <body className={cn("antialiased font-sans", outfit.variable)}>
-        <ThemeProviderWrapper attribute="class" defaultTheme="system" enableSystem>
+        <ThemeProviderWrapper attribute="class" defaultTheme="light" enableSystem>
           {children}
           <Toaster />
           <ServiceWorkerRegistration />

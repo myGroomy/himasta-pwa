@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Buat Event Baru - Student Portal</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-fixed": "#0b1c30",
+                        "on-secondary-fixed-variant": "#38485d",
+                        "surface-variant": "#e0e3e5",
+                        "inverse-surface": "#2d3133",
+                        "background": "#f7f9fb",
+                        "inverse-primary": "#b6c4ff",
+                        "error-container": "#ffdad6",
+                        "tertiary": "#4b1c00",
+                        "on-primary-container": "#90a8ff",
+                        "secondary-fixed": "#d3e4fe",
+                        "outline": "#757682",
+                        "on-background": "#191c1e",
+                        "on-error-container": "#93000a",
+                        "surface-container": "#eceef0",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-fixed-dim": "#ffb691",
+                        "surface-tint": "#4059aa",
+                        "primary-fixed": "#dce1ff",
+                        "error": "#ba1a1a",
+                        "on-primary": "#ffffff",
+                        "surface-container-high": "#e6e8ea",
+                        "surface": "#f7f9fb",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-bright": "#f7f9fb",
+                        "secondary-fixed-dim": "#b7c8e1",
+                        "secondary": "#505f76",
+                        "inverse-on-surface": "#eff1f3",
+                        "outline-variant": "#c5c5d3",
+                        "secondary-container": "#d0e1fb",
+                        "on-secondary": "#ffffff",
+                        "on-primary-fixed-variant": "#264191",
+                        "on-error": "#ffffff",
+                        "primary-container": "#1e3a8a",
+                        "on-tertiary-container": "#f39461",
+                        "on-surface": "#191c1e",
+                        "surface-container-low": "#f2f4f6",
+                        "primary-fixed-dim": "#b6c4ff",
+                        "on-tertiary-fixed-variant": "#773205",
+                        "on-tertiary-fixed": "#341100",
+                        "on-surface-variant": "#444651",
+                        "on-primary-fixed": "#00164e",
+                        "primary": "#00236f",
+                        "surface-container-highest": "#e0e3e5",
+                        "tertiary-container": "#6e2c00",
+                        "on-secondary-container": "#54647a",
+                        "surface-dim": "#d8dadc",
+                        "tertiary-fixed": "#ffdbcb"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "touch-target-min": "48px",
+                        "container-max": "1200px",
+                        "margin-mobile": "1rem",
+                        "gutter": "1rem"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Outfit"],
+                        "headline-lg": ["Outfit"],
+                        "label-caps": ["Outfit"],
+                        "headline-md": ["Outfit"],
+                        "headline-lg-mobile": ["Outfit"],
+                        "body-sm": ["Outfit"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "headline-md": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body { background-color: #f7f9fb; color: #191c1e; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        [data-weight="fill"] { font-variation-settings: 'FILL' 1; }
+        
+        /* Input overrides for design system */
+        input[type="text"], input[type="date"], input[type="time"], input[type="number"], select, textarea {
+            border: 1px solid #c5c5d3;
+            border-radius: 0.25rem;
+            padding: 0 12px;
+            min-height: 48px;
+            background-color: #ffffff;
+            color: #191c1e;
+            width: 100%;
+        }
+        input[type="text"]:focus, input[type="date"]:focus, input[type="time"]:focus, input[type="number"]:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #00236f;
+            box-shadow: 0 0 0 1px #00236f;
+        }
+        .toggle-checkbox:checked { right: 0; border-color: #1e3a8a; }
+        .toggle-checkbox:checked + .toggle-label { background-color: #1e3a8a; }
+        .toggle-checkbox:checked + .toggle-label:after { transform: translateX(100%); border-color: white; }
+        .toggle-label { width: 48px; height: 24px; background-color: #e0e3e5; border-radius: 9999px; position: relative; cursor: pointer; transition: background-color .2s; }
+        .toggle-label:after { content: ''; position: absolute; top: 2px; left: 2px; width: 20px; height: 20px; background-color: white; border-radius: 50%; transition: transform .2s; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
+    </style>
+</head>
+<body class="antialiased min-h-screen flex flex-col pt-14 pb-16 md:pb-0">
+<!-- TopAppBar -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-4 h-14 bg-surface text-primary border-b border-outline-variant flat no shadows transition-colors duration-200 ease-in-out md:px-gutter">
+<div class="flex items-center gap-3">
+<button aria-label="Menu" class="hover:bg-surface-container rounded-full p-2 text-secondary flex items-center justify-center transition-colors duration-200 ease-in-out">
+<span class="material-symbols-outlined" data-icon="school">school</span>
+</button>
+<h1 class="font-headline-md text-headline-md font-bold text-primary">Student Portal</h1>
+</div>
+<!-- Desktop Nav -->
+<nav class="hidden md:flex h-full items-center">
+<a class="h-full px-4 flex items-center text-secondary hover:bg-surface-container transition-colors duration-200 ease-in-out" href="#">
+<span class="font-label-caps text-label-caps">Home</span>
+</a>
+<a class="h-full px-4 flex items-center text-secondary hover:bg-surface-container transition-colors duration-200 ease-in-out" href="#">
+<span class="font-label-caps text-label-caps">About</span>
+</a>
+<a class="h-full px-4 flex items-center text-primary border-b-2 border-primary transition-colors duration-200 ease-in-out" href="#">
+<span class="font-label-caps text-label-caps">Events</span>
+</a>
+<a class="h-full px-4 flex items-center text-secondary hover:bg-surface-container transition-colors duration-200 ease-in-out" href="#">
+<span class="font-label-caps text-label-caps">Profile</span>
+</a>
+</nav>
+<button aria-label="Account" class="hover:bg-surface-container rounded-full p-2 text-secondary flex items-center justify-center transition-colors duration-200 ease-in-out">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+</button>
+</header>
+<!-- Main Content -->
+<main class="flex-grow flex justify-center w-full max-w-container-max mx-auto px-margin-mobile md:px-gutter py-6">
+<div class="w-full max-w-3xl">
+<div class="mb-6 flex items-center gap-2">
+<button aria-label="Kembali" class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container text-secondary transition-colors">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile md:font-headline-lg md:text-headline-lg text-on-surface">Buat Event Baru</h2>
+</div>
+<!-- Form Card -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded p-6 md:p-8">
+<form action="#" class="space-y-6" method="POST">
+<!-- Event Name -->
+<div class="space-y-2">
+<label class="block font-label-caps text-label-caps text-on-surface-variant" for="eventName">NAMA EVENT</label>
+<input class="font-body-lg text-body-lg focus:ring-0" id="eventName" name="eventName" placeholder="Masukkan nama event" required="" type="text"/>
+</div>
+<!-- Date & Time Row -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="space-y-2">
+<label class="block font-label-caps text-label-caps text-on-surface-variant" for="eventDate">TANGGAL</label>
+<input class="font-body-lg text-body-lg focus:ring-0" id="eventDate" name="eventDate" required="" type="date"/>
+</div>
+<div class="space-y-2">
+<label class="block font-label-caps text-label-caps text-on-surface-variant" for="eventTime">WAKTU</label>
+<input class="font-body-lg text-body-lg focus:ring-0" id="eventTime" name="eventTime" required="" type="time"/>
+</div>
+</div>
+<!-- Capacity & Location Row -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="space-y-2">
+<label class="block font-label-caps text-label-caps text-on-surface-variant" for="eventCapacity">KAPASITAS</label>
+<input class="font-body-lg text-body-lg focus:ring-0" id="eventCapacity" min="1" name="eventCapacity" placeholder="Contoh: 100" type="number"/>
+</div>
+<div class="space-y-2">
+<label class="block font-label-caps text-label-caps text-on-surface-variant" for="eventLocation">LOKASI</label>
+<input class="font-body-lg text-body-lg focus:ring-0" id="eventLocation" name="eventLocation" placeholder="Nama ruangan atau link meeting" type="text"/>
+</div>
+</div>
+<!-- Description -->
+<div class="space-y-2">
+<label class="block font-label-caps text-label-caps text-on-surface-variant" for="eventDescription">DESKRIPSI (OPSIONAL)</label>
+<textarea class="font-body-lg text-body-lg focus:ring-0 py-3" id="eventDescription" name="eventDescription" placeholder="Tambahkan detail mengenai event..." rows="4"></textarea>
+</div>
+<!-- Visibility Toggle -->
+<div class="pt-2 pb-4 border-b border-outline-variant">
+<div class="flex items-center justify-between">
+<div>
+<span class="block font-label-caps text-label-caps text-on-surface-variant mb-1">VISIBILITAS</span>
+<span class="font-body-lg text-body-lg text-on-surface" id="visibilityStatus">Event Publik</span>
+<p class="font-body-sm text-body-sm text-secondary mt-1">Event dapat dilihat oleh semua mahasiswa.</p>
+</div>
+<div class="relative inline-block w-12 mr-2 align-middle select-none">
+<input checked="" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer opacity-0 z-10" id="isPublic" name="isPublic" type="checkbox"/>
+<label class="toggle-label block overflow-hidden" for="isPublic"></label>
+</div>
+</div>
+</div>
+<!-- Actions -->
+<div class="pt-4 flex flex-col-reverse md:flex-row justify-end gap-4">
+<button class="min-h-touch-target-min px-6 py-2 border border-outline-variant text-primary font-headline-md text-headline-md rounded hover:bg-surface-container transition-colors" type="button">
+                            Batal
+                        </button>
+<button class="min-h-touch-target-min px-6 py-2 bg-primary-container text-on-primary font-headline-md text-headline-md rounded hover:bg-primary transition-colors" type="submit">
+                            Buat Event
+                        </button>
+</div>
+</form>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-16 px-gutter pb-safe bg-surface text-primary border-t border-outline-variant flat no shadows md:hidden">
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-3 py-1 hover:bg-surface-container-high transition-transform duration-150 scale-95 active:scale-90" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="home">home</span>
+<span class="font-label-caps text-label-caps">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-3 py-1 hover:bg-surface-container-high transition-transform duration-150 scale-95 active:scale-90" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="info">info</span>
+<span class="font-label-caps text-label-caps">About</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-xl px-3 py-1 hover:bg-surface-container-high transition-transform duration-150 scale-95 active:scale-90" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="event" data-weight="fill">event</span>
+<span class="font-label-caps text-label-caps">Events</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-3 py-1 hover:bg-surface-container-high transition-transform duration-150 scale-95 active:scale-90" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="person">person</span>
+<span class="font-label-caps text-label-caps">Profile</span>
+</a>
+</nav>
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const toggle = document.getElementById('isPublic');
+            const status = document.getElementById('visibilityStatus');
+            const desc = status.nextElementSibling;
+
+            toggle.addEventListener('change', (e) => {
+                if(e.target.checked) {
+                    status.textContent = 'Event Publik';
+                    desc.textContent = 'Event dapat dilihat oleh semua mahasiswa.';
+                } else {
+                    status.textContent = 'Event Internal';
+                    desc.textContent = 'Hanya terlihat oleh anggota grup/jurusan tertentu.';
+                }
+            });
+        });
+    </script>
+</body></html>

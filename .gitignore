@@ -25,3 +25,15 @@ next-env.d.ts
 
 # Local Skills
 Skill/
+
+# Cloudflare Tunnel credentials (cert.pem = Argo Tunnel token, JANGAN di-commit)
+cloudflare/
+
+# Graphify knowledge graph output
+graphify-out/
+
+# Windows metadata junk
+*:Zone.Identifier
+
+# Temporary junk files
+nul

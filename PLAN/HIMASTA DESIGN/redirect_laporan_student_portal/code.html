@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Verifying Access</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-container": "#f39461",
+                        "on-surface-variant": "#444651",
+                        "on-primary-fixed-variant": "#264191",
+                        "tertiary-fixed-dim": "#ffb691",
+                        "on-secondary": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "secondary-container": "#d0e1fb",
+                        "secondary": "#505f76",
+                        "surface-tint": "#4059aa",
+                        "surface-bright": "#f7f9fb",
+                        "on-primary-container": "#90a8ff",
+                        "on-error-container": "#93000a",
+                        "tertiary-fixed": "#ffdbcb",
+                        "on-tertiary-fixed": "#341100",
+                        "on-secondary-fixed-variant": "#38485d",
+                        "inverse-surface": "#2d3133",
+                        "surface-variant": "#e0e3e5",
+                        "primary-fixed": "#dce1ff",
+                        "on-primary-fixed": "#00164e",
+                        "primary-fixed-dim": "#b6c4ff",
+                        "surface-container-low": "#f2f4f6",
+                        "tertiary-container": "#6e2c00",
+                        "surface-dim": "#d8dadc",
+                        "surface": "#f7f9fb",
+                        "on-error": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary-fixed": "#0b1c30",
+                        "on-secondary-container": "#54647a",
+                        "inverse-on-surface": "#eff1f3",
+                        "on-tertiary-fixed-variant": "#773205",
+                        "primary-container": "#1e3a8a",
+                        "inverse-primary": "#b6c4ff",
+                        "surface-container-lowest": "#ffffff",
+                        "outline": "#757682",
+                        "outline-variant": "#c5c5d3",
+                        "surface-container-highest": "#e0e3e5",
+                        "primary": "#00236f",
+                        "tertiary": "#4b1c00",
+                        "surface-container-high": "#e6e8ea",
+                        "secondary-fixed": "#d3e4fe",
+                        "error-container": "#ffdad6",
+                        "error": "#ba1a1a",
+                        "on-surface": "#191c1e",
+                        "on-background": "#191c1e",
+                        "secondary-fixed-dim": "#b7c8e1",
+                        "background": "#f7f9fb",
+                        "surface-container": "#eceef0"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "1rem",
+                        "touch-target-min": "48px",
+                        "margin-mobile": "1rem",
+                        "container-max": "1200px"
+                    },
+                    "fontFamily": {
+                        "body-sm": ["Outfit"],
+                        "body-lg": ["Outfit"],
+                        "headline-md": ["Outfit"],
+                        "headline-lg-mobile": ["Outfit"],
+                        "headline-lg": ["Outfit"],
+                        "label-caps": ["Outfit"]
+                    },
+                    "fontSize": {
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-md": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .bg-grid {
+            background-size: 40px 40px;
+            background-image: linear-gradient(to right, rgba(117, 118, 130, 0.1) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(117, 118, 130, 0.1) 1px, transparent 1px);
+        }
+        
+        .spinner {
+            width: 48px;
+            height: 48px;
+            border: 3px solid rgba(0, 35, 111, 0.1); /* primary with opacity */
+            border-radius: 50%;
+            border-top-color: #00236f; /* primary */
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="bg-surface h-screen w-screen flex items-center justify-center relative overflow-hidden text-on-surface">
+<!-- Subtle Grid Background -->
+<div class="absolute inset-0 bg-grid pointer-events-none"></div>
+<!-- Main Content Container -->
+<main class="relative z-10 flex flex-col items-center justify-center max-w-sm w-full px-gutter text-center space-y-6">
+<!-- Animated Spinner -->
+<div aria-label="Loading" class="spinner mb-4" role="status"></div>
+<!-- Status Text -->
+<div class="space-y-2">
+<h1 class="font-headline-md text-headline-md text-primary">Sedang memverifikasi akses...</h1>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+                Silakan tunggu sementara kami mengamankan koneksi Anda.
+            </p>
+</div>
+<!-- Security indicator (Optional touch of corporate reliability) -->
+<div class="flex items-center space-x-2 text-on-surface-variant/70 mt-8">
+<span class="material-symbols-outlined text-[16px]">lock</span>
+<span class="font-label-caps text-label-caps">SECURE CONNECTION</span>
+</div>
+</main>
+<!-- Script to simulate redirection after a delay (for demonstration purposes) -->
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Simulate a verification process
+            setTimeout(() => {
+                // In a real application, this would redirect based on auth status
+                console.log('Verification complete. Ready to redirect.');
+            }, 2500);
+        });
+    </script>
+</body></html>

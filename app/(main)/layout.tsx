@@ -3,6 +3,7 @@ import { prisma } from '@/lib/prisma'
 import { Navbar } from '@/components/shared/navbar'
 import { BottomNav } from '@/components/shared/bottom-nav'
 import { OfflineIndicator } from '@/components/shared/offline-indicator'
+import { HierarchicalNavigation } from '@/components/shared/hierarchical-navigation'
 
 import { PageTransition } from '@/components/shared/page-transition'
 
@@ -33,6 +34,7 @@ export default async function MainLayout({ children }: { children: React.ReactNo
   return (
     <div className="min-h-screen bg-background text-foreground pb-32">
       <OfflineIndicator />
+      <HierarchicalNavigation />
       <Navbar user={user} divisions={divisions} unreadCount={unreadCount} latestNotifications={latestNotifications} />
       <main className="container max-w-5xl mx-auto py-12 md:py-24 px-4">
         <PageTransition>{children}</PageTransition>

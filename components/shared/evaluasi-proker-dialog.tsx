@@ -20,7 +20,7 @@ export function EvaluasiProkerDialog({ prokerId, prokerName }: { prokerId: strin
   useEffect(() => {
     if (open) {
       setFetching(true)
-      fetch(`/api/proker/${prokerId}/evaluation`)
+      fetch(`/api/prokers/${prokerId}/evaluation`)
         .then(r => r.json())
         .then(data => {
           if (data.evaluation) {
@@ -39,7 +39,7 @@ export function EvaluasiProkerDialog({ prokerId, prokerName }: { prokerId: strin
     if (!whatWorked || !whatFailed || !lessons) return
     setLoading(true)
     try {
-      const r = await fetch(`/api/proker/${prokerId}/evaluation`, {
+      const r = await fetch(`/api/prokers/${prokerId}/evaluation`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ whatWorked, whatFailed, lessons, overallRating }),

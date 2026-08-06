@@ -22,6 +22,8 @@ export async function GET(
         name: true,
         startTime: true,
         location: true,
+        divisionId: true,
+        createdById: true,
         division: { select: { name: true } },
       },
     })
@@ -31,9 +33,14 @@ export async function GET(
     let registration
 
     if (registrationId) {
-      // Pengurus / BPH melihat sertifikat peserta tertentu
+      if (user.role === 'KADIV') {
+        const hasAccess = event.divisionId === user.divisionId || event.createdById === user.id
+        if (!hasAccess) return forbidden('Kadiv hanya bisa melihat sertifikat peserta event divisi sendiri')
+      } else if (user.role !== 'BPH') {
+        return forbidden('Hanya BPH/Kadiv yang bisa melihat sertifikat peserta lain')
+      }
       registration = await prisma.eventRegistration.findUnique({
-        where: { id: registrationId },
+        where: { id: registrationId, eventId: event.id },
       })
     } else {
       // Anggota melihat sertifikat miliknya sendiri

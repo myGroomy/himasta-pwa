@@ -69,7 +69,7 @@ export function MyQrDialog({ open, onOpenChange }: MyQrDialogProps) {
         <DialogHeader>
           <DialogTitle className="pr-6">QR Absensi Saya</DialogTitle>
           <DialogDescription>
-            Tunjukkan QR ini ke BPH/Kadiv untuk dicatat kehadirannya.
+            Tunjukkan QR ini ke BPH/Kadiv saat kegiatan agar kehadiran Anda dicatat.
           </DialogDescription>
         </DialogHeader>
 
@@ -98,8 +98,8 @@ export function MyQrDialog({ open, onOpenChange }: MyQrDialogProps) {
                 className="h-64 w-64 rounded-xl border bg-white p-3"
               />
               <p className="text-center text-xs text-muted-foreground">
-                Saat ada kegiatan, BPH/Kadiv memindai QR ini lewat menu Scan pada kartu kegiatan
-                untuk menandai kehadiran Anda.
+                Saat ada kegiatan, BPH/Kadiv memindai QR ini lewat menu Scan di halaman Kegiatan
+                untuk mencatat kehadiran Anda.
               </p>
               <Button variant="outline" size="sm" onClick={downloadQr}>
                 <Download className="h-4 w-4" />

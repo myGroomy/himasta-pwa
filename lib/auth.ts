@@ -60,10 +60,32 @@ export const authOptions: NextAuthOptions = {
         token.id = user.id
         token.role = user.role
         token.divisionId = user.divisionId ?? null
+      } else if (token.id) {
+        try {
+          const dbUser = await prisma.user.findUnique({
+            where: { id: token.id as string },
+            select: { isActive: true, role: true, divisionId: true },
+          })
+          if (!dbUser || !dbUser.isActive) {
+            token.id = undefined
+            token.role = undefined
+          } else {
+            token.role = dbUser.role
+            token.divisionId = dbUser.divisionId ?? null
+          }
+        } catch {
+          // Abaikan error DB temporal
+        }
       }
       return token
     },
     async session({ session, token }) {
+      if (!token.id || !token.role) {
+        return {
+          ...session,
+          user: undefined,
+        }
+      }
       if (session.user) {
         session.user.id = token.id as string
         session.user.role = token.role as Role

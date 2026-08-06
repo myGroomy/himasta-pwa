@@ -1,0 +1,169 @@
+<!DOCTYPE html><html class="light" lang="id"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+<title>Scan Absensi Kegiatan</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-fixed": "#0b1c30",
+                        "on-secondary-fixed-variant": "#38485d",
+                        "surface-variant": "#e0e3e5",
+                        "inverse-surface": "#2d3133",
+                        "background": "#f7f9fb",
+                        "inverse-primary": "#b6c4ff",
+                        "error-container": "#ffdad6",
+                        "tertiary": "#4b1c00",
+                        "on-primary-container": "#90a8ff",
+                        "secondary-fixed": "#d3e4fe",
+                        "outline": "#757682",
+                        "on-background": "#191c1e",
+                        "on-error-container": "#93000a",
+                        "surface-container": "#eceef0",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-fixed-dim": "#ffb691",
+                        "surface-tint": "#4059aa",
+                        "primary-fixed": "#dce1ff",
+                        "error": "#ba1a1a",
+                        "on-primary": "#ffffff",
+                        "surface-container-high": "#e6e8ea",
+                        "surface": "#f7f9fb",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-bright": "#f7f9fb",
+                        "secondary-fixed-dim": "#b7c8e1",
+                        "secondary": "#505f76",
+                        "inverse-on-surface": "#eff1f3",
+                        "outline-variant": "#c5c5d3",
+                        "secondary-container": "#d0e1fb",
+                        "on-secondary": "#ffffff",
+                        "on-primary-fixed-variant": "#264191",
+                        "on-error": "#ffffff",
+                        "primary-container": "#1e3a8a",
+                        "on-tertiary-container": "#f39461",
+                        "on-surface": "#191c1e",
+                        "surface-container-low": "#f2f4f6",
+                        "primary-fixed-dim": "#b6c4ff",
+                        "on-tertiary-fixed-variant": "#773205",
+                        "on-tertiary-fixed": "#341100",
+                        "on-surface-variant": "#444651",
+                        "on-primary-fixed": "#00164e",
+                        "primary": "#00236f",
+                        "surface-container-highest": "#e0e3e5",
+                        "tertiary-container": "#6e2c00",
+                        "on-secondary-container": "#54647a",
+                        "surface-dim": "#d8dadc",
+                        "tertiary-fixed": "#ffdbcb"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "touch-target-min": "48px",
+                        "container-max": "1200px",
+                        "margin-mobile": "1rem",
+                        "gutter": "1rem"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Outfit"],
+                        "headline-lg": ["Outfit"],
+                        "label-caps": ["Outfit"],
+                        "headline-md": ["Outfit"],
+                        "headline-lg-mobile": ["Outfit"],
+                        "body-sm": ["Outfit"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "headline-md": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .scanner-overlay {
+            box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.7);
+        }
+        .scan-line {
+            animation: scan 2s infinite linear;
+            background: linear-gradient(to bottom, transparent, rgba(30, 58, 138, 0.5), transparent);
+        }
+        @keyframes scan {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100%); }
+        }
+        .corner-border {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            border-color: #1E3A8A; /* primary-container */
+            border-style: solid;
+        }
+        .tl { top: 0; left: 0; border-width: 4px 0 0 4px; border-top-left-radius: 12px; }
+        .tr { top: 0; right: 0; border-width: 4px 4px 0 0; border-top-right-radius: 12px; }
+        .bl { bottom: 0; left: 0; border-width: 0 0 4px 4px; border-bottom-left-radius: 12px; }
+        .br { bottom: 0; right: 0; border-width: 0 4px 4px 0; border-bottom-right-radius: 12px; }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-lg min-h-screen flex flex-col antialiased">
+<!-- TopAppBar -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-4 h-14 bg-surface border-b border-outline-variant flat no shadows">
+<button aria-label="Go Back" class="h-touch-target-min w-touch-target-min flex items-center justify-center text-secondary hover:bg-surface-container transition-colors duration-200 ease-in-out rounded-full">
+<span class="material-symbols-outlined" data-icon="arrow_back">arrow_back</span>
+</button>
+<h1 class="font-headline-md text-headline-md font-bold text-primary flex-1 text-center pr-12">Scan Kehadiran</h1>
+</header>
+<!-- Main Content Area -->
+<main class="flex-1 relative mt-14 bg-surface-variant overflow-hidden flex flex-col justify-center items-center">
+<!-- Simulated Camera Feed Background -->
+<div class="absolute inset-0 w-full h-full">
+<img alt="Camera Feed" class="w-full h-full object-cover opacity-60" data-alt="A slightly blurred, real-world conference room background viewed through a mobile device camera lens. The lighting is bright and professional, typical of a corporate event space. A lanyard and a partially visible QR code badge rest on a clean, light wood table in the background. Minimalist corporate aesthetic, cool tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBDMVNgiMzyPywQ2bvJ3hLQ4g1ehkDNxwEyCgmXnTqgYucL7ZW89sLpv5FnFGfY4n89EmdwqSD_ldlQp0y466xeKpYR0Xroy8rk4R8mWYh3Utsy4GO-j7vPcy4_XTpcMLAPGmBk1yFjAvGc3ANJAfSSMc_mL7UDsK8I8Of0ghsFtzZ3fyH8ljjjRmBnSlpN9uu3FzqHukMxqA6RX1ENx3mcyvbJdps2f9uvtfy3RJEE28uqfyFfSuX0ZA">
+</div>
+<!-- Scanner UI Overlay -->
+<div class="relative z-10 w-full h-full flex flex-col justify-center items-center px-margin-mobile"><button aria-label="Close Scanner" class="absolute top-4 right-4 z-50 h-touch-target-min w-touch-target-min flex items-center justify-center bg-surface/90 backdrop-blur-sm text-secondary hover:bg-surface-container transition-colors duration-200 ease-in-out rounded-full border border-outline-variant shadow-sm"><span class="material-symbols-outlined" data-icon="close">close</span></button>
+<!-- Instructional Text -->
+<div class="absolute top-12 left-0 right-0 px-4 text-center">
+<div class="inline-block bg-surface/90 backdrop-blur-sm rounded-lg px-6 py-3 border border-outline-variant shadow-sm">
+<p class="font-body-lg text-body-lg text-on-surface">Posisikan kode QR di dalam kotak</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Sistem akan memindai secara otomatis</p>
+</div>
+</div>
+<!-- Viewfinder -->
+<div class="relative w-72 h-72 rounded-xl overflow-hidden shadow-[0_0_0_9999px_rgba(0,0,0,0.6)]">
+<!-- Target Frame Corners -->
+<div class="corner-border tl"></div>
+<div class="corner-border tr"></div>
+<div class="corner-border bl"></div>
+<div class="corner-border br"></div>
+<!-- Clear Center -->
+<div class="w-full h-full bg-transparent"></div>
+<!-- Animated Scan Line -->
+<div class="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
+<div class="scan-line w-full h-1/4 absolute top-1/2 -translate-y-1/2"></div>
+</div>
+</div>
+<!-- Manual Entry Fallback -->
+<div class="absolute bottom-12 left-0 right-0 px-margin-mobile flex justify-center">
+<button class="h-touch-target-min px-6 flex items-center justify-center space-x-2 bg-surface text-primary border border-outline-variant rounded-full font-label-caps text-label-caps hover:bg-surface-container active:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-lg" data-icon="keyboard">keyboard</span>
+<span class="">Masukkan Kode Manual</span>
+</button>
+</div>
+</div>
+</main>
+<!-- BottomNavBar is suppressed due to transactional/task-focused nature of the scanner -->
+
+
+</body></html>

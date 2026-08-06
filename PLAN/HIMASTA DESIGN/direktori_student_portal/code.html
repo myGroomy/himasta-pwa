@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>StudentOrg Portal - Member Directory</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-high": "#e6e8ea",
+                        "on-secondary-container": "#54647a",
+                        "primary": "#00236f",
+                        "surface-variant": "#e0e3e5",
+                        "secondary": "#505f76",
+                        "primary-fixed-dim": "#b6c4ff",
+                        "background": "#f7f9fb",
+                        "tertiary-container": "#6e2c00",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-highest": "#e0e3e5",
+                        "tertiary-fixed-dim": "#ffb691",
+                        "surface-bright": "#f7f9fb",
+                        "primary-fixed": "#dce1ff",
+                        "inverse-surface": "#2d3133",
+                        "surface": "#f7f9fb",
+                        "error-container": "#ffdad6",
+                        "on-tertiary-container": "#f39461",
+                        "on-primary-container": "#90a8ff",
+                        "on-error": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary-fixed-variant": "#38485d",
+                        "tertiary-fixed": "#ffdbcb",
+                        "surface-container": "#eceef0",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary-fixed-variant": "#773205",
+                        "on-surface": "#191c1e",
+                        "outline-variant": "#c5c5d3",
+                        "on-tertiary-fixed": "#341100",
+                        "on-background": "#191c1e",
+                        "inverse-primary": "#b6c4ff",
+                        "tertiary": "#4b1c00",
+                        "secondary-fixed": "#d3e4fe",
+                        "on-primary-fixed": "#00164e",
+                        "surface-dim": "#d8dadc",
+                        "on-surface-variant": "#444651",
+                        "on-primary-fixed-variant": "#264191",
+                        "secondary-fixed-dim": "#b7c8e1",
+                        "primary-container": "#1e3a8a",
+                        "error": "#ba1a1a",
+                        "surface-tint": "#4059aa",
+                        "secondary-container": "#d0e1fb",
+                        "surface-container-low": "#f2f4f6",
+                        "on-error-container": "#93000a",
+                        "outline": "#757682",
+                        "on-secondary-fixed": "#0b1c30",
+                        "inverse-on-surface": "#eff1f3",
+                        "on-primary": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "1rem",
+                        "container-max": "1200px",
+                        "margin-mobile": "1rem",
+                        "touch-target-min": "48px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Outfit"],
+                        "label-caps": ["Outfit"],
+                        "body-sm": ["Outfit"],
+                        "headline-md": ["Outfit"],
+                        "headline-lg-mobile": ["Outfit"],
+                        "body-lg": ["Outfit"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "headline-md": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex flex-col pt-16 pb-24 md:pb-0 md:pt-0 md:flex-row">
+<!-- NavigationDrawer (Web) -->
+<nav class="hidden md:flex flex-col h-screen w-80 bg-surface dark:bg-surface border-r border-outline-variant dark:border-outline py-gutter sticky top-0 transition-all duration-200 z-40">
+<div class="px-6 pb-6 border-b border-outline-variant dark:border-outline mb-4">
+<h1 class="font-headline-md text-headline-md text-primary">StudentOrg Portal</h1>
+</div>
+<div class="px-6 flex items-center gap-4 mb-8">
+<img class="w-12 h-12 rounded-full object-cover" data-alt="A professional headshot of a student organization president in a minimalist corporate style, bright lighting, light mode background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD-qcbVHmj6Pb5alnXFiBxQQU7GXUJIqZ4MxY5REc9_xempT1mY_xiVdXYy8NTXINkLnJkPzdJgAls6Rdo7lU_CHS5RtHOszQTrL1c8dFbSyAwVAv8rSdPey-xIgA01i_oe_cKNtK93vURe2hHEgS9FUOYP_9fhJ-GjyHub_YunPTgntOjsWRjwtQK7C9NVxb-HpI0aZlHKaCzkS4EQXzizcPiiBw_ui1Qt-P_MoTDkyS91zrKAKzIiqg"/>
+<div>
+<p class="font-body-lg text-body-lg font-bold text-primary dark:text-primary-fixed">Alex Rivera</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Presidential Council</p>
+<p class="font-label-caps text-label-caps text-secondary mt-1">Member ID: #8821</p>
+</div>
+</div>
+<div class="flex-1 overflow-y-auto px-4 space-y-1">
+<a class="flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-high dark:hover:bg-on-secondary-fixed-variant/10 transition-all duration-200" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-body-lg text-body-lg">Dashboard</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-high dark:hover:bg-on-secondary-fixed-variant/10 transition-all duration-200" href="#">
+<span class="material-symbols-outlined">account_tree</span>
+<span class="font-body-lg text-body-lg">My Divisions</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-high dark:hover:bg-on-secondary-fixed-variant/10 transition-all duration-200" href="#">
+<span class="material-symbols-outlined">event_available</span>
+<span class="font-body-lg text-body-lg">Event Manager</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-high dark:hover:bg-on-secondary-fixed-variant/10 transition-all duration-200" href="#">
+<span class="material-symbols-outlined">folder_shared</span>
+<span class="font-body-lg text-body-lg">Resource Library</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 rounded-lg text-primary dark:text-primary-fixed bg-secondary-container/50 font-bold hover:bg-surface-container-high dark:hover:bg-on-secondary-fixed-variant/10 transition-all duration-200" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">groups</span>
+<span class="font-body-lg text-body-lg">Directory</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-high dark:hover:bg-on-secondary-fixed-variant/10 transition-all duration-200 mt-8" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-body-lg text-body-lg">Settings</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-high dark:hover:bg-on-secondary-fixed-variant/10 transition-all duration-200" href="#">
+<span class="material-symbols-outlined">help</span>
+<span class="font-body-lg text-body-lg">Support</span>
+</a>
+</div>
+</nav>
+<!-- TopAppBar (Mobile) -->
+<header class="md:hidden fixed top-0 w-full bg-surface dark:bg-surface border-b border-outline-variant dark:border-outline transition-colors duration-200 z-40">
+<div class="flex items-center justify-between px-4 h-16 w-full max-w-container-max mx-auto">
+<button class="p-2 -ml-2 text-primary dark:text-primary-fixed hover:bg-surface-variant/50 dark:hover:bg-on-secondary-fixed-variant/20 rounded-full transition-colors duration-200">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<h1 class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed">StudentOrg Portal</h1>
+<button class="p-2 -mr-2 text-primary dark:text-primary-fixed hover:bg-surface-variant/50 dark:hover:bg-on-secondary-fixed-variant/20 rounded-full transition-colors duration-200">
+<span class="material-symbols-outlined">search</span>
+</button>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-1 w-full max-w-container-max mx-auto px-margin-mobile md:px-8 py-8">
+<!-- Page Header & Actions -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+<div>
+<h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-2">Member Directory</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">Browse active members across all divisions. Use the search or filter tools to find specific personnel.</p>
+</div>
+<div class="flex items-center gap-3 w-full md:w-auto">
+<div class="relative flex-1 md:w-64">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">search</span>
+<input class="w-full h-[48px] pl-10 pr-4 rounded-DEFAULT border border-outline-variant bg-surface-container-lowest focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-shadow font-body-sm text-body-sm text-on-surface placeholder:text-outline" placeholder="Search members..." type="text"/>
+</div>
+<button class="h-[48px] px-4 flex items-center justify-center gap-2 border border-outline-variant rounded-DEFAULT bg-surface-container-lowest text-primary hover:bg-surface-variant/50 transition-colors font-label-caps text-label-caps">
+<span class="material-symbols-outlined text-[20px]">filter_list</span>
+<span class="hidden md:inline">FILTER</span>
+</button>
+</div>
+</div>
+<!-- Directory Bento Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+<!-- Division Stats Card -->
+<div class="lg:col-span-4 bg-surface-container-lowest border border-outline-variant rounded-xl p-6 flex flex-col">
+<h3 class="font-headline-md text-headline-md text-primary mb-6">Division Overview</h3>
+<div class="space-y-4 flex-1">
+<div class="flex items-center justify-between">
+<span class="font-body-sm text-body-sm text-on-surface">Presidential Council</span>
+<span class="font-label-caps text-label-caps bg-primary-container text-on-primary-container px-2 py-1 rounded-full">12 Members</span>
+</div>
+<div class="flex items-center justify-between">
+<span class="font-body-sm text-body-sm text-on-surface">Finance &amp; Operations</span>
+<span class="font-label-caps text-label-caps bg-surface-variant text-on-surface-variant px-2 py-1 rounded-full">8 Members</span>
+</div>
+<div class="flex items-center justify-between">
+<span class="font-body-sm text-body-sm text-on-surface">Public Relations</span>
+<span class="font-label-caps text-label-caps bg-surface-variant text-on-surface-variant px-2 py-1 rounded-full">15 Members</span>
+</div>
+<div class="flex items-center justify-between">
+<span class="font-body-sm text-body-sm text-on-surface">Events Planning</span>
+<span class="font-label-caps text-label-caps bg-surface-variant text-on-surface-variant px-2 py-1 rounded-full">22 Members</span>
+</div>
+</div>
+<button class="mt-6 w-full h-[48px] bg-primary text-on-primary font-label-caps text-label-caps rounded-DEFAULT hover:bg-primary/90 transition-colors">
+                    EXPORT ROSTER
+                </button>
+</div>
+<!-- Members List Area -->
+<div class="lg:col-span-8 bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden">
+<div class="px-6 py-4 border-b border-outline-variant bg-surface-container-low flex justify-between items-center">
+<h3 class="font-label-caps text-label-caps text-on-surface-variant">PRESIDENTIAL COUNCIL (12)</h3>
+</div>
+<div class="divide-y divide-outline-variant">
+<!-- Member Row 1 -->
+<div class="p-4 sm:px-6 hover:bg-surface-variant/20 transition-colors flex flex-col sm:flex-row sm:items-center justify-between gap-4 min-h-[56px]">
+<div class="flex items-center gap-4">
+<img class="w-10 h-10 rounded-full border border-outline-variant object-cover" data-alt="A professional headshot of a student in a minimalist corporate style, bright lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCw15qv7T-svFu0g_mWR4yQHk6b0YacY_7pVSwhem8jMx-u9NKDmzMR0FABOFRxLnyUIYgYO2gUiKJrVqJ3aazCSSAzyImkiktX5fHHETEB66hnxzJTjfFTbk0EWIuvDslI8bybxAEHcoHAQ0rh_70PiLPKy2QR26IHwMRskuDyEwQCxxovprECUEHe6iYG0lESNYgeNmmvhe4Cfw3tqtcCL2dY342DwxeVPM5hnro6SAYjERX69L6_Tw"/>
+<div>
+<p class="font-body-lg text-body-lg font-bold text-on-surface">Alex Rivera</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">President</p>
+</div>
+</div>
+<div class="flex items-center gap-2 sm:gap-4">
+<a class="h-10 px-3 flex items-center justify-center gap-2 border border-outline-variant rounded-DEFAULT text-primary hover:bg-surface-variant/50 transition-colors font-body-sm text-body-sm" href="mailto:alex@example.com">
+<span class="material-symbols-outlined text-[18px]">mail</span>
+<span class="hidden sm:inline">Email</span>
+</a>
+<button class="h-10 w-10 flex items-center justify-center border border-outline-variant rounded-DEFAULT text-on-surface-variant hover:bg-surface-variant/50 transition-colors">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+</div>
+</div>
+<!-- Member Row 2 -->
+<div class="p-4 sm:px-6 hover:bg-surface-variant/20 transition-colors flex flex-col sm:flex-row sm:items-center justify-between gap-4 min-h-[56px]">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-bold font-body-lg border border-outline-variant">SJ</div>
+<div>
+<p class="font-body-lg text-body-lg font-bold text-on-surface">Samira Jones</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Vice President</p>
+</div>
+</div>
+<div class="flex items-center gap-2 sm:gap-4">
+<a class="h-10 px-3 flex items-center justify-center gap-2 border border-outline-variant rounded-DEFAULT text-primary hover:bg-surface-variant/50 transition-colors font-body-sm text-body-sm" href="mailto:samira@example.com">
+<span class="material-symbols-outlined text-[18px]">mail</span>
+<span class="hidden sm:inline">Email</span>
+</a>
+<button class="h-10 w-10 flex items-center justify-center border border-outline-variant rounded-DEFAULT text-on-surface-variant hover:bg-surface-variant/50 transition-colors">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+</div>
+</div>
+<!-- Member Row 3 -->
+<div class="p-4 sm:px-6 hover:bg-surface-variant/20 transition-colors flex flex-col sm:flex-row sm:items-center justify-between gap-4 min-h-[56px]">
+<div class="flex items-center gap-4">
+<img class="w-10 h-10 rounded-full border border-outline-variant object-cover" data-alt="A professional headshot of an asian male student in a minimalist corporate style, bright lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDkUwb7k-mhG8GmXQA4lhCbZYMUgI2EgWz5G-wnsK6FLJsZBLg6V7RYaKEmo4eCUCQgj4NAbFpov21dN3SBWmbU73P6uUMedrMsUlp0alYW_qc2CRcSBUWaMCXz6P1KBSSNgK6_n9ClwIoBN2QdwGyMBAEaSCMXpbO12PowRkpJguKyttEg7SgD-D_ZeEcV3RYdkRXjY8dpHkDSXNOkKskgMQQrBK32xcfTqiWC7dqofAzM6xqp2Nf86w"/>
+<div>
+<p class="font-body-lg text-body-lg font-bold text-on-surface">David Chen</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Secretary</p>
+</div>
+</div>
+<div class="flex items-center gap-2 sm:gap-4">
+<a class="h-10 px-3 flex items-center justify-center gap-2 border border-outline-variant rounded-DEFAULT text-primary hover:bg-surface-variant/50 transition-colors font-body-sm text-body-sm" href="mailto:david@example.com">
+<span class="material-symbols-outlined text-[18px]">mail</span>
+<span class="hidden sm:inline">Email</span>
+</a>
+<button class="h-10 w-10 flex items-center justify-center border border-outline-variant rounded-DEFAULT text-on-surface-variant hover:bg-surface-variant/50 transition-colors">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+</div>
+</div>
+<!-- Member Row 4 -->
+<div class="p-4 sm:px-6 hover:bg-surface-variant/20 transition-colors flex flex-col sm:flex-row sm:items-center justify-between gap-4 min-h-[56px]">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center font-bold font-body-lg border border-outline-variant">MK</div>
+<div>
+<p class="font-body-lg text-body-lg font-bold text-on-surface">Mariah Knowles</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Adviser Liason</p>
+</div>
+</div>
+<div class="flex items-center gap-2 sm:gap-4">
+<a class="h-10 px-3 flex items-center justify-center gap-2 border border-outline-variant rounded-DEFAULT text-primary hover:bg-surface-variant/50 transition-colors font-body-sm text-body-sm" href="mailto:mariah@example.com">
+<span class="material-symbols-outlined text-[18px]">mail</span>
+<span class="hidden sm:inline">Email</span>
+</a>
+<button class="h-10 w-10 flex items-center justify-center border border-outline-variant rounded-DEFAULT text-on-surface-variant hover:bg-surface-variant/50 transition-colors">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+</div>
+</div>
+</div>
+<div class="p-4 border-t border-outline-variant flex justify-center">
+<button class="font-label-caps text-label-caps text-primary hover:underline">VIEW ALL IN DIVISION</button>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Mobile) -->
+<nav class="md:hidden fixed bottom-0 w-full px-margin-mobile pb-4 pt-2 z-50 flex justify-around items-center bg-surface/80 dark:bg-surface/80 backdrop-blur-md rounded-t-xl border border-outline-variant dark:border-outline shadow-sm">
+<a class="flex flex-col items-center justify-center text-secondary dark:text-secondary-fixed-dim hover:bg-secondary-container/30 dark:hover:bg-secondary-container/10 rounded-lg active:scale-95 transition-transform duration-150 p-2 min-w-[64px]" href="#">
+<span class="material-symbols-outlined mb-1">home</span>
+<span class="font-label-caps text-label-caps">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-secondary dark:text-secondary-fixed-dim hover:bg-secondary-container/30 dark:hover:bg-secondary-container/10 rounded-lg active:scale-95 transition-transform duration-150 p-2 min-w-[64px]" href="#">
+<span class="material-symbols-outlined mb-1">calendar_today</span>
+<span class="font-label-caps text-label-caps">Calendar</span>
+</a>
+<a class="flex flex-col items-center justify-center text-primary dark:text-primary-fixed font-bold hover:bg-secondary-container/30 dark:hover:bg-secondary-container/10 rounded-lg active:scale-95 transition-transform duration-150 p-2 min-w-[64px]" href="#">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">groups</span>
+<span class="font-label-caps text-label-caps">Directory</span>
+</a>
+<a class="flex flex-col items-center justify-center text-secondary dark:text-secondary-fixed-dim hover:bg-secondary-container/30 dark:hover:bg-secondary-container/10 rounded-lg active:scale-95 transition-transform duration-150 p-2 min-w-[64px]" href="#">
+<span class="material-symbols-outlined mb-1">notifications</span>
+<span class="font-label-caps text-label-caps">Inbox</span>
+</a>
+<a class="flex flex-col items-center justify-center text-secondary dark:text-secondary-fixed-dim hover:bg-secondary-container/30 dark:hover:bg-secondary-container/10 rounded-lg active:scale-95 transition-transform duration-150 p-2 min-w-[64px]" href="#">
+<span class="material-symbols-outlined mb-1">account_circle</span>
+<span class="font-label-caps text-label-caps">Profile</span>
+</a>
+</nav>
+</body></html>

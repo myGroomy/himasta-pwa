@@ -75,7 +75,7 @@ export default async function KegiatanPage() {
     <div>
       <PageHeader
         title="Kegiatan"
-        description="Pusat kegiatan HIMASTA — rapat, makrab, mubes, dan proker. Absensi via QR tanpa tanda tangan manual."
+        description="Pusat kegiatan HIMASTA. Rapat, makrab, mubes, dan proker. Absensi via QR tanpa tanda tangan manual."
         action={
           <span className="hidden items-center gap-2 text-sm text-muted-foreground sm:flex">
             <QrCode className="h-4 w-4" />

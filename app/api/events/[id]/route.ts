@@ -21,6 +21,31 @@ const updateSchema = z.object({
   visibility: z.enum(['INTERNAL', 'PUBLIC']).optional(),
 })
 
+export async function GET(
+  req: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  try {
+    const sessionResult = await requireApiSession(['ANGGOTA', 'KADIV', 'BPH', 'DOSEN'])
+    if (isApiResponse(sessionResult)) return sessionResult
+
+    const event = await prisma.event.findUnique({
+      where: { id: params.id },
+      include: {
+        division: { select: { id: true, name: true, slug: true } },
+        createdBy: { select: { id: true, name: true } },
+        approvedBy: { select: { id: true, name: true } },
+        _count: { select: { registrations: true } },
+      },
+    })
+
+    if (!event) return notFound('Event tidak ditemukan')
+    return NextResponse.json({ event })
+  } catch (error) {
+    return serverError(error)
+  }
+}
+
 export async function PATCH(
   req: NextRequest,
   { params }: { params: { id: string } }

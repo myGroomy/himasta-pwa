@@ -1,17 +1,13 @@
-import Link from 'next/link'
-import { Download } from 'lucide-react'
 import { requireSession } from '@/lib/permissions'
 import { prisma } from '@/lib/prisma'
 import { PageHeader } from '@/components/shared/page-header'
 import { EmptyState } from '@/components/shared/empty-state'
 import { DocumentUploadForm } from '@/components/shared/document-upload-form'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
+import { DocumentGrid } from '@/components/shared/document-grid'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
+import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Badge } from '@/components/ui/badge'
-import { DOC_CATEGORY_LABELS, DOC_CATEGORY_BADGE } from '@/lib/constants'
-import { formatDate } from '@/lib/utils'
+import { DOC_CATEGORY_LABELS } from '@/lib/constants'
 
 export const dynamic = 'force-dynamic'
 
@@ -40,6 +36,11 @@ export default async function DokumenPage() {
       select: { id: true, name: true, slug: true },
     }),
   ])
+
+  const serializedDocs = documents.map((d) => ({
+    ...d,
+    createdAt: d.createdAt.toISOString(),
+  }))
 
   const canUpload = user.role === 'KADIV' || user.role === 'BPH'
   const categories = ['NOTULEN', 'PROPOSAL', 'LPJ', 'LAINNYA'] as const
@@ -80,41 +81,13 @@ export default async function DokumenPage() {
         </TabsList>
 
         {['all', ...categories].map((tab) => {
-          const filtered = tab === 'all' ? documents : documents.filter((d) => d.category === tab)
+          const filtered = tab === 'all' ? serializedDocs : serializedDocs.filter((d) => d.category === tab)
           return (
             <TabsContent key={tab} value={tab}>
               {filtered.length === 0 ? (
                 <EmptyState title="Tidak ada dokumen" description="Belum ada dokumen pada kategori ini." />
               ) : (
-                <div className="grid gap-3 sm:grid-cols-2">
-                  {filtered.map((d) => (
-                    <Card key={d.id}>
-                      <CardHeader className="pb-3">
-                        <div className="flex items-center justify-between gap-2">
-                          <Badge className={DOC_CATEGORY_BADGE[d.category]}>
-                            {DOC_CATEGORY_LABELS[d.category]}
-                          </Badge>
-                          <span className="text-xs text-muted-foreground">
-                            {d.division?.name ?? 'General'}
-                          </span>
-                        </div>
-                        <CardTitle className="text-base leading-snug">{d.title}</CardTitle>
-                        <CardDescription className="line-clamp-2">{d.description ?? '—'}</CardDescription>
-                      </CardHeader>
-                      <CardContent className="flex items-center justify-between gap-2 text-xs text-muted-foreground">
-                        <span>
-                          {formatDate(d.createdAt)} · {d.uploadedBy.name}
-                        </span>
-                        <Button asChild size="sm" variant="outline">
-                          <Link href={d.fileUrl} target="_blank" rel="noopener noreferrer">
-                            <Download className="h-3.5 w-3.5" />
-                            Buka
-                          </Link>
-                        </Button>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
+                <DocumentGrid documents={filtered as any} />
               )}
             </TabsContent>
           )

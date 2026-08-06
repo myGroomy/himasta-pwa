@@ -10,7 +10,7 @@ interface AccentThemeContextType {
 }
 
 const AccentThemeContext = createContext<AccentThemeContextType>({
-  theme: 'noir',
+  theme: 'royal',
   setTheme: () => null,
 })
 
@@ -35,7 +35,7 @@ const themeStyles: Record<AccentTheme, { primary: string; primaryForeground: str
 import { useTheme } from 'next-themes'
 
 export function AccentThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setThemeState] = useState<AccentTheme>('noir')
+  const [theme, setThemeState] = useState<AccentTheme>('royal')
   const [mounted, setMounted] = useState(false)
   const { resolvedTheme } = useTheme()
 

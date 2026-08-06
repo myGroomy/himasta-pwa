@@ -1,4 +1,4 @@
-import { requireSession } from '@/lib/permissions'
+import { requireRole } from '@/lib/permissions'
 import { prisma } from '@/lib/prisma'
 import { PageHeader } from '@/components/shared/page-header'
 import { ProkerForm } from '@/components/shared/proker-form'
@@ -6,7 +6,7 @@ import { ProkerForm } from '@/components/shared/proker-form'
 export const dynamic = 'force-dynamic'
 
 export default async function NewProkerPage() {
-  const user = await requireSession()
+  const user = await requireRole(['BPH', 'KADIV'])
 
   const [divisions, users] = await Promise.all([
     prisma.division.findMany({ orderBy: { name: 'asc' }, select: { id: true, name: true, slug: true } }),

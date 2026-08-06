@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Student Portal - E-Ticket</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-fixed": "#0b1c30",
+                        "on-secondary-fixed-variant": "#38485d",
+                        "surface-variant": "#e0e3e5",
+                        "inverse-surface": "#2d3133",
+                        "background": "#f7f9fb",
+                        "inverse-primary": "#b6c4ff",
+                        "error-container": "#ffdad6",
+                        "tertiary": "#4b1c00",
+                        "on-primary-container": "#90a8ff",
+                        "secondary-fixed": "#d3e4fe",
+                        "outline": "#757682",
+                        "on-background": "#191c1e",
+                        "on-error-container": "#93000a",
+                        "surface-container": "#eceef0",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-fixed-dim": "#ffb691",
+                        "surface-tint": "#4059aa",
+                        "primary-fixed": "#dce1ff",
+                        "error": "#ba1a1a",
+                        "on-primary": "#ffffff",
+                        "surface-container-high": "#e6e8ea",
+                        "surface": "#f7f9fb",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-bright": "#f7f9fb",
+                        "secondary-fixed-dim": "#b7c8e1",
+                        "secondary": "#505f76",
+                        "inverse-on-surface": "#eff1f3",
+                        "outline-variant": "#c5c5d3",
+                        "secondary-container": "#d0e1fb",
+                        "on-secondary": "#ffffff",
+                        "on-primary-fixed-variant": "#264191",
+                        "on-error": "#ffffff",
+                        "primary-container": "#1e3a8a",
+                        "on-tertiary-container": "#f39461",
+                        "on-surface": "#191c1e",
+                        "surface-container-low": "#f2f4f6",
+                        "primary-fixed-dim": "#b6c4ff",
+                        "on-tertiary-fixed-variant": "#773205",
+                        "on-tertiary-fixed": "#341100",
+                        "on-surface-variant": "#444651",
+                        "on-primary-fixed": "#00164e",
+                        "primary": "#00236f",
+                        "surface-container-highest": "#e0e3e5",
+                        "tertiary-container": "#6e2c00",
+                        "on-secondary-container": "#54647a",
+                        "surface-dim": "#d8dadc",
+                        "tertiary-fixed": "#ffdbcb"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "touch-target-min": "48px",
+                        "container-max": "1200px",
+                        "margin-mobile": "1rem",
+                        "gutter": "1rem"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Outfit"],
+                        "headline-lg": ["Outfit"],
+                        "label-caps": ["Outfit"],
+                        "headline-md": ["Outfit"],
+                        "headline-lg-mobile": ["Outfit"],
+                        "body-sm": ["Outfit"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "headline-md": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Outfit', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .ticket-cutout {
+            position: relative;
+        }
+        .ticket-cutout::before,
+        .ticket-cutout::after {
+            content: '';
+            position: absolute;
+            top: -12px;
+            width: 24px;
+            height: 24px;
+            background-color: #f7f9fb; /* Match body background */
+            border-radius: 50%;
+            border: 1px solid #c5c5d3; /* Match outline-variant */
+            z-index: 10;
+        }
+        .ticket-cutout::before { left: -13px; border-right-color: transparent; border-top-color: transparent; border-bottom-color: transparent; transform: rotate(180deg); }
+        .ticket-cutout::after { right: -13px; border-left-color: transparent; border-top-color: transparent; border-bottom-color: transparent; }
+        
+        /* Hide cutout borders that face inward to blend with background */
+        .ticket-cutout-border-mask::before,
+        .ticket-cutout-border-mask::after {
+             content: '';
+            position: absolute;
+            top: -13px;
+            width: 12px;
+            height: 26px;
+            background-color: #f7f9fb;
+            z-index: 11;
+        }
+        .ticket-cutout-border-mask::before { left: -14px; }
+        .ticket-cutout-border-mask::after { right: -14px; }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen pb-safe">
+<!-- TopAppBar -->
+<header class="bg-surface border-b border-outline-variant fixed top-0 left-0 w-full z-50 flex justify-between items-center px-4 h-14 transition-colors duration-200 ease-in-out">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary cursor-pointer hover:bg-surface-container rounded-full p-2 transition-colors" data-icon="arrow_back">arrow_back</span>
+<span class="font-headline-md text-headline-md font-bold text-primary">Student Portal</span>
+</div>
+<span class="material-symbols-outlined text-secondary hover:bg-surface-container rounded-full p-2 transition-colors cursor-pointer" data-icon="account_circle">account_circle</span>
+</header>
+<!-- Main Content Canvas -->
+<main class="pt-[72px] pb-[80px] px-margin-mobile md:px-gutter max-w-container-max mx-auto flex flex-col items-center justify-center min-h-[calc(100vh-16px)]">
+<!-- Ticket Container -->
+<div class="w-full max-w-sm bg-surface-container-lowest border border-outline-variant rounded-xl flex flex-col overflow-hidden shadow-sm mt-4">
+<!-- Ticket Header -->
+<div class="p-6 bg-primary-container text-on-primary-container flex flex-col items-center text-center">
+<span class="material-symbols-outlined text-4xl mb-2" data-icon="school" style="font-variation-settings: 'FILL' 1;">school</span>
+<h1 class="font-headline-md text-headline-md mb-1">Annual Tech Symposium 2024</h1>
+<p class="font-body-sm text-body-sm opacity-90">VIP Admission</p>
+</div>
+<!-- Ticket Body -->
+<div class="p-6 flex flex-col gap-4 border-b border-dashed border-outline-variant ticket-cutout ticket-cutout-border-mask relative bg-surface-container-lowest z-0">
+<div class="flex justify-between items-start">
+<div>
+<p class="font-label-caps text-label-caps text-secondary uppercase">Participant</p>
+<p class="font-body-lg text-body-lg font-semibold text-on-surface">Alex Mercer</p>
+</div>
+<div class="text-right">
+<p class="font-label-caps text-label-caps text-secondary uppercase">Ticket ID</p>
+<p class="font-body-lg text-body-lg font-semibold text-on-surface">#TS-9924-AB</p>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4 mt-2">
+<div>
+<p class="font-label-caps text-label-caps text-secondary uppercase flex items-center gap-1"><span class="material-symbols-outlined text-[16px]" data-icon="calendar_today">calendar_today</span> Date</p>
+<p class="font-body-sm text-body-sm text-on-surface mt-1">Oct 24, 2024</p>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-secondary uppercase flex items-center gap-1"><span class="material-symbols-outlined text-[16px]" data-icon="schedule">schedule</span> Time</p>
+<p class="font-body-sm text-body-sm text-on-surface mt-1">09:00 AM - 05:00 PM</p>
+</div>
+<div class="col-span-2">
+<p class="font-label-caps text-label-caps text-secondary uppercase flex items-center gap-1"><span class="material-symbols-outlined text-[16px]" data-icon="location_on">location_on</span> Venue</p>
+<p class="font-body-sm text-body-sm text-on-surface mt-1">Main Auditorium, Campus Center</p>
+</div>
+</div>
+</div>
+<!-- QR Code Section -->
+<div class="p-6 flex flex-col items-center justify-center bg-surface-container-lowest">
+<div class="bg-white p-4 border border-outline-variant rounded-lg inline-block shadow-sm">
+<!-- Placeholder for actual QR code image -->
+<img alt="Ticket QR Code" class="w-48 h-48 object-contain" data-alt="A highly scannable, high-contrast black and white QR code centered precisely within a minimal, clean white bounding box. The aesthetic is purely functional, starkly digital, and optimized for mobile screen readability under high key lighting, adhering strictly to a high-density enterprise UI design language." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAKMECVpn_JMl9BH3p-8d7hx9O_5rE3r6F4qF875BSbCTq3kjRHPDIHZXQ4X-GBf9YrDmI-jjXef2njVUUP6rAAWfFBMv_EvxOe7haoCKapwDATiGm8LXs-TTwyqhHRaX7dbkzG3rbykaz0h78XNrL2Hzn3GrYqK57TN3VvKQN8K39tVfldmFJpR0wxNJeRzQqGQAvubKOJI1fOaqB9nm0bWa-XfmI0k-xUC1GxjBX2XObmA3L7oQBwVA"/>
+</div>
+<p class="font-body-sm text-body-sm text-secondary mt-4 text-center">Scan at the entrance</p>
+</div>
+</div>
+<!-- Action Buttons -->
+<div class="w-full max-w-sm mt-6 flex gap-4">
+<button class="flex-1 bg-surface-container-lowest border border-outline-variant text-primary font-body-lg text-body-lg rounded-lg h-touch-target-min flex items-center justify-center gap-2 hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined" data-icon="share">share</span> Share
+            </button>
+<button class="flex-1 bg-primary text-on-primary font-body-lg text-body-lg rounded-lg h-touch-target-min flex items-center justify-center gap-2 hover:bg-on-primary-fixed-variant transition-colors">
+<span class="material-symbols-outlined" data-icon="download">download</span> Save
+            </button>
+</div>
+</main>
+<!-- BottomNavBar - Suppressed because this is a specific detail/transactional view, 
+         but keeping it for compliance with the "Events" semantic context if needed, 
+         though hiding it emphasizes the content canvas as per rules. 
+         Wait, rule says: "Automatic Suppression: You MUST exclude the navigation shell if the page intent is: ... Task-Focused: Any sub-page featuring a 'Close' or 'Back' action". 
+         I added a back button in TopAppBar, so BottomNav is suppressed. -->
+</body></html>

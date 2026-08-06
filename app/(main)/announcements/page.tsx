@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { Plus } from 'lucide-react'
 import { requireSession } from '@/lib/permissions'
 import { getPublishedAnnouncements } from '@/lib/feed'
-import { AnnouncementCard } from '@/components/shared/announcement-card'
+import { AnnouncementList } from '@/components/shared/announcement-list'
 import { PageHeader } from '@/components/shared/page-header'
 import { EmptyState } from '@/components/shared/empty-state'
 import { Button } from '@/components/ui/button'
@@ -65,11 +65,7 @@ export default async function AnnouncementsPage({
           description="Belum ada pengumuman pada kategori ini."
         />
       ) : (
-        <div className="space-y-4">
-          {announcements.map((a) => (
-            <AnnouncementCard key={a.id} announcement={a} />
-          ))}
-        </div>
+        <AnnouncementList announcements={announcements as any} />
       )}
     </div>
   )

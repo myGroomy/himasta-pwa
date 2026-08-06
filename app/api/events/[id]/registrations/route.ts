@@ -61,7 +61,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
 
   try {
     const registration = await prisma.eventRegistration.update({
-      where: { id: registrationId },
+      where: { id: registrationId, eventId: event.id },
       data: { attended },
     })
     return NextResponse.json({ registration })

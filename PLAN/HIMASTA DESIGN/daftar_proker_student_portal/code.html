@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Daftar Proker - OrgPortal</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "outline-variant": "#c5c5d3",
+                        "on-background": "#191c1e",
+                        "surface": "#f7f9fb",
+                        "surface-container-high": "#e6e8ea",
+                        "inverse-surface": "#2d3133",
+                        "surface-dim": "#d8dadc",
+                        "primary-container": "#1e3a8a",
+                        "on-surface": "#191c1e",
+                        "inverse-primary": "#b6c4ff",
+                        "on-primary-container": "#90a8ff",
+                        "outline": "#757682",
+                        "on-primary-fixed-variant": "#264191",
+                        "primary": "#00236f",
+                        "on-secondary-fixed-variant": "#38485d",
+                        "primary-fixed-dim": "#b6c4ff",
+                        "surface-variant": "#e0e3e5",
+                        "surface-tint": "#4059aa",
+                        "secondary-container": "#d0e1fb",
+                        "error": "#ba1a1a",
+                        "surface-container-lowest": "#ffffff",
+                        "primary-fixed": "#dce1ff",
+                        "on-secondary-container": "#54647a",
+                        "tertiary-fixed-dim": "#ffb691",
+                        "surface-container-low": "#f2f4f6",
+                        "on-primary": "#ffffff",
+                        "tertiary-container": "#6e2c00",
+                        "surface-container": "#eceef0",
+                        "on-primary-fixed": "#00164e",
+                        "tertiary": "#4b1c00",
+                        "on-tertiary-fixed-variant": "#773205",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary-container": "#f39461",
+                        "on-secondary-fixed": "#0b1c30",
+                        "on-tertiary": "#ffffff",
+                        "secondary-fixed-dim": "#b7c8e1",
+                        "inverse-on-surface": "#eff1f3",
+                        "background": "#f7f9fb",
+                        "tertiary-fixed": "#ffdbcb",
+                        "surface-container-highest": "#e0e3e5",
+                        "on-tertiary-fixed": "#341100",
+                        "on-error": "#ffffff",
+                        "surface-bright": "#f7f9fb",
+                        "secondary": "#505f76",
+                        "on-surface-variant": "#444651",
+                        "secondary-fixed": "#d3e4fe",
+                        "on-error-container": "#93000a",
+                        "error-container": "#ffdad6"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-mobile": "1rem",
+                        "container-max": "1200px",
+                        "touch-target-min": "48px",
+                        "gutter": "1rem"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Outfit"],
+                        "body-sm": ["Outfit"],
+                        "label-caps": ["Outfit"],
+                        "headline-lg": ["Outfit"],
+                        "headline-lg-mobile": ["Outfit"],
+                        "body-lg": ["Outfit"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .icon-filled {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-sm min-h-screen pb-20 md:pb-0">
+<!-- TopAppBar -->
+<header class="w-full top-0 sticky z-40 bg-surface border-b border-outline-variant flat no shadows transition-colors duration-200">
+<div class="flex items-center justify-between px-margin-mobile h-touch-target-min w-full max-w-container-max mx-auto">
+<button class="text-on-surface-variant hover:bg-surface-container-low p-2 rounded-full flex items-center justify-center transition-colors duration-200">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<h1 class="font-headline-md text-headline-md font-bold text-primary tracking-tight">OrgPortal</h1>
+<button class="hover:bg-surface-container-low rounded-full overflow-hidden w-8 h-8 flex items-center justify-center transition-colors duration-200">
+<img alt="User Profile" class="w-full h-full object-cover" data-alt="A professional headshot of a corporate employee in a bright, modern office setting. Light mode aesthetic with sharp focus, realistic lighting, and minimal background noise." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA9x7FhYDSKl2Q11ZnXCMBuG8IyKAfaJeSKyybWk0i7KZZFsvj_OHALiqpko7uCOUBSlNYu6t0oUaqkgGdmuxDEWlpQnfNrCRGBMN8pQdikqo3gyREEH2d728ULkYG4uft8nCkQrWVjB-3PAVP3m-b1dLHVfmf4xxoliX_OXa3pb_q3mSJ95NSOJyIj8hGVQk1WBm9PUvcco5jaDFXY4cNSlMq3cyyE7m8YToiMPykWM_v6UcxzwStgtQ"/>
+</button>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="w-full max-w-container-max mx-auto px-margin-mobile pt-6 pb-8">
+<!-- Page Header & Actions -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6">
+<div>
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile md:font-headline-lg md:text-headline-lg text-on-background mb-1">Daftar Proker</h2>
+<p class="font-body-sm text-body-sm text-secondary">Kelola dan pantau program kerja organisasi.</p>
+</div>
+<button class="bg-primary-container text-on-primary h-touch-target-min px-6 rounded flex items-center justify-center gap-2 font-label-caps text-label-caps transition-colors hover:bg-primary whitespace-nowrap md:w-auto w-full">
+<span class="material-symbols-outlined text-lg">add</span>
+                TAMBAH PROKER
+            </button>
+</div>
+<!-- Status Tabs (Desktop & Mobile Scrollable) -->
+<div class="border-b border-outline-variant mb-6 overflow-x-auto hide-scrollbar">
+<div class="flex gap-6 min-w-max px-1">
+<button class="pb-3 border-b-2 border-primary-container text-primary font-label-caps text-label-caps transition-colors">
+                    BERJALAN (4)
+                </button>
+<button class="pb-3 border-b-2 border-transparent text-secondary hover:text-primary transition-colors font-label-caps text-label-caps">
+                    RENCANA (2)
+                </button>
+<button class="pb-3 border-b-2 border-transparent text-secondary hover:text-primary transition-colors font-label-caps text-label-caps">
+                    SELESAI (12)
+                </button>
+<button class="pb-3 border-b-2 border-transparent text-secondary hover:text-primary transition-colors font-label-caps text-label-caps">
+                    DIBATALKAN (0)
+                </button>
+</div>
+</div>
+<!-- Bento Grid / Cards Layout -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+<!-- Proker Card 1 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-5 flex flex-col gap-4 hover:border-primary-container transition-colors duration-200">
+<div class="flex justify-between items-start gap-2">
+<h3 class="font-headline-md text-headline-md text-on-background line-clamp-2">Pelatihan Kepemimpinan Anggota Baru 2024</h3>
+<span class="bg-secondary-container text-on-secondary-container font-label-caps text-label-caps px-2 py-1 rounded-full shrink-0">BERJALAN</span>
+</div>
+<div class="mt-auto pt-2 space-y-3">
+<!-- Progress Bar -->
+<div>
+<div class="flex justify-between text-body-sm font-body-sm text-secondary mb-1">
+<span>Anggaran Terpakai</span>
+<span class="font-bold text-on-background">60%</span>
+</div>
+<div class="w-full h-2 bg-surface-variant rounded-full overflow-hidden">
+<div class="h-full bg-primary-container rounded-full" style="width: 60%;"></div>
+</div>
+</div>
+<div class="flex items-center gap-3 pt-2 border-t border-outline-variant">
+<img alt="PJ Avatar" class="w-8 h-8 rounded-full object-cover" data-alt="A small circular avatar portrait of a young female professional in a minimalist corporate environment, bright natural light." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA0wPK-TqQGHWsV5hWIfjrEAe7-feK56ZCCeTSDeabuXM8MXIVKNoHgTpfACeR4kq8xJb8itGrij-X111uxDPYFhjjeOk36zPf37O_eBxwEw1M8pelmP-3eMTdbS7WQvi_L0RLI9aZub1ekO2BuiQlqPCmHuWD_nwEJQtdGPmdG52HbRxVMzhOKfguezOIee5HCjAHdqXCg-lTSZWhRJ6EBpGtU40VSGoLbFJjO1iALoeMZbRxU_q4Ufg"/>
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps text-secondary">PENANGGUNG JAWAB</span>
+<span class="font-body-sm text-body-sm text-on-background">Sarah Wijaya</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Proker Card 2 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-5 flex flex-col gap-4 hover:border-primary-container transition-colors duration-200">
+<div class="flex justify-between items-start gap-2">
+<h3 class="font-headline-md text-headline-md text-on-background line-clamp-2">Webinar Series: Teknologi AI di Dunia Kerja</h3>
+<span class="bg-secondary-container text-on-secondary-container font-label-caps text-label-caps px-2 py-1 rounded-full shrink-0">BERJALAN</span>
+</div>
+<div class="mt-auto pt-2 space-y-3">
+<!-- Progress Bar -->
+<div>
+<div class="flex justify-between text-body-sm font-body-sm text-secondary mb-1">
+<span>Anggaran Terpakai</span>
+<span class="font-bold text-on-background">35%</span>
+</div>
+<div class="w-full h-2 bg-surface-variant rounded-full overflow-hidden">
+<div class="h-full bg-primary-container rounded-full" style="width: 35%;"></div>
+</div>
+</div>
+<div class="flex items-center gap-3 pt-2 border-t border-outline-variant">
+<img alt="PJ Avatar" class="w-8 h-8 rounded-full object-cover" data-alt="A small circular avatar portrait of a young male professional wearing glasses in a clean office setting, clear corporate aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD3cZH6dFs28zXUGVaciY09LDzbCn7OV6Pjr3olNtnAAL2Iktdpx_rnNAuyWQwpeyxGWhJCqrZTBz5jq4_F0BvK61HjzlwkoLDk-TC5nKgdUi2RWFYxeMseHAVE0Q9X9Demym4HeSyn1E_MZcrMRPNyTwGMson9NNx5KdJARuHhhCHN_X9_S5fVeQUAv-w_dXJni3mU4mnhFFmoaniCHdTY4rSsW3IeqftQ3nB14CpBVz0MB5u7wGmgWw"/>
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps text-secondary">PENANGGUNG JAWAB</span>
+<span class="font-body-sm text-body-sm text-on-background">Budi Santoso</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Proker Card 3 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-5 flex flex-col gap-4 hover:border-primary-container transition-colors duration-200">
+<div class="flex justify-between items-start gap-2">
+<h3 class="font-headline-md text-headline-md text-on-background line-clamp-2">Pengabdian Masyarakat Desa Binaan</h3>
+<span class="bg-secondary-container text-on-secondary-container font-label-caps text-label-caps px-2 py-1 rounded-full shrink-0">BERJALAN</span>
+</div>
+<div class="mt-auto pt-2 space-y-3">
+<!-- Progress Bar -->
+<div>
+<div class="flex justify-between text-body-sm font-body-sm text-secondary mb-1">
+<span>Anggaran Terpakai</span>
+<span class="font-bold text-on-background">85%</span>
+</div>
+<div class="w-full h-2 bg-surface-variant rounded-full overflow-hidden">
+<div class="h-full bg-primary-container rounded-full" style="width: 85%;"></div>
+</div>
+</div>
+<div class="flex items-center gap-3 pt-2 border-t border-outline-variant">
+<img alt="PJ Avatar" class="w-8 h-8 rounded-full object-cover" data-alt="A small circular avatar portrait of an experienced female manager looking confident, bright crisp lighting, white background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBO8btH7uvi_auL7Fgi9pKSDGnqbKoQRLUD_sOEoq6mSz-keVcZYgq0v54E7NslAD6oUMmt98679-7TIvphg9YtauP29Iv3yx9ROuikXUCaWf3IVK4KN5gZ26PS7l7Hyr6uSJak6vOFVWkWIXvbOmph4CuRKl6STXmff-dl1b3ztvOzskIkQ9l4g-8uWB5oKk69E8rzli_KdHwUdgj26XDJvSF5fW6KvteLlmL5-0U6Z-4sQt5tby361Q"/>
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps text-secondary">PENANGGUNG JAWAB</span>
+<span class="font-body-sm text-body-sm text-on-background">Dian Sastrowardoyo</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Proker Card 4 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-5 flex flex-col gap-4 hover:border-primary-container transition-colors duration-200">
+<div class="flex justify-between items-start gap-2">
+<h3 class="font-headline-md text-headline-md text-on-background line-clamp-2">Penyusunan LPJ Tahunan Periode 2023</h3>
+<span class="bg-secondary-container text-on-secondary-container font-label-caps text-label-caps px-2 py-1 rounded-full shrink-0">BERJALAN</span>
+</div>
+<div class="mt-auto pt-2 space-y-3">
+<!-- Progress Bar -->
+<div>
+<div class="flex justify-between text-body-sm font-body-sm text-secondary mb-1">
+<span>Anggaran Terpakai</span>
+<span class="font-bold text-on-background">10%</span>
+</div>
+<div class="w-full h-2 bg-surface-variant rounded-full overflow-hidden">
+<div class="h-full bg-primary-container rounded-full" style="width: 10%;"></div>
+</div>
+</div>
+<div class="flex items-center gap-3 pt-2 border-t border-outline-variant">
+<div class="w-8 h-8 rounded-full bg-primary-container text-on-primary flex items-center justify-center font-label-caps text-label-caps">
+                            AR
+                        </div>
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps text-secondary">PENANGGUNG JAWAB</span>
+<span class="font-body-sm text-body-sm text-on-background">Ahmad Riza</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center h-16 px-gutter bg-surface border-t border-outline-variant z-50">
+<a class="flex flex-col items-center justify-center text-secondary hover:text-primary transition-transform scale-95 active:scale-90 w-16" href="#">
+<span class="material-symbols-outlined mb-1">home</span>
+<span class="font-label-caps text-label-caps text-[10px]">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-primary bg-secondary-container rounded-xl px-4 py-1 transition-transform scale-95 active:scale-90 w-16" href="#">
+<span class="material-symbols-outlined mb-1 icon-filled">calendar_today</span>
+<span class="font-label-caps text-label-caps text-[10px]">Calendar</span>
+</a>
+<a class="flex flex-col items-center justify-center text-secondary hover:text-primary transition-transform scale-95 active:scale-90 w-16" href="#">
+<span class="material-symbols-outlined mb-1">groups</span>
+<span class="font-label-caps text-label-caps text-[10px]">Directory</span>
+</a>
+<a class="flex flex-col items-center justify-center text-secondary hover:text-primary transition-transform scale-95 active:scale-90 w-16" href="#">
+<span class="material-symbols-outlined mb-1">mail</span>
+<span class="font-label-caps text-label-caps text-[10px]">Inbox</span>
+</a>
+<a class="flex flex-col items-center justify-center text-secondary hover:text-primary transition-transform scale-95 active:scale-90 w-16" href="#">
+<span class="material-symbols-outlined mb-1">person</span>
+<span class="font-label-caps text-label-caps text-[10px]">Profile</span>
+</a>
+</nav>
+<style>
+        /* Hide scrollbar for tab navigation */
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</body></html>

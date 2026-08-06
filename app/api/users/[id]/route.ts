@@ -48,7 +48,18 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
         divisionId: 'divisionId' in parsed.data ? parsed.data.divisionId : undefined,
         ...(hashedPassword ? { password: hashedPassword } : {}),
       },
-      include: {
+      select: {
+        id: true,
+        nim: true,
+        email: true,
+        name: true,
+        role: true,
+        divisionId: true,
+        phone: true,
+        photoUrl: true,
+        isActive: true,
+        pendingApproval: true,
+        createdAt: true,
         division: { select: { id: true, name: true, slug: true } },
       },
     })
@@ -59,7 +70,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
           userId: params.id,
           title: 'Akun Disetujui',
           message: 'Akun HIMASTA Anda telah disetujui oleh BPH. Silakan masuk ke aplikasi.',
-          link: '/dashboard',
+          link: '/',
         },
       })
     }

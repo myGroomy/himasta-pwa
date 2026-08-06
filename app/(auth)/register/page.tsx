@@ -1,33 +1,40 @@
-import { prisma } from '@/lib/prisma'
 import { RegisterForm } from './register-form'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import Link from 'next/link'
-import { ArrowLeft } from 'lucide-react'
+import { School } from 'lucide-react'
 
 export const dynamic = 'force-dynamic'
 
 export default async function RegisterPage() {
-  const divisions = await prisma.division.findMany({
-    select: { id: true, name: true, slug: true },
-    orderBy: { name: 'asc' },
-  })
-
   return (
-    <Card className="shadow-2xl border-slate-200/80 rounded-3xl overflow-hidden w-full max-w-md">
-      <CardHeader className="items-center text-center bg-slate-900 text-white pb-8 pt-8 relative">
-        <Link href="/login" className="absolute top-6 left-6 text-xs text-slate-400 hover:text-white flex items-center gap-1 transition-colors">
-          <ArrowLeft className="h-3.5 w-3.5" />
-          Masuk
-        </Link>
+    <div className="flex-1 flex flex-col justify-center px-6 py-12 bg-[#001035] text-white">
+      <div className="w-full max-w-sm mx-auto space-y-8">
+        {/* Header Section */}
+        <div className="text-center flex flex-col items-center">
+          {/* Logo Placeholder */}
+          <div className="w-16 h-16 bg-white/10 rounded border border-white/20 flex items-center justify-center mb-6">
+            <School className="h-8 w-8 text-white" />
+          </div>
+          <h1 className="text-2xl font-bold tracking-tight text-white mb-2">
+            Buat Akun Baru
+          </h1>
+          <p className="text-xs text-slate-300">
+            Lengkapi data diri untuk mendaftar kepengurusan
+          </p>
+        </div>
 
-        <CardTitle className="text-2xl font-bold tracking-tight mt-6">Daftar Akun</CardTitle>
-        <CardDescription className="text-slate-400 text-xs mt-1 max-w-xs">
-          Silakan isi formulir di bawah ini untuk membuat akun baru. Akun baru memerlukan persetujuan BPH sebelum dapat digunakan.
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="pt-6">
-        <RegisterForm divisions={divisions} />
-      </CardContent>
-    </Card>
+        {/* Form Section */}
+        <div className="bg-[#001c55] border border-white/10 p-6 rounded shadow-lg">
+          <RegisterForm />
+
+          {/* Footer Navigation */}
+          <div className="text-center text-xs text-slate-400 pt-4 border-t border-white/10 mt-6">
+            Sudah punya akun?{' '}
+            <Link href="/login" className="font-bold text-white hover:underline">
+              Masuk disini
+            </Link>
+          </div>
+        </div>
+      </div>
+    </div>
   )
 }

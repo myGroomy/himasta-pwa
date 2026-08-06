@@ -29,6 +29,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { ThemeToggle } from '@/components/shared/theme-toggle'
+import { SearchDialog } from '@/components/shared/search-dialog'
 
 export type NavDivision = {
   id: string
@@ -43,7 +44,7 @@ type NavbarProps = {
   latestNotifications: { id: string; title: string; message: string; isRead: boolean; link: string | null; createdAt: Date }[]
 }
 
-export function Navbar({ user, unreadCount, latestNotifications }: NavbarProps) {
+export function Navbar({ user, divisions, unreadCount, latestNotifications }: NavbarProps) {
   const router = useRouter()
 
   const initials = user.name
@@ -72,8 +73,9 @@ export function Navbar({ user, unreadCount, latestNotifications }: NavbarProps) 
           </div>
         </Link>
 
-        {/* Right Actions: Theme, Notifications & Profile Avatar */}
+        {/* Right Actions: Search, Theme, Notifications & Profile Avatar */}
         <div className="flex items-center gap-2">
+          <SearchDialog divisions={divisions} />
           <ThemeToggle />
           
           <DropdownMenu modal={false}>

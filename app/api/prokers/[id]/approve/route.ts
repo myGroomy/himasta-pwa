@@ -25,6 +25,9 @@ export async function POST(
 
   const proker = await prisma.proker.findUnique({ where: { id: params.id } })
   if (!proker) return notFound('Proker tidak ditemukan')
+  if (proker.status !== 'RENCANA') {
+    return badRequest('Hanya proker dengan status RENCANA yang dapat diproses')
+  }
 
   const body = await req.json().catch(() => null)
   const parsed = decisionSchema.safeParse(body)

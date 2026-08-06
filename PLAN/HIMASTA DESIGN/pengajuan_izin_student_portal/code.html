@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Permit Request - StudentOrg Portal</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-container": "#d0e1fb",
+                        "on-tertiary-fixed": "#341100",
+                        "outline-variant": "#c5c5d3",
+                        "primary-fixed-dim": "#b6c4ff",
+                        "outline": "#757682",
+                        "surface": "#f7f9fb",
+                        "on-error": "#ffffff",
+                        "secondary-fixed-dim": "#b7c8e1",
+                        "surface-bright": "#f7f9fb",
+                        "on-primary": "#ffffff",
+                        "secondary-fixed": "#d3e4fe",
+                        "on-primary-fixed-variant": "#264191",
+                        "surface-container": "#eceef0",
+                        "error-container": "#ffdad6",
+                        "inverse-surface": "#2d3133",
+                        "on-secondary": "#ffffff",
+                        "on-primary-container": "#90a8ff",
+                        "error": "#ba1a1a",
+                        "inverse-primary": "#b6c4ff",
+                        "tertiary-fixed": "#ffdbcb",
+                        "on-tertiary-fixed-variant": "#773205",
+                        "inverse-on-surface": "#eff1f3",
+                        "surface-dim": "#d8dadc",
+                        "surface-container-low": "#f2f4f6",
+                        "background": "#f7f9fb",
+                        "on-secondary-fixed": "#0b1c30",
+                        "primary-fixed": "#dce1ff",
+                        "primary-container": "#1e3a8a",
+                        "on-error-container": "#93000a",
+                        "tertiary": "#4b1c00",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary": "#505f76",
+                        "tertiary-container": "#6e2c00",
+                        "on-background": "#191c1e",
+                        "on-surface-variant": "#444651",
+                        "on-surface": "#191c1e",
+                        "tertiary-fixed-dim": "#ffb691",
+                        "on-secondary-container": "#54647a",
+                        "on-tertiary": "#ffffff",
+                        "surface-tint": "#4059aa",
+                        "surface-container-high": "#e6e8ea",
+                        "on-primary-fixed": "#00164e",
+                        "surface-container-highest": "#e0e3e5",
+                        "on-tertiary-container": "#f39461",
+                        "primary": "#00236f",
+                        "surface-variant": "#e0e3e5",
+                        "on-secondary-fixed-variant": "#38485d"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-mobile": "1rem",
+                        "gutter": "1rem",
+                        "touch-target-min": "48px",
+                        "container-max": "1200px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Outfit"],
+                        "headline-lg-mobile": ["Outfit"],
+                        "body-sm": ["Outfit"],
+                        "headline-md": ["Outfit"],
+                        "label-caps": ["Outfit"],
+                        "headline-lg": ["Outfit"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "headline-md": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Outfit', sans-serif; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface min-h-screen flex flex-col">
+<!-- TopAppBar -->
+<header class="bg-surface dark:bg-surface-dim w-full top-0 sticky border-b border-outline-variant dark:border-outline z-10">
+<div class="flex justify-between items-center px-4 h-16 w-full max-w-container-max mx-auto">
+<button class="w-12 h-12 flex items-center justify-center text-primary dark:text-primary-fixed hover:bg-surface-container dark:hover:bg-surface-container-high transition-colors active:opacity-80 transition-opacity rounded-full">
+<span class="material-symbols-outlined" data-icon="arrow_back" data-weight="regular">arrow_back</span>
+</button>
+<h1 class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed truncate px-2">Pengajuan Izin</h1>
+<div class="w-12 h-12 flex items-center justify-center rounded-full overflow-hidden border border-outline-variant bg-surface-container-low cursor-pointer hover:bg-surface-container transition-colors">
+<img alt="User profile photo" class="w-full h-full object-cover" data-alt="A professional headshot of a college student in a crisp white shirt, minimalist corporate style, well-lit studio environment, high resolution." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDi0kEoP2XPRK56yGscDMYb3lNds6AZJ7-DDv9aoX8tJ2c1YDkJEIfaeh9Wj5SqzUWt7P9E_W0yNPYrOrscfsoU-lJ3Yaz9CqhbkMk4UlnZfzq_aDjPYmTSXfu-PN84766arfMxIsd7gpPOhIag-S_cE3qyNtBbLmxjI7dau1dWSCTwdojgoRbgk_KC8_D9VKEWBf_0hA9KVEp4MuBNzeB8LO7Hdsm6gjO282LNYebwhBOZ99H9-K90_Q"/>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-grow w-full max-w-container-max mx-auto px-margin-mobile md:px-gutter py-6">
+<div class="max-w-2xl mx-auto bg-surface-container-lowest border border-outline-variant rounded-lg p-6 md:p-8">
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-6">Lengkapi formulir di bawah ini untuk mengajukan izin ketidakhadiran pada kegiatan organisasi.</p>
+<form class="space-y-6">
+<!-- Pilih Kegiatan -->
+<div class="space-y-2">
+<label class="block font-label-caps text-label-caps text-on-surface" for="kegiatan">Pilih Kegiatan</label>
+<div class="relative">
+<select class="block w-full min-h-[48px] px-3 py-2 bg-surface-container-lowest border border-outline-variant rounded-DEFAULT text-on-surface font-body-lg text-body-lg focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary appearance-none cursor-pointer" id="kegiatan" name="kegiatan">
+<option disabled="" selected="" value="">Pilih kegiatan yang akan datang...</option>
+<option value="rapat_pleno">Rapat Pleno Bulanan - 24 Okt 2023</option>
+<option value="diklat">Diklat Anggota Baru - 28 Okt 2023</option>
+<option value="evaluasi">Evaluasi Program Kerja - 05 Nov 2023</option>
+</select>
+<div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="expand_more">expand_more</span>
+</div>
+</div>
+</div>
+<!-- Alasan Tidak Hadir -->
+<div class="space-y-2">
+<label class="block font-label-caps text-label-caps text-on-surface" for="alasan">Alasan Tidak Hadir</label>
+<textarea class="block w-full px-3 py-2 bg-surface-container-lowest border border-outline-variant rounded-DEFAULT text-on-surface font-body-lg text-body-lg focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary resize-y" id="alasan" name="alasan" placeholder="Jelaskan alasan ketidakhadiran Anda secara singkat dan jelas..." rows="4"></textarea>
+</div>
+<!-- Bukti Pendukung -->
+<div class="space-y-2">
+<label class="block font-label-caps text-label-caps text-on-surface">Bukti Pendukung (Opsional)</label>
+<div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-outline-variant border-dashed rounded-lg bg-surface hover:bg-surface-container transition-colors cursor-pointer relative" id="file-upload-zone">
+<div class="space-y-1 text-center">
+<span class="material-symbols-outlined text-4xl text-on-surface-variant mb-2" data-icon="cloud_upload">cloud_upload</span>
+<div class="flex text-sm text-on-surface-variant justify-center">
+<label class="relative cursor-pointer rounded-md font-body-sm text-body-sm text-primary hover:text-primary-container focus-within:outline-none focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2" for="file-upload">
+<span>Pilih file PDF/JPG/PNG</span>
+<input accept=".pdf,.jpg,.jpeg,.png" class="sr-only" id="file-upload" name="file-upload" type="file"/>
+</label>
+<p class="pl-1">atau tarik dan lepas di sini</p>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Maksimal ukuran file: 5MB</p>
+</div>
+</div>
+<div class="hidden font-body-sm text-body-sm text-secondary mt-2 flex items-center gap-2" id="file-name-display">
+<span class="material-symbols-outlined text-sm">draft</span>
+<span id="file-name-text"></span>
+<button class="text-error hover:text-error-container ml-auto" id="remove-file" type="button"><span class="material-symbols-outlined text-sm">close</span></button>
+</div>
+</div>
+<!-- Action Button -->
+<div class="pt-4">
+<button class="w-full min-h-[48px] bg-primary-container text-on-primary font-headline-md text-headline-md rounded-DEFAULT hover:bg-primary transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-container active:scale-[0.98] transform duration-100 flex items-center justify-center gap-2" type="submit">
+<span>Kirim Permohonan</span>
+<span class="material-symbols-outlined text-lg" data-icon="send">send</span>
+</button>
+</div>
+</form>
+</div>
+</main>
+<script>
+        // Simple file upload interaction
+        const fileInput = document.getElementById('file-upload');
+        const fileNameDisplay = document.getElementById('file-name-display');
+        const fileNameText = document.getElementById('file-name-text');
+        const removeFileBtn = document.getElementById('remove-file');
+        const dropZone = document.getElementById('file-upload-zone');
+
+        fileInput.addEventListener('change', function(e) {
+            if (this.files && this.files[0]) {
+                fileNameText.textContent = this.files[0].name;
+                fileNameDisplay.classList.remove('hidden');
+                fileNameDisplay.classList.add('flex');
+            }
+        });
+
+        removeFileBtn.addEventListener('click', function() {
+            fileInput.value = '';
+            fileNameDisplay.classList.add('hidden');
+            fileNameDisplay.classList.remove('flex');
+        });
+
+        // Basic drag and drop visual cues
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, preventDefaults, false);
+        });
+
+        function preventDefaults (e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropZone.addEventListener(eventName, highlight, false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, unhighlight, false);
+        });
+
+        function highlight(e) {
+            dropZone.classList.add('border-primary', 'bg-surface-container-low');
+        }
+
+        function unhighlight(e) {
+            dropZone.classList.remove('border-primary', 'bg-surface-container-low');
+        }
+
+        dropZone.addEventListener('drop', handleDrop, false);
+
+        function handleDrop(e) {
+            let dt = e.dataTransfer;
+            let files = dt.files;
+
+            if (files && files.length > 0) {
+                fileInput.files = files;
+                fileNameText.textContent = files[0].name;
+                fileNameDisplay.classList.remove('hidden');
+                fileNameDisplay.classList.add('flex');
+            }
+        }
+    </script>
+</body></html>

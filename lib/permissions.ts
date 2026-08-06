@@ -23,15 +23,6 @@ export async function requireRole(roles: Role[]): Promise<SessionUser> {
 export const canManageDivision = (user: SessionUser, divisionId?: string | null) =>
   user.role === 'BPH' || (user.role === 'KADIV' && !!divisionId && user.divisionId === divisionId)
 
-export const canCreateGeneralAnnouncement = (user: SessionUser) =>
-  user.role === 'BPH' || user.role === 'KADIV'
-
-export const canGenerateQr = (user: SessionUser) => user.role === 'BPH' || user.role === 'KADIV'
-
-export const isBPH = (user: SessionUser) => user.role === 'BPH'
-
-export const isAdmin = (user: SessionUser) => user.role === 'BPH'
-
 // --- V2 ---
 
 // Kadiv bisa kelola proker & approval izin di divisi sendiri; BPH lintas divisi

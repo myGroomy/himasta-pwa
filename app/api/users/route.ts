@@ -40,7 +40,18 @@ export async function GET(req: NextRequest) {
             }
           : {}),
       },
-      include: {
+      select: {
+        id: true,
+        nim: true,
+        email: true,
+        name: true,
+        role: true,
+        divisionId: true,
+        phone: true,
+        photoUrl: true,
+        isActive: true,
+        pendingApproval: true,
+        createdAt: true,
         division: { select: { id: true, name: true, slug: true } },
       },
       orderBy: { name: 'asc' },
@@ -81,7 +92,20 @@ export async function POST(req: NextRequest) {
         divisionId: divisionId ?? null,
         phone: phone ?? null,
       },
-      include: { division: { select: { id: true, name: true, slug: true } } },
+      select: {
+        id: true,
+        nim: true,
+        email: true,
+        name: true,
+        role: true,
+        divisionId: true,
+        phone: true,
+        photoUrl: true,
+        isActive: true,
+        pendingApproval: true,
+        createdAt: true,
+        division: { select: { id: true, name: true, slug: true } },
+      }
     })
     return NextResponse.json({ user }, { status: 201 })
   } catch (error) {

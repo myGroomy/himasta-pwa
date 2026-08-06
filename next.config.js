@@ -2,6 +2,8 @@
 const nextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
+  optimizeFonts: false,
+  allowedDevOrigins: ['himasta.livowear.my.id'],
   experimental: {
     instrumentationHook: true,
   },

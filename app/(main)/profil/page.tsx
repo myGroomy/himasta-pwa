@@ -12,6 +12,7 @@ import { Badge } from '@/components/ui/badge'
 import { AccentColorPicker } from '@/components/shared/accent-color-picker'
 
 import { ProfileActions } from '@/components/shared/profile-actions'
+import { QrSayaButton } from '@/components/shared/qr-saya-button'
 
 export const dynamic = 'force-dynamic'
 
@@ -23,7 +24,7 @@ export const metadata = {
 export default async function ProfilPage() {
   const user = await requireSession()
 
-  const [dbUser, memberHistories, attendanceCount, tasksCount] = await Promise.all([
+  const [dbUser, memberHistories, attendanceCount, tasksCount, registrations] = await Promise.all([
     prisma.user.findUnique({
       where: { id: user.id },
       include: {
@@ -37,6 +38,21 @@ export default async function ProfilPage() {
     }),
     prisma.attendanceRecord.count({ where: { userId: user.id, status: 'HADIR' } }),
     prisma.task.count({ where: { assigneeId: user.id, status: 'SELESAI' } }),
+    prisma.eventRegistration.findMany({
+      where: { userId: user.id },
+      include: {
+        event: {
+          select: {
+            id: true,
+            name: true,
+            startTime: true,
+            division: { select: { name: true } }
+          }
+        }
+      },
+      orderBy: { createdAt: 'desc' },
+      take: 10,
+    })
   ])
 
   if (!dbUser) return null
@@ -49,14 +65,17 @@ export default async function ProfilPage() {
     .join('')
 
   return (
-    <div className="mx-auto max-w-lg space-y-6 pb-12">
-      {/* Digital Member Card */}
-      <div id="member-card" className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-900 via-slate-800 to-sky-950 p-6 text-white shadow-2xl border border-slate-700">
-        <div className="absolute right-0 top-0 -mr-8 -mt-8 h-40 w-40 rounded-full bg-sky-500/10 blur-2xl pointer-events-none" />
-        
-        <div className="flex items-start justify-between">
+    <div className="mx-auto max-w-lg space-y-6 pb-12 px-4 md:px-0">
+      {/* Digital Member Card - Realistic Corporate Plastic ID Card */}
+      <div 
+        id="member-card" 
+        className="relative overflow-hidden rounded-xl bg-white text-slate-800 shadow-md border-2 border-slate-200 aspect-[1.586/1] w-full flex flex-col font-sans"
+        style={{ contentVisibility: 'auto' }}
+      >
+        {/* Header Band */}
+        <div className="bg-[#00236f] text-white px-4 py-3 flex items-center justify-between border-b border-[#00164e]">
           <div className="flex items-center gap-3">
-            <div className="relative h-12 w-12 overflow-hidden rounded-xl bg-slate-800/80 border border-slate-700 p-1">
+            <div className="relative h-10 w-10 shrink-0 bg-white rounded-md p-1">
               <Image
                 src="/himasta-logo.png"
                 alt="Logo HIMASTA"
@@ -64,52 +83,93 @@ export default async function ProfilPage() {
                 className="object-contain p-0.5"
               />
             </div>
-            <div>
-              <p className="text-xs font-bold text-sky-400 uppercase tracking-widest">KARTU ANGGOTA DIGITAL</p>
-              <p className="text-base font-extrabold tracking-tight">HIMASTA</p>
+            <div className="text-left">
+              <p className="text-[11px] font-extrabold tracking-wider leading-none text-white">HIMASTA</p>
+              <p className="text-[8px] font-semibold text-white/80 leading-none mt-1">HIMPUNAN MAHASISWA STATISTIKA</p>
             </div>
           </div>
-          <Badge className="bg-sky-500/20 text-sky-300 border-sky-500/30 text-xs">
-            {ROLE_LABELS[dbUser.role]}
-          </Badge>
-        </div>
-
-        <div className="mt-6 flex items-center gap-4">
-          <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-tr from-sky-500 to-blue-600 text-xl font-black text-white shadow-md relative overflow-hidden">
-            {dbUser.photoUrl ? (
-              <Image src={dbUser.photoUrl} alt={dbUser.name} fill className="object-cover" />
-            ) : (
-              initials
-            )}
-          </div>
-          <div>
-            <h2 className="text-xl font-bold leading-tight">{dbUser.name}</h2>
-            <p className="text-sm text-slate-300 mt-0.5 font-mono">NIM: {dbUser.nim ?? '—'}</p>
-            <p className="text-xs text-sky-400 mt-1 flex items-center gap-1 font-medium">
-              <Building2 className="h-3 w-3" />
-              Divisi: {dbUser.division?.name ?? 'BPH / Umum'}
-            </p>
-          </div>
-        </div>
-
-        <div className="mt-6 flex items-center justify-between border-t border-slate-700/60 pt-4 text-xs text-slate-300">
-          <div>
-            <span className="text-[10px] text-slate-400 block uppercase">Status Keanggotaan</span>
-            <span className="font-semibold text-emerald-400 flex items-center gap-1 mt-0.5">
-              <CheckCircle2 className="h-3 w-3" /> Aktif
-            </span>
-          </div>
           <div className="text-right">
-            <span className="text-[10px] text-slate-400 block uppercase">Email Terdaftar</span>
-            <span className="font-mono text-slate-200">{dbUser.email}</span>
+            <Badge className="bg-white/20 hover:bg-white/20 text-white border-0 text-[9px] uppercase font-bold tracking-widest px-2 py-0.5">
+              {ROLE_LABELS[dbUser.role as keyof typeof ROLE_LABELS]}
+            </Badge>
           </div>
+        </div>
+
+        {/* Card Body */}
+        <div className="flex-1 p-4 grid grid-cols-12 gap-4 items-center bg-slate-50/50">
+          {/* Left Column: Photo & Barcode */}
+          <div className="col-span-4 flex flex-col items-center justify-center">
+            {/* Photo Box */}
+            <div className="relative h-24 w-20 shrink-0 border-2 border-slate-300 bg-slate-100 rounded shadow-sm overflow-hidden flex items-center justify-center">
+              {dbUser.photoUrl ? (
+                <Image src={dbUser.photoUrl} alt={dbUser.name} fill className="object-cover" />
+              ) : (
+                <span className="text-2xl font-bold text-slate-400">{initials}</span>
+              )}
+            </div>
+            
+            {/* Real Barcode Design */}
+            <div className="mt-2.5 w-full flex flex-col items-center">
+              <div className="h-6 w-full flex items-center justify-center gap-[1px] bg-white border border-slate-200 px-1 rounded" aria-hidden="true">
+                {[1, 2, 1, 3, 1, 2, 4, 1, 2, 1, 3, 2, 1, 1, 4, 1, 2, 1, 3, 1].map((w, idx) => (
+                  <div 
+                    key={idx} 
+                    className="bg-slate-900 h-4" 
+                    style={{ width: `${w}px` }} 
+                  />
+                ))}
+              </div>
+              <span className="text-[8px] font-mono text-slate-500 mt-0.5 tracking-widest">
+                {dbUser.nim ?? 'HIMASTA-MEMBER'}
+              </span>
+            </div>
+          </div>
+
+          {/* Right Column: Member Details */}
+          <div className="col-span-8 space-y-2 text-left">
+            <div>
+              <span className="text-[8px] font-bold text-slate-400 uppercase tracking-wider block">Nama Lengkap</span>
+              <h2 className="text-base font-extrabold text-slate-800 leading-tight line-clamp-1">{dbUser.name}</h2>
+            </div>
+
+            <div className="grid grid-cols-2 gap-2">
+              <div>
+                <span className="text-[8px] font-bold text-slate-400 uppercase tracking-wider block">Nomor Induk Mahasiswa</span>
+                <p className="text-[11px] font-semibold text-slate-700 font-mono">{dbUser.nim ?? '—'}</p>
+              </div>
+              <div>
+                <span className="text-[8px] font-bold text-slate-400 uppercase tracking-wider block">Status Keanggotaan</span>
+                <span className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-600 mt-0.5">
+                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" /> AKTIF
+                </span>
+              </div>
+            </div>
+
+            <div>
+              <span className="text-[8px] font-bold text-slate-400 uppercase tracking-wider block">Divisi Kepengurusan</span>
+              <p className="text-[11px] font-semibold text-slate-700 flex items-center gap-1">
+                {dbUser.division?.name ?? 'BPH / Umum'}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Footer Band */}
+        <div className="bg-slate-100 border-t border-slate-200 px-4 py-1.5 flex items-center justify-between text-[8px] font-semibold text-slate-500">
+          <span>KARTU IDENTITAS RESMI</span>
+          <span>MASA BERLAKU: 2026/2027</span>
         </div>
       </div>
 
-      <ProfileActions 
+      <ProfileActions
         initialPhone={dbUser.phone || ''}
         initialPhotoUrl={dbUser.photoUrl || ''}
+        registrations={registrations as any}
       />
+
+      <div className="grid grid-cols-2 gap-3">
+        <QrSayaButton className="w-full h-11" />
+      </div>
 
       {/* Quick Performance Stats */}
       <div className="grid grid-cols-2 gap-3">

@@ -53,6 +53,15 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
+    const event = await prisma.event.findUnique({
+      where: { id: params.id },
+      select: { divisionId: true, createdById: true },
+    })
+    if (!event) return NextResponse.json({ error: 'Event tidak ditemukan' }, { status: 404 })
+    if (session.user.role === 'KADIV' && event.divisionId !== session.user.divisionId && event.createdById !== session.user.id) {
+      return NextResponse.json({ error: 'Akses ditolak' }, { status: 403 })
+    }
+
     const surveys = await prisma.eventSurvey.findMany({
       where: { eventId: params.id },
       include: {

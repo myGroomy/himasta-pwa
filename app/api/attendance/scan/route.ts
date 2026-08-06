@@ -32,23 +32,27 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const record = await prisma.attendanceRecord.create({
-      data: {
-        sessionId: session.id,
-        userId: user.id,
-      },
-      include: {
-        session: { select: { id: true, title: true } },
-      },
-    })
+    const record = await prisma.$transaction(async (tx) => {
+      const rec = await tx.attendanceRecord.create({
+        data: {
+          sessionId: session.id,
+          userId: user.id,
+        },
+        include: {
+          session: { select: { id: true, title: true } },
+        },
+      })
 
-    await prisma.notification.create({
-      data: {
-        userId: session.createdById,
-        title: 'Kehadiran tercatat',
-        message: `${user.name} telah melakukan absensi pada "${session.title}".`,
-        link: `/absensi`,
-      },
+      await tx.notification.create({
+        data: {
+          userId: session.createdById,
+          title: 'Kehadiran tercatat',
+          message: `${user.name} telah melakukan absensi pada "${session.title}".`,
+          link: `/kegiatan`,
+        },
+      })
+
+      return rec
     })
 
     return NextResponse.json({ ok: true, record })

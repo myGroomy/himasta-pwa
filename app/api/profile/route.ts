@@ -16,6 +16,17 @@ export async function PATCH(req: Request) {
       data: {
         phone: typeof phone === 'string' ? phone : undefined,
         photoUrl: typeof photoUrl === 'string' ? photoUrl : undefined,
+      },
+      select: {
+        id: true,
+        nim: true,
+        email: true,
+        name: true,
+        role: true,
+        divisionId: true,
+        phone: true,
+        photoUrl: true,
+        isActive: true,
       }
     })
 

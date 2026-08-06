@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
-import { requireApiSession, isApiResponse, badRequest, notFound } from '@/lib/api'
+import { requireApiSession, isApiResponse, badRequest, notFound, forbidden } from '@/lib/api'
 import { z } from 'zod'
 import type { SessionUser } from '@/lib/auth'
 import { Prisma } from '@prisma/client'
@@ -29,6 +29,10 @@ export async function POST(req: NextRequest) {
     return badRequest('Kegiatan sudah berakhir.')
   }
 
+  if (scanner.role === 'KADIV' && session.divisionId !== scanner.divisionId && session.createdById !== scanner.id) {
+    return forbidden('Kadiv hanya dapat menandai kehadiran sesi divisi sendiri')
+  }
+
   const member = await prisma.user.findUnique({ where: { qrToken: memberToken } })
   if (!member) return badRequest('QR pribadi tidak dikenal.')
   if (!member.isActive || member.role === 'DOSEN') {
@@ -39,21 +43,25 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const record = await prisma.attendanceRecord.create({
-      data: {
-        sessionId: session.id,
-        userId: member.id,
-        status: 'HADIR',
-      },
-    })
+    const record = await prisma.$transaction(async (tx) => {
+      const rec = await tx.attendanceRecord.create({
+        data: {
+          sessionId: session.id,
+          userId: member.id,
+          status: 'HADIR',
+        },
+      })
 
-    await prisma.notification.create({
-      data: {
-        userId: member.id,
-        title: 'Kehadiran tercatat',
-        message: `${scanner.name} mencatat kehadiran Anda pada "${session.title}".`,
-        link: `/kegiatan`,
-      },
+      await tx.notification.create({
+        data: {
+          userId: member.id,
+          title: 'Kehadiran tercatat',
+          message: `${scanner.name} mencatat kehadiran Anda pada "${session.title}".`,
+          link: `/kegiatan`,
+        },
+      })
+
+      return rec
     })
 
     return NextResponse.json({

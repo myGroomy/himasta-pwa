@@ -1,16 +1,10 @@
-import Link from 'next/link'
-import { notFound } from 'next/navigation'
-import { Plus, Users } from 'lucide-react'
+import { DivisionWorkspaceView } from '@/components/shared/division-workspace-view'
 import { requireSession } from '@/lib/permissions'
 import { prisma } from '@/lib/prisma'
-import { AnnouncementCard } from '@/components/shared/announcement-card'
-import { PageHeader } from '@/components/shared/page-header'
-import { EmptyState } from '@/components/shared/empty-state'
+import { notFound } from 'next/navigation'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
-import { DOC_CATEGORY_LABELS } from '@/lib/constants'
-import { formatDate } from '@/lib/utils'
-import { DiscussionPanel } from '@/components/discussions/discussion-panel'
+import Link from 'next/link'
+import { PageHeader } from '@/components/shared/page-header'
 
 export const dynamic = 'force-dynamic'
 
@@ -41,7 +35,7 @@ export default async function DivisionWorkspacePage({ params }: { params: { slug
     )
   }
 
-  const [announcements, documents, members] = await Promise.all([
+  const [announcements, documents, members, sessions] = await Promise.all([
     prisma.announcement.findMany({
       where: { divisionId: division.id, status: 'PUBLISHED' },
       include: {
@@ -64,123 +58,24 @@ export default async function DivisionWorkspacePage({ params }: { params: { slug
       select: { id: true, name: true, nim: true, role: true },
       orderBy: [{ role: 'asc' }, { name: 'asc' }],
     }),
+    prisma.attendanceSession.findMany({
+      where: { divisionId: division.id },
+      orderBy: { startTime: 'desc' },
+      take: 20,
+    }),
   ])
 
   const canManage = isBPH || isOwnDivision
 
   return (
-    <div className="space-y-8">
-      <PageHeader
-        title={`Divisi ${division.name}`}
-        description={division.description ?? 'Workspace divisi'}
-        action={
-          canManage ? (
-            <Button asChild>
-              <Link href={`/announcements/new?division=${division.id}`}>
-                <Plus className="h-4 w-4" />
-                Posting ke {division.name}
-              </Link>
-            </Button>
-          ) : undefined
-        }
-      />
-
-      <div className="grid gap-4 sm:grid-cols-3">
-        <Card>
-          <CardContent className="flex items-center gap-3 pt-6">
-            <Users className="h-8 w-8 text-primary" />
-            <div>
-              <p className="text-2xl font-bold">{members.length}</p>
-              <p className="text-sm text-muted-foreground">Anggota aktif</p>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-
-      <section>
-        <h2 className="mb-3 text-lg font-semibold">Pengumuman Divisi</h2>
-        {announcements.length === 0 ? (
-          <EmptyState
-            title="Belum ada pengumuman divisi"
-            description={canManage ? 'Posting pengumuman pertama untuk divisi ini.' : 'Pengumuman divisi akan tampil di sini.'}
-          />
-        ) : (
-          <div className="space-y-4">
-            {announcements.map((a) => (
-              <AnnouncementCard key={a.id} announcement={a} />
-            ))}
-          </div>
-        )}
-      </section>
-
-      <section>
-        <h2 className="mb-3 text-lg font-semibold">Dokumen Divisi</h2>
-        {documents.length === 0 ? (
-          <EmptyState title="Belum ada dokumen divisi" />
-        ) : (
-          <div className="grid gap-3 sm:grid-cols-2">
-            {documents.map((d) => (
-              <Card key={d.id}>
-                <CardContent className="pt-6">
-                  <div className="flex items-start justify-between gap-3">
-                    <div>
-                      <p className="font-medium">{d.title}</p>
-                      <p className="mt-1 text-sm text-muted-foreground">
-                        {DOC_CATEGORY_LABELS[d.category]} · {formatDate(d.createdAt)}
-                      </p>
-                      <p className="mt-1 text-xs text-muted-foreground">oleh {d.uploadedBy.name}</p>
-                    </div>
-                    <Button asChild size="sm" variant="outline">
-                      <Link href={d.fileUrl} target="_blank" rel="noopener noreferrer">
-                        Buka
-                      </Link>
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        )}
-      </section>
-
-      <section>
-        <h2 className="mb-3 text-lg font-semibold">Anggota</h2>
-        {members.length === 0 ? (
-          <EmptyState title="Belum ada anggota" />
-        ) : (
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {members.map((m) => (
-              <Card key={m.id}>
-                <CardContent className="flex items-center gap-3 pt-6">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-sm font-semibold text-primary">
-                    {m.name
-                      .split(' ')
-                      .map((n) => n[0])
-                      .slice(0, 2)
-                      .join('')
-                      .toUpperCase()}
-                  </div>
-                  <div>
-                    <p className="font-medium">{m.name}</p>
-                    <p className="text-sm text-muted-foreground">
-                      {m.nim ?? '—'} {m.role === 'KADIV' && '· Kadiv'}
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        )}
-      </section>
-
-      {/* V3 Thread Diskusi */}
-      <section>
-        <DiscussionPanel
-          divisionId={division.id}
-          currentUserId={user.id}
-          canPost={canManage}
-        />
-      </section>
-    </div>
+    <DivisionWorkspaceView
+      division={division}
+      user={user}
+      members={members}
+      documents={documents}
+      tasks={[]} // disuplai dari table proker tasks (opsional) atau empty array ponytail
+      sessions={sessions}
+      canManage={canManage}
+    />
   )
 }

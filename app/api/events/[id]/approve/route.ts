@@ -25,6 +25,9 @@ export async function POST(
 
   const event = await prisma.event.findUnique({ where: { id: params.id } })
   if (!event) return notFound('Event tidak ditemukan')
+  if (event.status !== 'PENDING_APPROVAL') {
+    return badRequest('Hanya event dengan status PENDING_APPROVAL yang dapat diproses')
+  }
 
   const body = await req.json().catch(() => null)
   const parsed = decisionSchema.safeParse(body)

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>StudentOrg Portal - Detail Pengumuman</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-fixed-variant": "#38485d",
+                        "on-surface": "#191c1e",
+                        "primary-container": "#1e3a8a",
+                        "on-secondary-container": "#54647a",
+                        "on-primary-fixed-variant": "#264191",
+                        "tertiary-fixed-dim": "#ffb691",
+                        "secondary": "#505f76",
+                        "on-tertiary": "#ffffff",
+                        "primary-fixed-dim": "#b6c4ff",
+                        "surface-container-lowest": "#ffffff",
+                        "on-secondary-fixed": "#0b1c30",
+                        "background": "#f7f9fb",
+                        "secondary-fixed-dim": "#b7c8e1",
+                        "surface-container-low": "#f2f4f6",
+                        "on-tertiary-fixed-variant": "#773205",
+                        "on-surface-variant": "#444651",
+                        "secondary-container": "#d0e1fb",
+                        "error-container": "#ffdad6",
+                        "surface-container-highest": "#e0e3e5",
+                        "surface-tint": "#4059aa",
+                        "tertiary-fixed": "#ffdbcb",
+                        "surface-container": "#eceef0",
+                        "inverse-surface": "#2d3133",
+                        "surface": "#f7f9fb",
+                        "on-secondary": "#ffffff",
+                        "on-background": "#191c1e",
+                        "inverse-on-surface": "#eff1f3",
+                        "on-primary-container": "#90a8ff",
+                        "on-primary": "#ffffff",
+                        "outline": "#757682",
+                        "on-primary-fixed": "#00164e",
+                        "inverse-primary": "#b6c4ff",
+                        "surface-container-high": "#e6e8ea",
+                        "outline-variant": "#c5c5d3",
+                        "surface-variant": "#e0e3e5",
+                        "primary-fixed": "#dce1ff",
+                        "surface-bright": "#f7f9fb",
+                        "on-tertiary-fixed": "#341100",
+                        "on-error-container": "#93000a",
+                        "surface-dim": "#d8dadc",
+                        "primary": "#00236f",
+                        "secondary-fixed": "#d3e4fe",
+                        "error": "#ba1a1a",
+                        "on-tertiary-container": "#f39461",
+                        "tertiary-container": "#6e2c00",
+                        "tertiary": "#4b1c00",
+                        "on-error": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "touch-target-min": "48px",
+                        "margin-mobile": "1rem",
+                        "gutter": "1rem",
+                        "container-max": "1200px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Outfit"],
+                        "headline-lg": ["Outfit"],
+                        "label-caps": ["Outfit"],
+                        "headline-lg-mobile": ["Outfit"],
+                        "body-sm": ["Outfit"],
+                        "body-lg": ["Outfit"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Outfit', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background antialiased min-h-screen">
+<!-- TopAppBar -->
+<header class="bg-surface text-primary font-headline-md text-headline-md fixed top-0 w-full border-b border-outline-variant z-40 transition-colors duration-200">
+<div class="flex items-center justify-between px-4 h-16 w-full max-w-container-max mx-auto">
+<button aria-label="Back" class="w-12 h-12 flex items-center justify-center hover:bg-surface-variant/50 rounded-full transition-colors">
+<span class="material-symbols-outlined text-primary">arrow_back</span>
+</button>
+<div class="font-headline-md text-headline-md font-bold text-primary">StudentOrg Portal</div>
+<button aria-label="Search" class="w-12 h-12 flex items-center justify-center hover:bg-surface-variant/50 rounded-full transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant">search</span>
+</button>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="pt-20 pb-24 md:pb-8 px-margin-mobile md:px-gutter max-w-container-max mx-auto">
+<!-- Action Bar (Admin) -->
+<div class="flex justify-end mb-6">
+<button class="min-h-[48px] px-6 border border-outline bg-surface text-primary rounded flex items-center gap-2 hover:border-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]">edit</span>
+<span class="font-label-caps text-label-caps">EDIT PENGUMUMAN</span>
+</button>
+</div>
+<!-- Announcement Article -->
+<article class="bg-surface border border-outline-variant rounded-lg p-6 md:p-10 mb-8 max-w-3xl mx-auto">
+<!-- Header -->
+<header class="mb-8 border-b border-outline-variant pb-6">
+<div class="inline-flex items-center gap-2 px-3 py-1 bg-secondary-container rounded-full mb-4">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+<span class="font-label-caps text-label-caps text-on-secondary-container uppercase">Penting</span>
+</div>
+<h1 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-6">
+                    Rapat Paripurna Evaluasi Program Kerja Semester Ganjil 2024
+                </h1>
+<div class="flex flex-wrap items-center gap-4 text-on-surface-variant font-body-sm text-body-sm">
+<div class="flex items-center gap-2">
+<img alt="Author" class="w-10 h-10 rounded-full object-cover border border-outline-variant" data-alt="A professional headshot of a young male student leader wearing a dark navy blazer over a crisp white shirt, standing against a neutral light grey background. Soft, diffused studio lighting highlighting a confident expression, adhering to a clean, minimalist corporate visual aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBDhgLQT5OUog3gpI9yUOKgqrrUy591H7CgXS4IMUvfMJz1a4W18ccHS_K3wMvBMa3XUH9yuGoj8fsx22Nmm7VARaNHyO9-sJWTZlCzkNwqMQkDDTx28ksNeYEUJRFuIIenlSQ0SPEbcrGTC6KNkbTCY-bB4Yzs6-vOMmFNejA0bOhBqNC2HohVe-XjAbfBRagEuxe4ZYJBbjUxx6Myx0VILyi4n4fLwievoZti9jEo6JHKOoG7E5350Q"/>
+<div>
+<div class="font-headline-md text-headline-md text-[14px] text-on-surface">Budi Santoso</div>
+<div>Divisi Kesekretariatan</div>
+</div>
+</div>
+<div class="w-1 h-1 rounded-full bg-outline-variant hidden sm:block"></div>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[18px]">calendar_today</span>
+<span>12 Oktober 2024</span>
+</div>
+<div class="w-1 h-1 rounded-full bg-outline-variant hidden sm:block"></div>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[18px]">schedule</span>
+<span>10:30 WIB</span>
+</div>
+</div>
+</header>
+<!-- Featured Image -->
+<div class="w-full h-64 md:h-80 mb-8 rounded-lg overflow-hidden border border-outline-variant">
+<img alt="Rapat Paripurna" class="w-full h-full object-cover" data-alt="A spacious, brightly lit modern conference room with a large rectangular glass table and ergonomic navy blue chairs. A digital projector screen is visible at the far end. Sunlight streams through large windows, creating a clean, professional, and organized minimalist corporate atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAFExSycYqNp2jCSCkrFdCnqICwLSt2zRtAn8ZSNmbk1LHUtvI6v1c_EKdIDH2R5E89vJh9taAW7ORoxeY24pEI2hHAy8__iBz5APK9MyRhC-cmFEag8s-WbIrU0jsDchaxIfK1KDufGr4UHwjgnVYWPn-mySBbXBIzAIxAIiCoLbVMw_cKPvHSi6SuNHDGUw7nE0dA5XYYXwwHaSLEbCNa5mj8G1V79ibcgMF7wT_Q1EOsr_f_HZanHQ"/>
+</div>
+<!-- Content Body -->
+<div class="font-body-lg text-body-lg text-on-surface space-y-6 leading-relaxed">
+<p>
+                    Diberitahukan kepada seluruh pengurus inti dan kepala divisi StudentOrg, bahwa kita akan menyelenggarakan <strong>Rapat Paripurna Evaluasi Program Kerja</strong> untuk paruh pertama kepengurusan periode 2024/2025.
+                </p>
+<p>
+                    Rapat ini bertujuan untuk meninjau pencapaian, mengidentifikasi kendala pelaksanaan program, serta merumuskan strategi penyesuaian untuk semester genap mendatang. Kehadiran bersifat wajib bagi seluruh nama yang tercantum dalam surat undangan resmi.
+                </p>
+<div class="bg-surface-container-low p-6 rounded border border-outline-variant my-8">
+<h3 class="font-headline-md text-headline-md text-primary mb-4">Detail Pelaksanaan:</h3>
+<ul class="space-y-3">
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-secondary mt-0.5">event</span>
+<div><strong>Hari/Tanggal:</strong> Sabtu, 19 Oktober 2024</div>
+</li>
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-secondary mt-0.5">schedule</span>
+<div><strong>Waktu:</strong> 09.00 WIB - Selesai</div>
+</li>
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-secondary mt-0.5">location_on</span>
+<div><strong>Tempat:</strong> Ruang Sidang Utama, Gedung Kemahasiswaan Lantai 3</div>
+</li>
+</ul>
+</div>
+<p>
+                    Setiap divisi diharapkan menyiapkan laporan pertanggungjawaban sementara dan slide presentasi maksimal 5 halaman. Dokumen harus diunggah ke folder bersama paling lambat H-2 pelaksanaan rapat.
+                </p>
+<p>
+                    Bagi yang berhalangan hadir karena alasan mendesak/akademik, harap mengajukan surat izin resmi ke Kesekretariatan selambatnya 24 jam sebelum acara dimulai.
+                </p>
+<p class="mt-8 italic text-on-surface-variant">
+                    Demikian pengumuman ini disampaikan untuk menjadi perhatian dan dilaksanakan dengan penuh tanggung jawab.
+                </p>
+</div>
+<!-- Tags/Attachments -->
+<div class="mt-10 pt-6 border-t border-outline-variant">
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-on-surface-variant text-[20px]">attach_file</span>
+<span class="font-headline-md text-headline-md text-[16px] text-on-surface">Lampiran Dokumen</span>
+</div>
+<div class="flex flex-col sm:flex-row gap-4">
+<a class="flex items-center gap-3 p-3 border border-outline-variant rounded hover:border-primary hover:bg-surface-container-low transition-all min-h-[48px] w-full sm:w-auto" href="#">
+<span class="material-symbols-outlined text-error">picture_as_pdf</span>
+<span class="font-body-sm text-body-sm text-on-surface truncate">Draft_Agenda_Rapat.pdf</span>
+<span class="material-symbols-outlined text-secondary ml-auto text-[18px]">download</span>
+</a>
+</div>
+</div>
+</article>
+</main>
+</body></html>

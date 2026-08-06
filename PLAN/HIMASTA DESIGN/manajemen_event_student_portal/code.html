@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Event Detail - Event Manager</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-fixed": "#0b1c30",
+                        "on-secondary-fixed-variant": "#38485d",
+                        "surface-variant": "#e0e3e5",
+                        "inverse-surface": "#2d3133",
+                        "background": "#f7f9fb",
+                        "inverse-primary": "#b6c4ff",
+                        "error-container": "#ffdad6",
+                        "tertiary": "#4b1c00",
+                        "on-primary-container": "#90a8ff",
+                        "secondary-fixed": "#d3e4fe",
+                        "outline": "#757682",
+                        "on-background": "#191c1e",
+                        "on-error-container": "#93000a",
+                        "surface-container": "#eceef0",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-fixed-dim": "#ffb691",
+                        "surface-tint": "#4059aa",
+                        "primary-fixed": "#dce1ff",
+                        "error": "#ba1a1a",
+                        "on-primary": "#ffffff",
+                        "surface-container-high": "#e6e8ea",
+                        "surface": "#f7f9fb",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-bright": "#f7f9fb",
+                        "secondary-fixed-dim": "#b7c8e1",
+                        "secondary": "#505f76",
+                        "inverse-on-surface": "#eff1f3",
+                        "outline-variant": "#c5c5d3",
+                        "secondary-container": "#d0e1fb",
+                        "on-secondary": "#ffffff",
+                        "on-primary-fixed-variant": "#264191",
+                        "on-error": "#ffffff",
+                        "primary-container": "#1e3a8a",
+                        "on-tertiary-container": "#f39461",
+                        "on-surface": "#191c1e",
+                        "surface-container-low": "#f2f4f6",
+                        "primary-fixed-dim": "#b6c4ff",
+                        "on-tertiary-fixed-variant": "#773205",
+                        "on-tertiary-fixed": "#341100",
+                        "on-surface-variant": "#444651",
+                        "on-primary-fixed": "#00164e",
+                        "primary": "#00236f",
+                        "surface-container-highest": "#e0e3e5",
+                        "tertiary-container": "#6e2c00",
+                        "on-secondary-container": "#54647a",
+                        "surface-dim": "#d8dadc",
+                        "tertiary-fixed": "#ffdbcb"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "touch-target-min": "48px",
+                        "container-max": "1200px",
+                        "margin-mobile": "1rem",
+                        "gutter": "1rem"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Outfit"],
+                        "headline-lg": ["Outfit"],
+                        "label-caps": ["Outfit"],
+                        "headline-md": ["Outfit"],
+                        "headline-lg-mobile": ["Outfit"],
+                        "body-sm": ["Outfit"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "headline-md": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            background-color: #f7f9fb; /* surface */
+            color: #191c1e; /* on-surface */
+        }
+        /* Mobile-first specific styles */
+        .pb-safe { padding-bottom: env(safe-area-inset-bottom); }
+    </style>
+</head>
+<body class="font-body-lg antialiased">
+<!-- TopAppBar -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-4 h-14 bg-surface border-b border-outline-variant transition-colors duration-200 ease-in-out hidden md:flex">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" data-icon="school">school</span>
+<span class="font-headline-md text-headline-md font-bold text-primary">Student Portal</span>
+</div>
+<nav class="flex gap-6 h-full items-center">
+<a class="h-full flex items-center text-secondary font-label-caps text-label-caps hover:text-primary transition-colors" href="#">Home</a>
+<a class="h-full flex items-center text-secondary font-label-caps text-label-caps hover:text-primary transition-colors" href="#">About</a>
+<a class="h-full flex items-center text-primary border-b-2 border-primary font-label-caps text-label-caps transition-colors" href="#">Events</a>
+<a class="h-full flex items-center text-secondary font-label-caps text-label-caps hover:text-primary transition-colors" href="#">Profile</a>
+</nav>
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-primary" data-icon="account_circle">account_circle</span>
+</button>
+</header>
+<!-- Mobile Sub-header (Back button for focused journey) -->
+<header class="md:hidden flex items-center h-14 px-margin-mobile border-b border-outline-variant bg-surface sticky top-0 z-40">
+<a class="w-touch-target-min h-touch-target-min flex items-center justify-center -ml-2 text-primary" href="#">
+<span class="material-symbols-outlined">arrow_back</span>
+</a>
+<h1 class="font-headline-md text-headline-md text-on-surface ml-2 truncate flex-1">Annual Tech Symposium 2024</h1>
+<button class="w-touch-target-min h-touch-target-min flex items-center justify-center -mr-2 text-primary">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</header>
+<!-- Main Content -->
+<main class="w-full max-w-container-max mx-auto px-margin-mobile pt-4 pb-24 md:pt-20 md:pb-8">
+<!-- Event Header Info -->
+<section class="mb-8 bg-surface-container-lowest border border-outline-variant rounded-lg p-6">
+<div class="flex flex-col md:flex-row gap-6 justify-between items-start">
+<div class="flex-1">
+<div class="flex items-center gap-2 mb-2">
+<span class="bg-primary-container text-on-primary-container font-label-caps text-label-caps px-2 py-1 rounded-full">INTERNAL ONLY</span>
+<span class="bg-surface-variant text-on-surface-variant font-label-caps text-label-caps px-2 py-1 rounded-full flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">calendar_today</span> Oct 15, 2024</span>
+</div>
+<h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-2">Annual Tech Symposium 2024</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-3xl mb-4">A deep dive into emerging technologies including AI, Web3, and sustainable tech infrastructure. This internal event is crucial for aligning our engineering teams on Q4 objectives and 2025 strategic planning.</p>
+<div class="flex flex-wrap gap-4 text-secondary">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[20px]">location_on</span>
+<span class="font-body-sm text-body-sm">Main Auditorium, Building B</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[20px]">schedule</span>
+<span class="font-body-sm text-body-sm">09:00 AM - 05:00 PM PST</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[20px]">person</span>
+<span class="font-body-sm text-body-sm">Manager: Sarah Jenkins</span>
+</div>
+</div>
+</div>
+<!-- Primary Actions -->
+<div class="flex flex-col sm:flex-row md:flex-col gap-3 w-full md:w-auto">
+<button class="bg-primary text-on-primary font-label-caps text-label-caps h-touch-target-min px-6 rounded flex items-center justify-center gap-2 hover:bg-on-primary-fixed-variant transition-colors w-full">
+<span class="material-symbols-outlined">edit</span> Edit Event
+                    </button>
+<button class="bg-surface-container-lowest border border-outline-variant text-primary font-label-caps text-label-caps h-touch-target-min px-6 rounded flex items-center justify-center gap-2 hover:bg-surface-container transition-colors w-full">
+<span class="material-symbols-outlined">download</span> Export List
+                    </button>
+</div>
+</div>
+</section>
+<!-- Bento Grid Layout for Stats and Participants -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+<!-- Statistik Kapasitas (Capacity Stats) - Takes up 4 columns on desktop -->
+<section class="md:col-span-4 bg-surface-container-lowest border border-outline-variant rounded-lg p-6 h-fit">
+<h3 class="font-headline-md text-headline-md text-on-surface mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">bar_chart</span> Statistik Kapasitas
+                </h3>
+<div class="mb-6">
+<div class="flex justify-between items-end mb-2">
+<div class="flex flex-col">
+<span class="font-headline-lg-mobile text-headline-lg-mobile font-bold text-on-surface">184</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant">Registered</span>
+</div>
+<div class="flex flex-col text-right">
+<span class="font-headline-md text-headline-md text-secondary">200</span>
+<span class="font-label-caps text-label-caps text-outline">Limit</span>
+</div>
+</div>
+<!-- Progress Bar -->
+<div class="w-full bg-surface-variant rounded-full h-2 mb-2 overflow-hidden">
+<div class="bg-primary h-2 rounded-full" style="width: 92%"></div>
+</div>
+<p class="font-body-sm text-body-sm text-secondary text-right">92% Capacity Reached</p>
+</div>
+<div class="space-y-4 pt-4 border-t border-outline-variant">
+<div class="flex justify-between items-center">
+<span class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-surface-tint"></span> Engineering
+                        </span>
+<span class="font-body-sm text-body-sm font-semibold text-on-surface">120</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-secondary-fixed"></span> Product
+                        </span>
+<span class="font-body-sm text-body-sm font-semibold text-on-surface">45</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-tertiary-fixed-dim"></span> Design
+                        </span>
+<span class="font-body-sm text-body-sm font-semibold text-on-surface">19</span>
+</div>
+</div>
+</section>
+<!-- Registered Participants List - Takes up 8 columns on desktop -->
+<section class="md:col-span-8 bg-surface-container-lowest border border-outline-variant rounded-lg p-0 flex flex-col">
+<div class="p-4 md:p-6 border-b border-outline-variant flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+<h3 class="font-headline-md text-headline-md text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">group</span> Registered Participants
+                    </h3>
+<!-- Search Input -->
+<div class="relative w-full sm:w-64">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">search</span>
+<input class="w-full h-touch-target-min pl-10 pr-4 bg-surface rounded border border-outline-variant text-body-lg font-body-lg focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors" placeholder="Search names..." type="text"/>
+</div>
+</div>
+<!-- Structured List -->
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="border-b border-outline-variant bg-surface-container-low">
+<th class="font-label-caps text-label-caps text-on-surface-variant p-4 font-semibold whitespace-nowrap">Name</th>
+<th class="font-label-caps text-label-caps text-on-surface-variant p-4 font-semibold whitespace-nowrap">Department</th>
+<th class="font-label-caps text-label-caps text-on-surface-variant p-4 font-semibold whitespace-nowrap">Role</th>
+<th class="font-label-caps text-label-caps text-on-surface-variant p-4 font-semibold whitespace-nowrap text-right">Status</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant">
+<!-- Row 1 -->
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="p-4 min-h-[56px] flex items-center gap-3">
+<img class="w-10 h-10 rounded-full object-cover border border-outline-variant bg-surface-variant" data-alt="A professional headshot of a smiling woman in her 30s with dark hair, wearing a white blouse against a minimalist grey background. The lighting is soft and corporate, fitting a modern tech company directory." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDY2iRiiuYLJSumdB__4wVFy3ImAIzVutDygotpSl6nJFm9aoamdZOtB72GktoPUTvupFXkViSDgQB0LiSdIVlN-wrc-HzHEGIQvqfSMXGJIR-FTqH1NyXcoiqTlFF1pw9abrP304R2-yyu0Nd-3C1BiAbuTGNOgAiz02fMmumsIZ4PyZ4ZvPWC3xBMImp6fytIcmSFC-GzXGmP1qRgTVIPtqjwU_EG4wqm5tl94HZN6grXXTktyIcTvg"/>
+<div class="flex flex-col">
+<span class="font-body-lg text-body-lg text-on-surface font-semibold">Alicia Vance</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">a.vance@company.com</span>
+</div>
+</td>
+<td class="p-4 align-middle">
+<span class="font-body-sm text-body-sm text-on-surface">Engineering</span>
+</td>
+<td class="p-4 align-middle">
+<span class="font-body-sm text-body-sm text-on-surface">Sr. Backend Dev</span>
+</td>
+<td class="p-4 align-middle text-right">
+<span class="inline-flex items-center gap-1 bg-secondary-fixed text-on-secondary-fixed font-label-caps text-label-caps px-2 py-1 rounded-full">
+<span class="material-symbols-outlined text-[14px]">check_circle</span> Confirmed
+                                    </span>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="p-4 min-h-[56px] flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-headline-md text-headline-md font-bold">MK</div>
+<div class="flex flex-col">
+<span class="font-body-lg text-body-lg text-on-surface font-semibold">Marcus Kincaid</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">m.kincaid@company.com</span>
+</div>
+</td>
+<td class="p-4 align-middle">
+<span class="font-body-sm text-body-sm text-on-surface">Product</span>
+</td>
+<td class="p-4 align-middle">
+<span class="font-body-sm text-body-sm text-on-surface">Product Manager</span>
+</td>
+<td class="p-4 align-middle text-right">
+<span class="inline-flex items-center gap-1 bg-secondary-fixed text-on-secondary-fixed font-label-caps text-label-caps px-2 py-1 rounded-full">
+<span class="material-symbols-outlined text-[14px]">check_circle</span> Confirmed
+                                    </span>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="p-4 min-h-[56px] flex items-center gap-3">
+<img class="w-10 h-10 rounded-full object-cover border border-outline-variant bg-surface-variant" data-alt="A professional headshot of a young man with short brown hair and glasses, wearing a navy blue crew neck sweater against a clean white background. High-key lighting, corporate minimalist style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAbiJT3g2ylgOmy94O_XsJ3httXoH8VW3klqhM1b6_qRLwkZ-vxYS35lX2UQN9AcWQ9JCrl8c6zyKtcW6pKIgp4tEj5miRPYdxgy1Tr-1WfNp8N0m0qXxy_Pm3M4i9qgQFNNawkuMh1byLmZRXzTxcbgw-DQplfnH7f_dtYsXRyXTzP8FC-U8laCj1nwidskvvwWwzeWO6ujGv6NCTTJj1Nr8yaRoxLma-7QKyQuCAotiySWIDakMk6BA"/>
+<div class="flex flex-col">
+<span class="font-body-lg text-body-lg text-on-surface font-semibold">David Chen</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">d.chen@company.com</span>
+</div>
+</td>
+<td class="p-4 align-middle">
+<span class="font-body-sm text-body-sm text-on-surface">Design</span>
+</td>
+<td class="p-4 align-middle">
+<span class="font-body-sm text-body-sm text-on-surface">UX Researcher</span>
+</td>
+<td class="p-4 align-middle text-right">
+<span class="inline-flex items-center gap-1 bg-surface-variant text-on-surface-variant font-label-caps text-label-caps px-2 py-1 rounded-full">
+<span class="material-symbols-outlined text-[14px]">schedule</span> Pending
+                                    </span>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="p-4 min-h-[56px] flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-tint text-on-primary flex items-center justify-center font-headline-md text-headline-md font-bold">ES</div>
+<div class="flex flex-col">
+<span class="font-body-lg text-body-lg text-on-surface font-semibold">Elena Rostova</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">e.rostova@company.com</span>
+</div>
+</td>
+<td class="p-4 align-middle">
+<span class="font-body-sm text-body-sm text-on-surface">Engineering</span>
+</td>
+<td class="p-4 align-middle">
+<span class="font-body-sm text-body-sm text-on-surface">DevOps Engineer</span>
+</td>
+<td class="p-4 align-middle text-right">
+<span class="inline-flex items-center gap-1 bg-secondary-fixed text-on-secondary-fixed font-label-caps text-label-caps px-2 py-1 rounded-full">
+<span class="material-symbols-outlined text-[14px]">check_circle</span> Confirmed
+                                    </span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination / Footer -->
+<div class="p-4 border-t border-outline-variant flex items-center justify-between bg-surface-container-lowest rounded-b-lg">
+<span class="font-body-sm text-body-sm text-on-surface-variant">Showing 1-4 of 184</span>
+<div class="flex gap-2">
+<button class="w-10 h-10 flex items-center justify-center border border-outline-variant rounded text-outline hover:bg-surface-container transition-colors disabled:opacity-50" disabled="">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<button class="w-10 h-10 flex items-center justify-center border border-outline-variant rounded text-primary hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+</div>
+</section>
+</div>
+</main>
+</body></html>

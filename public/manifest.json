@@ -10,8 +10,8 @@
     "minimal-ui"
   ],
   "orientation": "portrait",
-  "background_color": "#ffffff",
-  "theme_color": "#1d4ed8",
+  "background_color": "#F5F0E7",
+  "theme_color": "#020417",
   "lang": "id",
   "categories": [
     "education",
@@ -20,9 +20,9 @@
   ],
   "icons": [
     {
-      "src": "/icon.svg",
-      "sizes": "any",
-      "type": "image/svg+xml",
+      "src": "/himasta-logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
       "purpose": "any"
     }
   ],
@@ -34,9 +34,9 @@
       "url": "/absensi/scan",
       "icons": [
         {
-          "src": "/icon.svg",
-          "sizes": "any",
-          "type": "image/svg+xml"
+          "src": "/himasta-logo.png",
+          "sizes": "512x512",
+          "type": "image/png"
         }
       ]
     },
@@ -47,9 +47,9 @@
       "url": "/announcements",
       "icons": [
         {
-          "src": "/icon.svg",
-          "sizes": "any",
-          "type": "image/svg+xml"
+          "src": "/himasta-logo.png",
+          "sizes": "512x512",
+          "type": "image/png"
         }
       ]
     }
