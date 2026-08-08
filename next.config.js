@@ -3,7 +3,9 @@ const nextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
   optimizeFonts: false,
-  allowedDevOrigins: ['himasta.livowear.my.id'],
+  allowedDevOrigins: process.env.NEXT_PUBLIC_APP_URL
+    ? [new URL(process.env.NEXT_PUBLIC_APP_URL).host]
+    : [],
   experimental: {
     instrumentationHook: true,
   },
