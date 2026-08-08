@@ -52,14 +52,51 @@ function askQuestion(query) {
 }
 
 function resolveCloudflared() {
-  if (existsSync(CLOUDFLARED)) return CLOUDFLARED
-  const probe = spawnSync('cloudflared', ['--version'], { stdio: 'ignore' })
-  if (!probe.error) return 'cloudflared'
+  if (process.env.CLOUDFLARED && existsSync(process.env.CLOUDFLARED)) return process.env.CLOUDFLARED
+
+  const candidates = [CLOUDFLARED]
+  if (isWindows) {
+    const baseName = join(HOME, '.local', 'bin', 'cloudflared')
+    candidates.push(baseName, `${baseName}.exe`)
+    candidates.push(join(HOME, 'cloudflared', 'cloudflared.exe'))
+    candidates.push(join(HOME, '.cloudflared', 'cloudflared.exe'))
+    candidates.push('C:\\cloudflared\\cloudflared.exe')
+    const userProfile = process.env.USERPROFILE
+    if (userProfile && userProfile !== HOME) {
+      const profileBase = join(userProfile, '.local', 'bin', 'cloudflared')
+      candidates.push(profileBase, `${profileBase}.exe`)
+      candidates.push(join(userProfile, 'cloudflared', 'cloudflared.exe'))
+    }
+  }
+  for (const c of candidates) {
+    if (c && existsSync(c)) return c
+  }
+
+  const onPath = isWindows
+    ? spawnSync('where.exe', ['cloudflared'], { encoding: 'utf8', windowsHide: true })
+    : spawnSync('which', ['cloudflared'], { encoding: 'utf8' })
+  if (onPath.status === 0 && onPath.stdout) {
+    const first = onPath.stdout.split(/\r?\n/).map((s) => s.trim()).find(Boolean)
+    if (first) return first
+  }
+
+  const probe = runCloudflared('cloudflared', ['--version'])
+  if (!probe.error && probe.status === 0) return 'cloudflared'
   return null
 }
 
+function needsShellFor(bin) {
+  return isWindows && (bin === 'cloudflared' || !/^[A-Za-z]:[\\/]/.test(bin) || /\.(cmd|bat)$/i.test(bin))
+}
+
+function runCloudflared(bin, args) {
+  const shell = needsShellFor(bin)
+  const b = shell && bin.includes(' ') ? `"${bin}"` : bin
+  return spawnSync(b, args, { encoding: 'utf8', shell, windowsHide: true })
+}
+
 function tunnelRegistered(bin) {
-  const out = spawnSync(bin, ['tunnel', 'list'], { encoding: 'utf8' })
+  const out = runCloudflared(bin, ['tunnel', 'list'])
   if (out.error || out.status !== 0) return false
   const text = `${out.stdout}\n${out.stderr}`
   return new RegExp(`\\b${TUNNEL}\\b`).test(text)
@@ -67,9 +104,14 @@ function tunnelRegistered(bin) {
 
 function startTunnel(bin) {
   const logFd = openSync(LOG, 'a')
-  tunnelProcess = spawn(bin, ['tunnel', 'run', TUNNEL], {
+  const needsShell = needsShellFor(bin)
+  const runArgs = ['tunnel', 'run', TUNNEL]
+  const runBin = needsShell && bin.includes(' ') ? `"${bin}"` : bin
+  tunnelProcess = spawn(runBin, runArgs, {
     stdio: ['ignore', logFd, logFd],
     detached: process.platform !== 'win32',
+    shell: needsShell,
+    windowsHide: true,
   })
   tunnelProcess.on('error', () => { /* ditangani lewat cek exitCode */ })
   return new Promise(async (resolveStart) => {
