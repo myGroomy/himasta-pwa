@@ -27,8 +27,12 @@ const LOG = join(tmpdir(), 'himasta-tunnel.log')
 const log = (...args) => console.error('[tunnel]', ...args)
 
 let tunnelProcess = null
+let nextProcess = null
 
 const cleanup = () => {
+  if (nextProcess && !nextProcess.killed) {
+    try { nextProcess.kill('SIGTERM') } catch { /* ignore */ }
+  }
   if (tunnelProcess && !tunnelProcess.killed) {
     try { tunnelProcess.kill('SIGTERM') } catch { /* ignore */ }
   }
@@ -140,10 +144,10 @@ async function main() {
     log('MODE = LOCAL -> http://localhost:3000')
   }
 
-  const child = spawn(process.execPath, [nextBin, ...args], { stdio: 'inherit' })
-  child.on('exit', (code) => {
+  nextProcess = spawn(process.execPath, [nextBin, ...args], { stdio: 'inherit' })
+  nextProcess.on('exit', (code) => {
     cleanup()
-    process.exit(code ?? (child.signalCode ? 1 : 0))
+    process.exit(code ?? (nextProcess.signalCode ? 1 : 0))
   })
 }
 

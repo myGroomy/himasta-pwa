@@ -1,4 +1,4 @@
-import { prisma } from '@/lib/prisma'
+import { prisma, isDatabaseConfigured } from '@/lib/prisma'
 import { getOptionalSession } from '@/lib/permissions'
 import { WelcomeView } from '@/components/shared/welcome-view'
 
@@ -7,15 +7,27 @@ export const dynamic = 'force-dynamic'
 export default async function WelcomePage() {
   const user = await getOptionalSession()
 
-  // Fetch metrics and upcoming events
-  const [totalUsers, activeProkers, nextEvent] = await Promise.all([
-    prisma.user.count({ where: { isActive: true } }),
-    prisma.proker.count({ where: { status: 'BERJALAN' } }),
-    prisma.event.findFirst({
-      where: { visibility: 'PUBLIC', status: 'PUBLISHED' },
-      orderBy: { startTime: 'asc' },
-    }),
-  ])
+  let totalUsers = 0
+  let activeProkers = 0
+  let nextEvent: Awaited<ReturnType<typeof prisma.event.findFirst>> | null = null
+
+  if (isDatabaseConfigured()) {
+    try {
+      const [users, prokers, event] = await Promise.all([
+        prisma.user.count({ where: { isActive: true } }),
+        prisma.proker.count({ where: { status: 'BERJALAN' } }),
+        prisma.event.findFirst({
+          where: { visibility: 'PUBLIC', status: 'PUBLISHED' },
+          orderBy: { startTime: 'asc' },
+        }),
+      ])
+      totalUsers = users
+      activeProkers = prokers
+      nextEvent = event
+    } catch {
+      // Database dikonfigurasi tapi tidak dapat diakses — tampilkan landing tanpa data.
+    }
+  }
 
   const eventDate = nextEvent
     ? new Date(nextEvent.startTime).toLocaleDateString('id-ID', {

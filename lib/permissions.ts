@@ -2,16 +2,26 @@ import { getServerSession } from 'next-auth'
 import { redirect } from 'next/navigation'
 import { authOptions, type SessionUser } from '@/lib/auth'
 import type { Role } from '@prisma/client'
+import type { Session } from 'next-auth'
 
 export async function requireSession(): Promise<SessionUser> {
-  const session = await getServerSession(authOptions)
+  let session: Session | null = null
+  try {
+    session = await getServerSession(authOptions)
+  } catch {
+    session = null
+  }
   if (!session?.user?.id) redirect('/login')
   return session.user as SessionUser
 }
 
 export async function getOptionalSession() {
-  const session = await getServerSession(authOptions)
-  return session?.user ? (session.user as SessionUser) : null
+  try {
+    const session = await getServerSession(authOptions)
+    return session?.user ? (session.user as SessionUser) : null
+  } catch {
+    return null
+  }
 }
 
 export async function requireRole(roles: Role[]): Promise<SessionUser> {
