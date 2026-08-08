@@ -4,9 +4,9 @@
   "description": "Sistem Informasi & Operasional HIMASTA - PWA berbasis Next.js",
   "private": true,
   "scripts": {
-    "dev": "bash scripts/with-tunnel.sh next dev",
+    "dev": "node scripts/with-tunnel.mjs dev",
     "build": "next build",
-    "start": "bash scripts/with-tunnel.sh next start",
+    "start": "node scripts/with-tunnel.mjs start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
     "postinstall": "prisma generate",
