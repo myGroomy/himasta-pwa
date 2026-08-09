@@ -82,7 +82,7 @@ export default async function TentangPage() {
         <div className="mx-auto flex h-16 max-w-[1200px] items-center justify-between px-5 sm:px-8 lg:px-12">
           <div className="flex items-center gap-3">
             <div className="relative h-9 w-9 overflow-hidden rounded-md">
-              <Image src="/himasta-logo.png" alt="Logo HIMASTA" fill className="object-contain" />
+              <Image src="/himasta-logo.webp" alt="Logo HIMASTA" fill className="object-contain" />
             </div>
             <span className="text-xl font-bold tracking-tight">HIMASTA</span>
           </div>

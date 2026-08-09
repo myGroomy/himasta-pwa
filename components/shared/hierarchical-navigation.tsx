@@ -1,68 +1,41 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
 
-const ROUTE_PARENTS: Record<string, string> = {
-  '/proker/new': '/proker',
-  '/proker': '/',
-  '/announcements/new': '/announcements',
-  '/announcements': '/',
-  '/events/new': '/events',
-  '/events': '/',
-  '/kegiatan/scan': '/kegiatan',
-  '/kegiatan': '/',
-  '/izin': '/',
-  '/kalender': '/',
-  '/profil': '/',
-  '/dokumen': '/',
-  '/direktori': '/',
-  '/piket': '/',
-  '/notifikasi': '/',
-  '/feedback': '/',
-  '/login': '/welcome',
-  '/register': '/welcome',
-  '/forgot-password': '/login',
-}
-
-function getParentRoute(pathname: string): string | null {
-  // Exact match
-  if (ROUTE_PARENTS[pathname] !== undefined) {
-    return ROUTE_PARENTS[pathname]
-  }
-
-  // Dynamic route matches
-  if (/^\/events\/[^\/]+$/.test(pathname)) {
-    return '/events'
-  }
-  if (/^\/announcements\/[^\/]+$/.test(pathname)) {
-    return '/announcements'
-  }
-  if (/^\/announcements\/[^\/]+\/edit$/.test(pathname)) {
-    return '/announcements'
-  }
-  if (/^\/divisi\/[^\/]+$/.test(pathname)) {
-    return '/'
-  }
-
-  return null
-}
-
+/**
+ * Kontrol back (system/browser) ala PWA:
+ * - Di halaman dalam mana pun → back menuju dashboard ('/').
+ * - Sudah di dashboard → back keluar dari app (tidak pernah kembali
+ *   ke halaman dalam sesuai histori).
+ *
+ * Cara kerja: setiap halaman dalam menaruh 1 entry dummy (URL sama) di
+ * history. Back pertama pop entry dummy → URL tidak berubah → Next tidak
+ * menavigasi → kita arahkan sendiri. Di dashboard, back diteruskan
+ * (history.back()) beruntun sampai melewati semua entry app → keluar.
+ */
 export function HierarchicalNavigation() {
   const pathname = usePathname()
   const router = useRouter()
+  const pathRef = useRef(pathname)
 
   useEffect(() => {
-    // If not at the root page, we intercept state so back goes to parent
-    const parent = getParentRoute(pathname)
-    if (!parent) return
+    pathRef.current = pathname
+  }, [pathname])
 
-    // Push dummy state to capture next back gesture
-    window.history.pushState({ type: 'hierarchical' }, '')
+  useEffect(() => {
+    // Entry dummy: back berikutnya pop entry ini (URL sama) → Next diam,
+    // hanya handler kita yang jalan.
+    window.history.pushState({ himastaNav: true }, '')
 
-    const handlePopState = (event: PopStateEvent) => {
-      // Intercepted: Go to parent path instead of back in browser history
-      router.push(parent)
+    const handlePopState = () => {
+      if (pathRef.current === '/') {
+        // Dashboard: lanjutkan back → pop semua entry app → keluar app.
+        window.history.back()
+      } else {
+        // Halaman dalam: back → dashboard (replace, tanpa entry baru).
+        router.replace('/')
+      }
     }
 
     window.addEventListener('popstate', handlePopState)

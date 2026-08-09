@@ -65,7 +65,7 @@ export default async function AnnouncementsPage({
           description="Belum ada pengumuman pada kategori ini."
         />
       ) : (
-        <AnnouncementList announcements={announcements as any} />
+        <AnnouncementList announcements={announcements as any} currentUserId={user.id} />
       )}
     </div>
   )

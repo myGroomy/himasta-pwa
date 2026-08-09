@@ -5,14 +5,15 @@ import { prisma } from '@/lib/prisma'
 import { ROLE_LABELS } from '@/lib/constants'
 import {
   User, ShieldCheck, Mail, Phone, QrCode,
-  Calendar, Award, CheckCircle2, History, Building2, LogOut, Palette
+  Calendar, Award, CheckCircle2, History, Building2, LogOut,
 } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { AccentColorPicker } from '@/components/shared/accent-color-picker'
 
 import { ProfileActions } from '@/components/shared/profile-actions'
 import { QrSayaButton } from '@/components/shared/qr-saya-button'
+import { KtaActions } from '@/components/shared/kta-actions'
+import { PermissionsSettings } from '@/components/shared/permissions-settings'
 
 export const dynamic = 'force-dynamic'
 
@@ -77,7 +78,7 @@ export default async function ProfilPage() {
           <div className="flex items-center gap-3">
             <div className="relative h-10 w-10 shrink-0 bg-white rounded-md p-1">
               <Image
-                src="/himasta-logo.png"
+                src="/himasta-logo.webp"
                 alt="Logo HIMASTA"
                 fill
                 className="object-contain p-0.5"
@@ -161,11 +162,17 @@ export default async function ProfilPage() {
         </div>
       </div>
 
+      {/* Unduh KTA sebagai Gambar */}
+      <KtaActions />
+
       <ProfileActions
         initialPhone={dbUser.phone || ''}
         initialPhotoUrl={dbUser.photoUrl || ''}
         registrations={registrations as any}
       />
+
+      {/* Perizinan & Notifikasi */}
+      <PermissionsSettings />
 
       <div className="grid grid-cols-2 gap-3">
         <QrSayaButton className="w-full h-11" />
@@ -220,15 +227,6 @@ export default async function ProfilPage() {
             <span className="font-medium text-primary">{ROLE_LABELS[dbUser.role]}</span>
           </div>
         </div>
-      </div>
-
-      {/* Tampilan & Personalisasi */}
-      <div className="rounded-2xl border bg-card p-5 space-y-4 shadow-sm">
-        <h3 className="font-semibold text-sm flex items-center gap-2">
-          <Palette className="h-4 w-4 text-primary" />
-          Tema & Personalisasi
-        </h3>
-        <AccentColorPicker />
       </div>
 
       {/* Riwayat Jabatan */}

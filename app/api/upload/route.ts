@@ -1,6 +1,7 @@
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import { requireSession } from '@/lib/permissions'
 import { uploadFile } from '@/lib/storage'
+import { rateLimited } from '@/lib/api'
 
 export async function POST(request: Request) {
   try {
@@ -8,6 +9,10 @@ export async function POST(request: Request) {
     if (!user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
+
+    // Batasi upload per IP — cegah spam file / banjir storage.
+    const limited = rateLimited(request as unknown as NextRequest, { limit: 20 })
+    if (limited) return limited
 
     const formData = await request.formData()
     const file = formData.get('file') as File | null

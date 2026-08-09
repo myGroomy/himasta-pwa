@@ -3,6 +3,7 @@ import { prisma } from '@/lib/prisma'
 import { requireApiSession, isApiResponse, notFound, forbidden, serverError } from '@/lib/api'
 import type { SessionUser } from '@/lib/auth'
 
+// Sertifikat = link eksternal yang diisi BPH/Kadiv (bukan gambar yang dibuat app).
 export async function GET(
   req: NextRequest,
   { params }: { params: { id: string } }
@@ -17,15 +18,7 @@ export async function GET(
   try {
     const event = await prisma.event.findUnique({
       where: { id: params.id },
-      select: {
-        id: true,
-        name: true,
-        startTime: true,
-        location: true,
-        divisionId: true,
-        createdById: true,
-        division: { select: { name: true } },
-      },
+      select: { id: true, name: true, divisionId: true, createdById: true },
     })
 
     if (!event) return notFound('Event tidak ditemukan')
@@ -33,10 +26,10 @@ export async function GET(
     let registration
 
     if (registrationId) {
-      if (user.role === 'KADIV') {
+      if (user.role === 'KADIV' && !user.isSuper) {
         const hasAccess = event.divisionId === user.divisionId || event.createdById === user.id
         if (!hasAccess) return forbidden('Kadiv hanya bisa melihat sertifikat peserta event divisi sendiri')
-      } else if (user.role !== 'BPH') {
+      } else if (user.role !== 'BPH' && !user.isSuper) {
         return forbidden('Hanya BPH/Kadiv yang bisa melihat sertifikat peserta lain')
       }
       registration = await prisma.eventRegistration.findUnique({
@@ -57,17 +50,13 @@ export async function GET(
     }
 
     if (!registration.attended) {
-      return forbidden('Sertifikat hanya dapat diunduh jika peserta telah menghadiri event')
+      return forbidden('Sertifikat hanya tersedia jika peserta telah menghadiri event')
     }
 
     return NextResponse.json({
       certificate: {
-        certificateNumber: `CERT/HIMASTA/${event.id.slice(-5).toUpperCase()}/${registration.id.slice(-5).toUpperCase()}`,
-        recipientName: registration.name,
+        url: registration.certificateUrl || null,
         eventName: event.name,
-        eventDate: event.startTime.toISOString(),
-        organizer: event.division ? `Divisi ${event.division.name}` : 'HIMASTA',
-        issuedAt: new Date().toISOString(),
       },
     })
   } catch (error) {

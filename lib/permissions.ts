@@ -26,23 +26,28 @@ export async function getOptionalSession() {
 
 export async function requireRole(roles: Role[]): Promise<SessionUser> {
   const user = await requireSession()
-  if (!roles.includes(user.role)) redirect('/')
+  if (!user.isSuper && !roles.includes(user.role)) redirect('/')
   return user
 }
 
 export const canManageDivision = (user: SessionUser, divisionId?: string | null) =>
-  user.role === 'BPH' || (user.role === 'KADIV' && !!divisionId && user.divisionId === divisionId)
+  Boolean(user.isSuper) ||
+  user.role === 'BPH' ||
+  (user.role === 'KADIV' && !!divisionId && user.divisionId === divisionId)
 
 // --- V2 ---
 
 // Kadiv bisa kelola proker & approval izin di divisi sendiri; BPH lintas divisi
 export const canManageProker = (user: SessionUser, divisionId?: string | null) =>
-  user.role === 'BPH' || (user.role === 'KADIV' && !!divisionId && user.divisionId === divisionId)
+  Boolean(user.isSuper) ||
+  user.role === 'BPH' ||
+  (user.role === 'KADIV' && !!divisionId && user.divisionId === divisionId)
 
 export const canApprovePermission = (user: SessionUser, requesterDivisionId?: string | null) =>
+  Boolean(user.isSuper) ||
   user.role === 'BPH' ||
   (user.role === 'KADIV' && !!requesterDivisionId && user.divisionId === requesterDivisionId)
 
 // Event publik divisi butuh approval BPH; event BPH/general & internal divisi tayang langsung
 export const eventNeedsApproval = (user: SessionUser, visibility: 'INTERNAL' | 'PUBLIC') =>
-  user.role !== 'BPH' && visibility === 'PUBLIC'
+  !user.isSuper && user.role !== 'BPH' && visibility === 'PUBLIC'

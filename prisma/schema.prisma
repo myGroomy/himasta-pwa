@@ -107,6 +107,7 @@ model Division {
   announcements Announcement[]
   documents     Document[]
   sessions      AttendanceSession[]
+  tasks         Task[]
   prokers       Proker[]
   events        Event[]
   discussionThreads DiscussionThread[]
@@ -127,6 +128,7 @@ model User {
   isActive       Boolean   @default(true)
   pendingApproval Boolean  @default(false)   // true = registrasi baru menunggu persetujuan BPH
   qrToken        String?   @unique          // token QR pribadi untuk absensi (di-scan BPH/Kadiv)
+  isSuper        Boolean   @default(false)  // super admin: bypass semua guard role
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
 
@@ -137,6 +139,7 @@ model User {
   sessionsCreated       AttendanceSession[] @relation("SessionCreator")
   documentsUploaded     Document[]          @relation("DocumentUploader")
   notifications         Notification[]
+  pushSubscriptions     PushSubscription[]
   prokersProposed       Proker[]            @relation("ProkerProposer")
   prokersApproved       Proker[]            @relation("ProkerApprover")
   prokersLed            Proker[]            @relation("ProkerPj")
@@ -153,6 +156,7 @@ model User {
   discussionThreads     DiscussionThread[]
   discussionReplies     DiscussionReply[]
   pikets                Piket[]            @relation("UserPiket")
+  announcementReactions AnnouncementReaction[]
 
   @@index([divisionId])
 }
@@ -177,8 +181,10 @@ model Announcement {
   publishedAt  DateTime?
 
   approvalLogs  ApprovalLog[]
+  reactions     AnnouncementReaction[]
 
   @@index([status, scope])
+  @@index([status, publishedAt])
   @@index([divisionId])
   @@index([category])
   @@index([authorId])
@@ -265,6 +271,18 @@ model Notification {
   @@index([userId, isRead])
 }
 
+model PushSubscription {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  endpoint  String   @unique
+  p256dh    String
+  auth      String
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+}
+
 // ============================================
 // V2 PROGRAM KERJA, TASK, IZIN, EVENT
 // ============================================
@@ -305,14 +323,17 @@ model Task {
   title       String
   description String?     @db.Text
   status      TaskStatus  @default(BELUM)
-  prokerId    String
-  proker      Proker      @relation(fields: [prokerId], references: [id], onDelete: Cascade)
+  prokerId    String?
+  proker      Proker?     @relation(fields: [prokerId], references: [id], onDelete: Cascade)
+  divisionId  String?                 // task tingkat divisi (tanpa proker)
+  division    Division?   @relation(fields: [divisionId], references: [id], onDelete: Cascade)
   assigneeId  String?
   assignee    User?       @relation(fields: [assigneeId], references: [id], onDelete: SetNull)
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
 
   @@index([prokerId])
+  @@index([divisionId])
   @@index([assigneeId])
 }
 
@@ -376,6 +397,7 @@ model EventRegistration {
   institution String?                     // instansi / asal universitas
   qrToken    String?  @unique             // token absensi eksternal (jalur QR terpisah)
   attended   Boolean  @default(false)
+  certificateUrl String?                  // link sertifikat (diisi BPH/Kadiv)
   createdAt  DateTime @default(now())
 
   @@unique([eventId, userId])
@@ -512,6 +534,18 @@ model Piket {
   updatedAt   DateTime  @updatedAt
 
   @@unique([date, userId])
+  @@index([userId])
+}
+
+model AnnouncementReaction {
+  id             String       @id @default(cuid())
+  announcementId String
+  announcement   Announcement @relation(fields: [announcementId], references: [id], onDelete: Cascade)
+  userId         String
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt      DateTime     @default(now())
+
+  @@unique([announcementId, userId])
   @@index([userId])
 }
 

@@ -20,10 +20,16 @@ function announcementWhereFor(user: SessionUser): Prisma.AnnouncementWhereInput 
   }
 }
 
-const ANNOUNCEMENT_INCLUDE = {
-  author: { select: { name: true, email: true } },
-  division: { select: { name: true, slug: true } },
-} satisfies Prisma.AnnouncementInclude
+function announcementIncludeFor(user: SessionUser) {
+  return {
+    author: { select: { name: true, email: true } },
+    division: { select: { name: true, slug: true } },
+    _count: { select: { reactions: true } },
+    // Hanya fetch reaksi milik user ini (≤1 baris per announcement),
+    // bukan semua reaction rows. Count tetap dari _count.
+    reactions: { where: { userId: user.id }, select: { userId: true } },
+  } satisfies Prisma.AnnouncementInclude
+}
 
 export async function getPublishedAnnouncements(user: SessionUser, extraWhere: Prisma.AnnouncementWhereInput = {}) {
   return prisma.announcement.findMany({
@@ -32,7 +38,7 @@ export async function getPublishedAnnouncements(user: SessionUser, extraWhere: P
       ...announcementWhereFor(user),
       ...extraWhere,
     },
-    include: ANNOUNCEMENT_INCLUDE,
+    include: announcementIncludeFor(user),
     orderBy: { publishedAt: 'desc' },
     take: 50,
   })
@@ -45,6 +51,6 @@ export async function getAnnouncementById(id: string, user: SessionUser) {
       status: 'PUBLISHED',
       ...announcementWhereFor(user),
     },
-    include: ANNOUNCEMENT_INCLUDE,
+    include: announcementIncludeFor(user),
   })
 }

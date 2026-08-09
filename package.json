@@ -40,7 +40,7 @@
     "date-fns": "^3.6.0",
     "framer-motion": "^11.11.0",
     "graphify": "^1.0.0",
-    "html2canvas": "^1.4.1",
+    "html-to-image": "^1.11.13",
     "html5-qrcode": "^2.3.8",
     "lucide-react": "^0.428.0",
     "next": "^14.2.0",
@@ -54,6 +54,7 @@
     "sanitize-html": "^2.17.6",
     "tailwind-merge": "^2.5.0",
     "tailwindcss-animate": "^1.0.7",
+    "web-push": "^3.6.7",
     "xlsx": "^0.18.5",
     "zod": "^3.23.0"
   },

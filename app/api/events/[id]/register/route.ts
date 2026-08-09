@@ -1,11 +1,16 @@
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import crypto from 'crypto'
+import { rateLimited } from '@/lib/api'
 
 export async function POST(req: Request, { params }: { params: { id: string } }) {
   try {
+    // Endpoint publik (bisa tanpa session) — batasi spam pendaftaran.
+    const limited = rateLimited(req as unknown as NextRequest, { limit: 30 })
+    if (limited) return limited
+
     const session = await getServerSession(authOptions)
     const bodyText = await req.text()
 

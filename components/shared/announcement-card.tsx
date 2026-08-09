@@ -5,11 +5,14 @@ import { Calendar, Eye, Globe, Lock, UserRound } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
+import { AnnouncementReaction } from '@/components/shared/announcement-reaction'
 import { timeAgo } from '@/lib/utils'
 
 type AnnouncementCardData = Announcement & {
   author: Pick<User, 'name' | 'email'>
   division?: Pick<Division, 'name' | 'slug'> | null
+  _count?: { reactions: number }
+  reactions?: { userId: string }[]
 }
 
 const CATEGORY_BADGE: Record<string, string> = {
@@ -57,10 +60,12 @@ export function scopeBadge(scope: AnnouncementScope, divisionName?: string | nul
 export function AnnouncementCard({
   announcement,
   showStatus = false,
+  currentUserId,
   children,
 }: {
   announcement: AnnouncementCardData
   showStatus?: boolean
+  currentUserId?: string
   children?: React.ReactNode
 }) {
   const category = (announcement as { category?: string }).category
@@ -111,6 +116,17 @@ export function AnnouncementCard({
         <span className="flex items-center gap-1">
           <Calendar className="h-3 w-3" />
           {timeAgo(announcement.publishedAt ?? announcement.createdAt)}
+        </span>
+        <span className="ml-auto">
+          <AnnouncementReaction
+            announcementId={announcement.id}
+            initialCount={announcement._count?.reactions ?? 0}
+            initialReacted={
+              currentUserId
+                ? (announcement.reactions?.some((r) => r.userId === currentUserId) ?? false)
+                : false
+            }
+          />
         </span>
       </CardFooter>
     </Card>

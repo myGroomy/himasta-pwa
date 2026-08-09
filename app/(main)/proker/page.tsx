@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { Plus } from 'lucide-react'
-import { requireRole } from '@/lib/permissions'
+import { requireSession } from '@/lib/permissions'
 import { prisma } from '@/lib/prisma'
 import { PageHeader } from '@/components/shared/page-header'
 import { Button } from '@/components/ui/button'
@@ -10,9 +10,12 @@ import { getApiUserList } from './data'
 export const dynamic = 'force-dynamic'
 
 export default async function ProkerPage() {
-  const user = await requireRole(['BPH', 'KADIV'])
+  const user = await requireSession()
 
-  const where = user.role === 'BPH' ? {} : { divisionId: user.divisionId ?? undefined }
+  const where =
+    user.role === 'BPH' || user.role === 'DOSEN'
+      ? {}
+      : { divisionId: user.divisionId ?? undefined }
 
   const prokers = await prisma.proker.findMany({
     where,
@@ -43,7 +46,9 @@ export default async function ProkerPage() {
         description={
           user.role === 'BPH'
             ? 'Monitoring seluruh proker lintas divisi.'
-            : 'Kelola proker divisi Anda dari pengajuan hingga selesai.'
+            : user.role === 'KADIV'
+              ? 'Kelola proker divisi Anda dari pengajuan hingga selesai.'
+              : 'Lihat program kerja divisi Anda.'
         }
         action={
           user.role === 'BPH' || user.role === 'KADIV' ? (
@@ -60,7 +65,7 @@ export default async function ProkerPage() {
       <ProkerDashboard
         user={{ id: user.id, role: user.role, divisionId: user.divisionId }}
         prokers={serialized}
-        users={await getApiUserList()}
+        users={await getApiUserList(user.divisionId)}
         isBPH={user.role === 'BPH'}
       />
     </div>

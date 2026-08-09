@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Html5Qrcode } from 'html5-qrcode'
 import { Camera, CheckCircle2, Loader2, XCircle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { QrFileFallback } from './qr-file-fallback'
 
 const SCANNER_ID = 'member-qr-reader-region'
 
@@ -14,10 +15,50 @@ export function MemberQrScanner({ sessionId }: { sessionId: string }) {
   const [message, setMessage] = useState('')
   const scannerRef = useRef<Html5Qrcode | null>(null)
   const processedRef = useRef(false)
+  const activeRef = useRef(true)
+
+  function getScanner() {
+    if (!scannerRef.current) scannerRef.current = new Html5Qrcode(SCANNER_ID, false)
+    return scannerRef.current
+  }
+
+  async function submitMemberToken(memberToken: string) {
+    if (processedRef.current || !activeRef.current) return
+    processedRef.current = true
+    try {
+      const res = await fetch('/api/attendance/mark', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ memberToken, sessionId }),
+      })
+      const data = await res.json().catch(() => null)
+      if (res.ok) {
+        setStatus('success')
+        setMessage(`Kehadiran tercatat untuk ${data?.member?.name ?? 'anggota'}.`)
+      } else {
+        setStatus('error')
+        setMessage(data?.error ?? 'Gagal mencatat kehadiran.')
+      }
+    } catch {
+      setStatus('error')
+      setMessage('Terjadi kesalahan jaringan.')
+    }
+    resetAfterDelay()
+  }
+
+  function resetAfterDelay() {
+    setTimeout(() => {
+      if (!activeRef.current) return
+      processedRef.current = false
+      setStatus('scanning')
+      setMessage('Arahkan kamera ke QR berikutnya')
+    }, 3000)
+  }
 
   useEffect(() => {
     let html5Qr: Html5Qrcode | null = null
     let active = true
+    activeRef.current = true
 
     async function init() {
       try {
@@ -31,8 +72,6 @@ export function MemberQrScanner({ sessionId }: { sessionId: string }) {
           { fps: 10, qrbox: { width: 220, height: 220 } },
           async (decodedText) => {
             if (processedRef.current || !active) return
-            processedRef.current = true
-
             const memberToken = extractMemberToken(decodedText)
             if (!memberToken) {
               setStatus('error')
@@ -40,57 +79,28 @@ export function MemberQrScanner({ sessionId }: { sessionId: string }) {
               resetAfterDelay()
               return
             }
-
-            try {
-              const res = await fetch('/api/attendance/mark', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ memberToken, sessionId }),
-              })
-              const data = await res.json().catch(() => null)
-
-              if (res.ok) {
-                setStatus('success')
-                setMessage(`Kehadiran tercatat untuk ${data?.member?.name ?? 'anggota'}.`)
-              } else {
-                setStatus('error')
-                setMessage(data?.error ?? 'Gagal mencatat kehadiran.')
-              }
-            } catch {
-              setStatus('error')
-              setMessage('Terjadi kesalahan jaringan.')
-            }
-            resetAfterDelay()
+            await submitMemberToken(memberToken)
           },
           () => {}
         )
       } catch (err) {
         if (!active) return
         setStatus('camera-denied')
-        setMessage('Kamera tidak dapat diakses. Izinkan akses kamera.')
+        setMessage('Kamera tidak dapat diakses langsung. Ambil foto QR anggota.')
         console.error(err)
       }
-    }
-
-    function resetAfterDelay() {
-      setTimeout(() => {
-        if (!active) return
-        processedRef.current = false
-        setStatus('scanning')
-        setMessage('Arahkan kamera ke QR berikutnya')
-      }, 3000)
     }
 
     init()
 
     return () => {
       active = false
+      activeRef.current = false
       processedRef.current = true
-      const scanner = scannerRef.current
-      if (scanner && scanner.isScanning) {
-        scanner
+      if (html5Qr && html5Qr.isScanning) {
+        html5Qr
           .stop()
-          .then(() => scanner.clear())
+          .then(() => html5Qr?.clear())
           .catch(() => {})
       }
     }
@@ -119,11 +129,25 @@ export function MemberQrScanner({ sessionId }: { sessionId: string }) {
             {message}
           </div>
           <p className="text-center text-xs opacity-80">
-            Pastikan akses lewat HTTPS (ngrok) dan izinkan kamera di browser. Buka dari URL https, bukan http.
+            Pastikan akses lewat HTTPS dan izinkan kamera di browser.
           </p>
-          <Button size="sm" variant="outline" onClick={() => window.location.reload()}>
-            Coba lagi
-          </Button>
+          <div className="flex flex-wrap justify-center gap-2">
+            <Button size="sm" variant="outline" onClick={() => window.location.reload()}>
+              Coba lagi
+            </Button>
+            <QrFileFallback
+              getScanner={getScanner}
+              onToken={async (decoded) => {
+                const memberToken = extractMemberToken(decoded)
+                if (!memberToken) {
+                  setStatus('error')
+                  setMessage('QR tidak dikenal. Gunakan QR pribadi anggota HIMASTA.')
+                  return
+                }
+                await submitMemberToken(memberToken)
+              }}
+            />
+          </div>
         </div>
       )}
       {status === 'scanning' && (

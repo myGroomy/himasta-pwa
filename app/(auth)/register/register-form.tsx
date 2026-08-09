@@ -11,10 +11,10 @@ import { useToast } from '@/components/ui/use-toast'
 export function RegisterForm() {
   const router = useRouter()
   const { toast } = useToast()
-  
+
   const [loading, setLoading] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
-  
+
   const [form, setForm] = useState({
     name: '',
     email: '',
@@ -61,15 +61,16 @@ export function RegisterForm() {
     router.push('/login')
   }
 
+  const fieldClass = 'pl-9 h-10'
+
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      {/* Nama Lengkap */}
       <div className="flex flex-col gap-1.5 text-left">
-        <Label className="text-[10px] font-bold uppercase tracking-wider text-slate-300" htmlFor="nama">
-          NAMA LENGKAP
+        <Label className="text-sm font-medium text-foreground" htmlFor="nama">
+          Nama Lengkap
         </Label>
         <div className="relative">
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-muted-foreground">
             <User className="h-4 w-4" />
           </div>
           <Input
@@ -78,18 +79,17 @@ export function RegisterForm() {
             onChange={(e) => set('name', e.target.value)}
             required
             placeholder="Masukkan nama lengkap"
-            className="block w-full pl-10 pr-3 py-3 border border-white/10 bg-[#001035] text-white placeholder:text-slate-500 focus:border-white/40 focus:ring-0 transition-colors min-h-[48px] text-sm rounded"
+            className={fieldClass}
           />
         </div>
       </div>
 
-      {/* NIM */}
       <div className="flex flex-col gap-1.5 text-left">
-        <Label className="text-[10px] font-bold uppercase tracking-wider text-slate-300" htmlFor="nim">
+        <Label className="text-sm font-medium text-foreground" htmlFor="nim">
           NIM
         </Label>
         <div className="relative">
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-muted-foreground">
             <ShieldAlert className="h-4 w-4" />
           </div>
           <Input
@@ -100,18 +100,17 @@ export function RegisterForm() {
             minLength={10}
             maxLength={10}
             placeholder="Masukkan NIM Anda"
-            className="block w-full pl-10 pr-3 py-3 border border-white/10 bg-[#001035] text-white placeholder:text-slate-500 focus:border-white/40 focus:ring-0 transition-colors min-h-[48px] text-sm rounded"
+            className={fieldClass}
           />
         </div>
       </div>
 
-      {/* Email */}
       <div className="flex flex-col gap-1.5 text-left">
-        <Label className="text-[10px] font-bold uppercase tracking-wider text-slate-300" htmlFor="email">
-          EMAIL
+        <Label className="text-sm font-medium text-foreground" htmlFor="email">
+          Email
         </Label>
         <div className="relative">
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-muted-foreground">
             <Mail className="h-4 w-4" />
           </div>
           <Input
@@ -121,18 +120,17 @@ export function RegisterForm() {
             onChange={(e) => set('email', e.target.value)}
             required
             placeholder="contoh@mahasiswa.edu"
-            className="block w-full pl-10 pr-3 py-3 border border-white/10 bg-[#001035] text-white placeholder:text-slate-500 focus:border-white/40 focus:ring-0 transition-colors min-h-[48px] text-sm rounded"
+            className={fieldClass}
           />
         </div>
       </div>
 
-      {/* No. HP */}
       <div className="flex flex-col gap-1.5 text-left">
-        <Label className="text-[10px] font-bold uppercase tracking-wider text-slate-300" htmlFor="phone">
-          NO. HP / WHATSAPP
+        <Label className="text-sm font-medium text-foreground" htmlFor="phone">
+          No. HP / WhatsApp
         </Label>
         <div className="relative">
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-muted-foreground">
             <Phone className="h-4 w-4" />
           </div>
           <Input
@@ -141,18 +139,17 @@ export function RegisterForm() {
             onChange={(e) => set('phone', e.target.value)}
             required
             placeholder="08xxxxxxxxxx"
-            className="block w-full pl-10 pr-3 py-3 border border-white/10 bg-[#001035] text-white placeholder:text-slate-500 focus:border-white/40 focus:ring-0 transition-colors min-h-[48px] text-sm rounded"
+            className={fieldClass}
           />
         </div>
       </div>
 
-      {/* Password */}
       <div className="flex flex-col gap-1.5 text-left">
-        <Label className="text-[10px] font-bold uppercase tracking-wider text-slate-300" htmlFor="password">
-          PASSWORD
+        <Label className="text-sm font-medium text-foreground" htmlFor="password">
+          Password
         </Label>
         <div className="relative">
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-muted-foreground">
             <Lock className="h-4 w-4" />
           </div>
           <Input
@@ -163,22 +160,22 @@ export function RegisterForm() {
             onChange={(e) => set('password', e.target.value)}
             required
             minLength={6}
-            className="block w-full pl-10 pr-12 py-3 border border-white/10 bg-[#001035] text-white placeholder:text-slate-500 focus:border-white/40 focus:ring-0 transition-colors min-h-[48px] text-sm rounded"
+            className="pl-9 pr-10 h-10"
           />
           <button
             type="button"
             onClick={() => setShowPassword((v) => !v)}
-            className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-white transition-colors focus:outline-none"
+            aria-label={showPassword ? 'Sembunyikan password' : 'Tampilkan password'}
+            className="absolute inset-y-0 right-0 pr-3 flex items-center text-muted-foreground hover:text-foreground transition-colors"
           >
             {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
           </button>
         </div>
       </div>
 
-      {/* Action Button */}
       <Button
         type="submit"
-        className="w-full bg-white hover:bg-slate-100 text-[#001035] font-bold py-3 px-4 rounded transition-colors min-h-[48px] flex justify-center items-center mt-2 border-0"
+        className="w-full h-10 font-semibold"
         disabled={loading}
       >
         {loading && <Loader2 className="h-4 w-4 animate-spin mr-2" />}

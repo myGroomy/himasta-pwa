@@ -129,6 +129,7 @@ export function CertificateModal({ isOpen, onClose, data }: CertificateModalProp
       <div className="relative w-full max-w-2xl overflow-hidden rounded-2xl border border-slate-700 bg-slate-900 p-6 shadow-2xl">
         <button
           onClick={onClose}
+          aria-label="Tutup"
           className="absolute right-4 top-4 rounded-full p-2 text-slate-400 hover:bg-slate-800 hover:text-white"
         >
           <X className="h-5 w-5" />

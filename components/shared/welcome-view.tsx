@@ -80,7 +80,7 @@ export function WelcomeView({ user, totalUsers, activeProkers, nextEvent, eventD
         <div className="flex items-center">
           <Link href="/welcome" className="text-2xl font-bold text-primary flex items-center gap-2.5">
             <div className="relative h-8 w-8 overflow-hidden bg-white rounded p-0.5 shrink-0">
-              <Image src="/himasta-logo.png" alt="Logo HIMASTA" fill className="object-contain" />
+              <Image src="/himasta-logo.webp" alt="Logo HIMASTA" fill className="object-contain" />
             </div>
             HIMASTA
           </Link>
@@ -91,21 +91,33 @@ export function WelcomeView({ user, totalUsers, activeProkers, nextEvent, eventD
           <a className="text-muted-foreground hover:text-primary transition" href="#benefits">Manfaat</a>
           <Link className="text-muted-foreground hover:text-primary transition" href="/welcome/events">Event Umum</Link>
         </nav>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2">
           <ThemeToggle />
+          <Link
+            href="/welcome/events"
+            aria-label="Event Umum"
+            title="Event Umum"
+            className="flex h-9 w-9 items-center justify-center rounded-md text-muted-foreground hover:bg-secondary hover:text-foreground transition"
+          >
+            <CalendarDays className="h-5 w-5" />
+          </Link>
           {user ? (
-            <Link 
-              href="/" 
-              className="bg-primary text-primary-foreground px-6 py-2 rounded font-medium hover:opacity-90 transition flex items-center gap-1.5"
+            <Link
+              href="/"
+              aria-label="Dashboard"
+              title="Dashboard"
+              className="flex h-9 w-9 items-center justify-center rounded-md bg-primary text-primary-foreground hover:opacity-90 transition"
             >
-              <LayoutGrid className="h-4 w-4" /> Dashboard
+              <LayoutGrid className="h-5 w-5" />
             </Link>
           ) : (
-            <Link 
-              href="/login" 
-              className="bg-primary text-primary-foreground px-6 py-2 rounded font-medium hover:opacity-90 transition flex items-center gap-1.5"
+            <Link
+              href="/login"
+              aria-label="Masuk Portal"
+              title="Masuk Portal"
+              className="flex h-9 w-9 items-center justify-center rounded-md bg-primary text-primary-foreground hover:opacity-90 transition"
             >
-              <LogIn className="h-4 w-4" /> Masuk Portal
+              <LogIn className="h-5 w-5" />
             </Link>
           )}
         </div>
@@ -435,7 +447,7 @@ export function WelcomeView({ user, totalUsers, activeProkers, nextEvent, eventD
             <div className="col-span-1 md:col-span-1 space-y-6">
               <div className="text-2xl font-bold text-foreground flex items-center gap-2">
                 <div className="relative h-7 w-7 overflow-hidden bg-white rounded p-0.5 shrink-0">
-                  <Image src="/himasta-logo.png" alt="Logo HIMASTA" fill className="object-contain" />
+                  <Image src="/himasta-logo.webp" alt="Logo HIMASTA" fill className="object-contain" />
                 </div>
                 HIMASTA
               </div>

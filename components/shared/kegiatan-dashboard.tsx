@@ -42,7 +42,6 @@ type SessionData = {
   isActive: boolean
   division: { id: string; name: string; slug: string } | null
   createdBy: { id: string; name: string }
-  _count: { records: number }
   statusCounts?: Record<string, number>
 }
 
@@ -348,7 +347,7 @@ function SessionDetailDialog({
             </span>
             <span className="mt-1 flex items-center gap-1.5">
               <Users className="h-3.5 w-3.5" />
-              {session._count.records} hadir
+              {Object.values(session.statusCounts ?? {}).reduce((a, b) => a + b, 0)} hadir
             </span>
             <span className="mt-1 flex items-center gap-1.5">
               <UserRound className="h-3.5 w-3.5" />
@@ -467,7 +466,7 @@ function SessionCard({
               </span>
               <span className="flex items-center gap-1">
                 <Users className="h-3.5 w-3.5" />
-                {session._count.records} hadir
+                {Object.values(session.statusCounts ?? {}).reduce((a, b) => a + b, 0)} hadir
               </span>
               <span className="flex items-center gap-1">
                 <UserRound className="h-3.5 w-3.5" />

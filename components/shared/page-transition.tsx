@@ -1,24 +1,19 @@
 'use client'
 
-import { motion, AnimatePresence } from 'framer-motion'
 import { usePathname } from 'next/navigation'
 import React from 'react'
 
+// CSS animation — tanpa framer-motion (50KB di tiap halaman via layout).
+// Fade-in cepat, tidak blokir navigasi (tanpa exit/wait).
 export function PageTransition({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
 
   return (
-    <AnimatePresence mode="wait">
-      <motion.div
-        key={pathname}
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -10 }}
-        transition={{ duration: 0.25, ease: 'easeOut' }}
-        className="w-full h-full"
-      >
-        {children}
-      </motion.div>
-    </AnimatePresence>
+    <div
+      key={pathname}
+      className="w-full h-full animate-in fade-in slide-in-from-bottom-1 duration-200"
+    >
+      {children}
+    </div>
   )
 }

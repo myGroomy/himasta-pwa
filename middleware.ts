@@ -77,6 +77,7 @@ export const config = {
     '/divisi/:path*',
     '/proker/:path*',
     '/izin/:path*',
+    '/diskusi/:path*',
     '/events/:path*',
     '/kalender/:path*',
     '/admin/:path*',

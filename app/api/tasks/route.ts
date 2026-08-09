@@ -13,7 +13,8 @@ import type { SessionUser } from '@/lib/auth'
 const createSchema = z.object({
   title: z.string().min(1, 'Judul task wajib diisi').max(200),
   description: z.string().max(1000).optional().nullable(),
-  prokerId: z.string(),
+  prokerId: z.string().optional().nullable(),
+  divisionId: z.string().optional().nullable(),
   assigneeId: z.string().nullable().optional(),
 })
 
@@ -26,13 +27,23 @@ export async function POST(req: NextRequest) {
   const parsed = createSchema.safeParse(body)
   if (!parsed.success) return badRequest(parsed.error.issues[0]?.message ?? 'Data tidak valid')
 
-  const proker = await prisma.proker.findUnique({
-    where: { id: parsed.data.prokerId },
-    select: { id: true, divisionId: true },
-  })
-  if (!proker) return badRequest('Proker tidak ditemukan')
-  if (user.role === 'KADIV' && proker.divisionId !== user.divisionId) {
-    return forbidden('Kadiv hanya bisa menambah task di proker divisi sendiri')
+  // Task bisa melekat ke proker ATAU ke divisi langsung
+  let proker: { id: string; divisionId: string } | null = null
+  if (parsed.data.prokerId) {
+    proker = await prisma.proker.findUnique({
+      where: { id: parsed.data.prokerId },
+      select: { id: true, divisionId: true },
+    })
+    if (!proker) return badRequest('Proker tidak ditemukan')
+    if (!user.isSuper && user.role === 'KADIV' && proker.divisionId !== user.divisionId) {
+      return forbidden('Kadiv hanya bisa menambah task di proker divisi sendiri')
+    }
+  } else if (parsed.data.divisionId) {
+    if (!user.isSuper && user.role === 'KADIV' && parsed.data.divisionId !== user.divisionId) {
+      return forbidden('Kadiv hanya bisa menambah task di divisi sendiri')
+    }
+  } else {
+    return badRequest('prokerId atau divisionId wajib diisi')
   }
 
   try {
@@ -40,7 +51,8 @@ export async function POST(req: NextRequest) {
       data: {
         title: parsed.data.title,
         description: parsed.data.description ?? null,
-        prokerId: proker.id,
+        prokerId: proker?.id ?? null,
+        divisionId: parsed.data.divisionId ?? null,
         assigneeId: parsed.data.assigneeId ?? null,
       },
       include: { assignee: { select: { id: true, name: true } } },

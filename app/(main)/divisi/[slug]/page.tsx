@@ -35,7 +35,7 @@ export default async function DivisionWorkspacePage({ params }: { params: { slug
     )
   }
 
-  const [announcements, documents, members, sessions] = await Promise.all([
+  const [announcements, documents, members, sessions, prokers, tasks] = await Promise.all([
     prisma.announcement.findMany({
       where: { divisionId: division.id, status: 'PUBLISHED' },
       include: {
@@ -63,6 +63,25 @@ export default async function DivisionWorkspacePage({ params }: { params: { slug
       orderBy: { startTime: 'desc' },
       take: 20,
     }),
+    prisma.proker.findMany({
+      where: { divisionId: division.id },
+      select: {
+        id: true,
+        name: true,
+        description: true,
+        status: true,
+        timeline: true,
+        pj: { select: { name: true } },
+      },
+      orderBy: { createdAt: 'desc' },
+      take: 30,
+    }),
+    prisma.task.findMany({
+      where: { divisionId: division.id },
+      include: { assignee: { select: { id: true, name: true } } },
+      orderBy: { createdAt: 'desc' },
+      take: 50,
+    }),
   ])
 
   const canManage = isBPH || isOwnDivision
@@ -73,8 +92,9 @@ export default async function DivisionWorkspacePage({ params }: { params: { slug
       user={user}
       members={members}
       documents={documents}
-      tasks={[]} // disuplai dari table proker tasks (opsional) atau empty array ponytail
+      tasks={tasks}
       sessions={sessions}
+      prokers={prokers}
       canManage={canManage}
     />
   )

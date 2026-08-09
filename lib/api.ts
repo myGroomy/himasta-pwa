@@ -33,7 +33,7 @@ export function serverError(error?: unknown) {
 export async function requireApiSession(roles?: Role[]): Promise<SessionUser | NextResponse> {
   const user = await getApiSession()
   if (!user) return unauthorized()
-  if (roles && !roles.includes(user.role)) return forbidden()
+  if (roles && !user.isSuper && !roles.includes(user.role)) return forbidden()
   return user
 }
 

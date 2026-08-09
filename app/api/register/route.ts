@@ -1,10 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import bcrypt from 'bcryptjs'
-import { serverError } from '@/lib/api'
+import { serverError, rateLimited } from '@/lib/api'
 
 export async function POST(req: NextRequest) {
   try {
+    // Endpoint publik + bcrypt hash mahal — batasi spam / brute force.
+    const limited = rateLimited(req, { limit: 10 })
+    if (limited) return limited
+
     const json = await req.json()
     const { name, email, nim, password, divisionId } = json
 
@@ -12,10 +16,12 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Nama, Email, dan Password wajib diisi' }, { status: 400 })
     }
 
+    const normalizedEmail = String(email).trim().toLowerCase()
+
     const existingUser = await prisma.user.findFirst({
       where: {
         OR: [
-          { email },
+          { email: normalizedEmail },
           ...(nim ? [{ nim }] : [])
         ]
       }
@@ -30,7 +36,7 @@ export async function POST(req: NextRequest) {
     const user = await prisma.user.create({
       data: {
         name,
-        email,
+        email: normalizedEmail,
         nim: nim || null,
         password: hashedPassword,
         role: 'ANGGOTA',

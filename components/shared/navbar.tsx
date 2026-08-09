@@ -61,7 +61,7 @@ export function Navbar({ user, divisions, unreadCount, latestNotifications }: Na
         <Link href="/" className="flex items-center gap-3 font-bold hover:opacity-90 transition-opacity">
           <div className="relative h-9 w-9 overflow-hidden rounded-md">
             <Image
-              src="/himasta-logo.png"
+              src="/himasta-logo.webp"
               alt="Logo HIMASTA"
               fill
               className="object-contain"
@@ -77,6 +77,18 @@ export function Navbar({ user, divisions, unreadCount, latestNotifications }: Na
         <div className="flex items-center gap-2">
           <SearchDialog divisions={divisions} />
           <ThemeToggle />
+          <Button
+            asChild
+            variant="ghost"
+            size="icon"
+            className="text-muted-foreground hover:text-foreground hover:bg-secondary"
+            aria-label="Buka Landing Page"
+            title="Landing Page"
+          >
+            <Link href="/welcome">
+              <Globe className="h-5 w-5" />
+            </Link>
+          </Button>
           
           <DropdownMenu modal={false}>
             <DropdownMenuTrigger asChild>
@@ -152,12 +164,6 @@ export function Navbar({ user, divisions, unreadCount, latestNotifications }: Na
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
                 <Link href="/direktori">Direktori Anggota</Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link href="/welcome">
-                  <Globe className="h-4 w-4" />
-                  Landing Page
-                </Link>
               </DropdownMenuItem>
 
               {(user.role === 'BPH' || user.role === 'KADIV') && (

@@ -293,6 +293,7 @@ export function NotionCalendarView({
               <h3 className="font-bold text-base text-foreground">Detail Agenda</h3>
               <button
                 onClick={() => setSelectedItem(null)}
+                aria-label="Tutup"
                 className="text-muted-foreground hover:text-foreground p-1.5 rounded-full hover:bg-muted transition-colors"
               >
                 <X className="h-5 w-5" />

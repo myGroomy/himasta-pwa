@@ -44,6 +44,12 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Title, konten, dan divisi wajib diisi' }, { status: 400 })
     }
 
+    // BOLA: cek scope divisi. Non-BPH hanya boleh post ke divisi sendiri.
+    const user = session.user as { id: string; role: string; divisionId?: string | null }
+    if (user.role !== 'BPH' && user.divisionId !== divisionId) {
+      return NextResponse.json({ error: 'Anda hanya dapat berdiskusi di divisi sendiri' }, { status: 403 })
+    }
+
     const thread = await prisma.discussionThread.create({
       data: {
         title: title.trim(),

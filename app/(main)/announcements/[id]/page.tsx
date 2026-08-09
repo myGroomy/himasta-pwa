@@ -5,6 +5,7 @@ import { ArrowLeft, Calendar, UserRound } from 'lucide-react'
 import { requireSession } from '@/lib/permissions'
 import { getAnnouncementById } from '@/lib/feed'
 import { scopeBadge } from '@/components/shared/announcement-card'
+import { AnnouncementReaction } from '@/components/shared/announcement-reaction'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
@@ -92,6 +93,13 @@ export default async function AnnouncementDetailPage({ params }: { params: { id:
             }) 
           }}
         />
+        <CardContent className="border-t pt-4">
+          <AnnouncementReaction
+            announcementId={announcement.id}
+            initialCount={announcement._count?.reactions ?? 0}
+            initialReacted={announcement.reactions?.some((r) => r.userId === user.id) ?? false}
+          />
+        </CardContent>
       </Card>
     </div>
   )

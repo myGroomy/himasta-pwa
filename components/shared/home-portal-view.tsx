@@ -12,6 +12,7 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { timeAgo } from '@/lib/utils'
+import sanitizeHtml from 'sanitize-html'
 import { toast } from '@/components/ui/use-toast'
 import { DateTimeWidget } from '@/components/shared/date-time-widget'
 import {
@@ -320,7 +321,9 @@ export function HomePortalView({
                   <div
                     className="text-muted-foreground text-xs line-clamp-2 leading-relaxed"
                     dangerouslySetInnerHTML={{
-                      __html: a.content
+                      __html: sanitizeHtml(a.content, {
+                        allowedTags: ['p', 'br', 'strong', 'em', 'u', 'ul', 'ol', 'li'],
+                      }),
                     }}
                   />
                   <div className="mt-4 flex items-center gap-2 pt-3 border-t border-border text-[11px] text-muted-foreground">
@@ -350,6 +353,7 @@ export function HomePortalView({
               <h3 className="font-bold text-base text-foreground">Kustomisasi Menu</h3>
               <button
                 onClick={() => setShowCustomize(false)}
+                aria-label="Tutup"
                 className="text-muted-foreground hover:text-foreground p-1 hover:bg-secondary rounded-lg transition-colors"
               >
                 <X className="h-5 w-5" />
@@ -403,6 +407,9 @@ export function HomePortalView({
               })}
             </div>
             <div className="p-4 border-t border-border flex justify-end gap-2 bg-secondary/20">
+              <Button variant="ghost" size="sm" onClick={() => setTempGridItems(DEFAULT_GRID)}>
+                Reset
+              </Button>
               <Button variant="outline" size="sm" onClick={() => setShowCustomize(false)}>
                 Batal
               </Button>

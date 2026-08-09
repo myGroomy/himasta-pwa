@@ -1,5 +1,5 @@
-/* Service Worker sederhana HIMASTA V1 */
-const CACHE_NAME = 'himasta-v1'
+/* Service Worker sederhana HIMASTA V2 (web push) */
+const CACHE_NAME = 'himasta-v2'
 const APP_SHELL = ['/', '/login', '/manifest.json', '/icon.svg']
 
 self.addEventListener('install', (event) => {

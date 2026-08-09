@@ -23,7 +23,7 @@ export async function GET(
     select: { id: true, divisionId: true, createdById: true },
   })
   if (!event) return notFound('Event tidak ditemukan')
-  if (user.role === 'KADIV' && event.divisionId !== user.divisionId && event.createdById !== user.id) {
+  if (!user.isSuper && user.role === 'KADIV' && event.divisionId !== user.divisionId && event.createdById !== user.id) {
     return forbidden('Kadiv hanya bisa melihat peserta event divisi sendiri')
   }
 
@@ -60,9 +60,14 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
   if (!registrationId) return NextResponse.json({ error: 'registrationId wajib' }, { status: 400 })
 
   try {
+    const data: { attended: boolean; certificateUrl?: string | null } = { attended }
+    // BPH bisa set link sertifikat (string) atau hapus (null)
+    if ('certificateUrl' in (body ?? {})) {
+      data.certificateUrl = body.certificateUrl ? String(body.certificateUrl).trim() : null
+    }
     const registration = await prisma.eventRegistration.update({
       where: { id: registrationId, eventId: event.id },
-      data: { attended },
+      data,
     })
     return NextResponse.json({ registration })
   } catch (error) {

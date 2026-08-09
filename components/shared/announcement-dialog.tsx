@@ -22,6 +22,8 @@ export type AnnouncementDialogData = {
   createdAt?: Date | string
   author: { name: string }
   division?: { name: string } | null
+  _count?: { reactions: number }
+  reactions?: { userId: string }[]
 }
 
 const CATEGORY_BADGE: Record<string, string> = {

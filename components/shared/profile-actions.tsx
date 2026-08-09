@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { signOut } from 'next-auth/react'
 import Link from 'next/link'
-import { Download, Edit, LogOut, CheckCircle2, Award, Calendar, Clock, MapPin, QrCode, X } from 'lucide-react'
+import { Edit, LogOut, CheckCircle2, Award, Calendar, Clock, MapPin, QrCode, X, ExternalLink } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import {
@@ -17,7 +17,6 @@ import {
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import html2canvas from 'html2canvas'
 import { formatDate } from '@/lib/utils'
 
 type Registration = {
@@ -43,7 +42,6 @@ export function ProfileActions({ initialPhone, initialPhotoUrl, registrations }:
   const router = useRouter()
   const [phone, setPhone] = useState(initialPhone)
   const [photoUrl, setPhotoUrl] = useState(initialPhotoUrl)
-  const [isDownloading, setIsDownloading] = useState(false)
   const [isSaving, setIsSaving] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
 
@@ -51,22 +49,6 @@ export function ProfileActions({ initialPhone, initialPhotoUrl, registrations }:
   const [selectedCert, setSelectedCert] = useState<any | null>(null)
   const [loadingCert, setLoadingCert] = useState(false)
 
-  const handleDownload = async () => {
-    const cardElement = document.getElementById('member-card')
-    if (!cardElement) return
-    setIsDownloading(true)
-    try {
-      const canvas = await html2canvas(cardElement, { scale: 2, backgroundColor: null })
-      const link = document.createElement('a')
-      link.download = 'Kartu-Anggota-HIMASTA.png'
-      link.href = canvas.toDataURL('image/png')
-      link.click()
-    } catch (e) {
-      console.error('Failed to generate card', e)
-    } finally {
-      setIsDownloading(false)
-    }
-  }
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -91,10 +73,6 @@ export function ProfileActions({ initialPhone, initialPhotoUrl, registrations }:
   return (
     <div className="space-y-4">
       <div className="flex gap-2">
-        <Button onClick={handleDownload} disabled={isDownloading} variant="outline" className="flex-1 gap-2 border-border">
-          <Download className="h-4 w-4" />
-          {isDownloading ? 'Memproses...' : 'Unduh Kartu'}
-        </Button>
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
           <DialogTrigger asChild>
             <Button variant="secondary" className="flex-1 gap-2">
@@ -198,7 +176,7 @@ export function ProfileActions({ initialPhone, initialPhotoUrl, registrations }:
         </div>
       </div>
 
-      {/* Certificate Modal */}
+      {/* Certificate Modal — link diisi BPH/Kadiv */}
       {selectedCert && (
         <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4 animate-in fade-in duration-200">
           <div className="bg-background rounded-xl border border-border shadow-xl max-w-sm w-full overflow-hidden flex flex-col transform transition-all duration-300">
@@ -206,6 +184,7 @@ export function ProfileActions({ initialPhone, initialPhotoUrl, registrations }:
               <h3 className="font-bold text-base text-foreground">Sertifikat Digital</h3>
               <button
                 onClick={() => setSelectedCert(null)}
+                aria-label="Tutup"
                 className="text-muted-foreground hover:text-foreground p-1 rounded-lg hover:bg-secondary transition-colors"
               >
                 <X className="h-5 w-5" />
@@ -214,19 +193,30 @@ export function ProfileActions({ initialPhone, initialPhotoUrl, registrations }:
             <div className="p-5 space-y-4">
               <div className="border border-dashed border-primary/20 rounded-xl p-4 bg-primary/5 text-center space-y-2">
                 <Award className="h-10 w-10 text-primary mx-auto" />
-                <p className="text-xs text-primary font-bold uppercase tracking-wider">{selectedCert.certificateNumber}</p>
-                <p className="text-sm font-bold text-foreground">{selectedCert.recipientName}</p>
-                <p className="text-xs text-muted-foreground">Telah menghadiri event: <br /><strong className="text-foreground">{selectedCert.eventName}</strong></p>
-              </div>
-              <div className="text-[10px] text-muted-foreground space-y-1">
-                <p>Penyelenggara: {selectedCert.organizer}</p>
-                <p>Diterbitkan: {formatDate(selectedCert.issuedAt)}</p>
+                <p className="text-sm font-bold text-foreground">{selectedCert.eventName}</p>
+                {selectedCert.url ? (
+                  <p className="text-xs text-muted-foreground">
+                    Sertifikat Anda tersedia. Klik tombol di bawah untuk membuka.
+                  </p>
+                ) : (
+                  <p className="text-xs text-muted-foreground">
+                    Link sertifikat belum tersedia. Hubungi panitia/BPH.
+                  </p>
+                )}
               </div>
             </div>
             <div className="p-4 border-t border-border flex justify-end gap-2 bg-secondary/20">
-              <Button size="sm" onClick={() => window.print()} className="bg-primary text-white hover:opacity-90">
-                Cetak / Simpan PDF
-              </Button>
+              {selectedCert.url ? (
+                <Button size="sm" asChild className="gap-1.5">
+                  <a href={selectedCert.url} target="_blank" rel="noopener noreferrer">
+                    <ExternalLink className="h-3.5 w-3.5" /> Buka Sertifikat
+                  </a>
+                </Button>
+              ) : (
+                <Button size="sm" variant="outline" onClick={() => setSelectedCert(null)}>
+                  Tutup
+                </Button>
+              )}
             </div>
           </div>
         </div>

@@ -8,25 +8,39 @@ export const dynamic = 'force-dynamic'
 export default async function KalenderPage() {
   const user = await requireSession()
 
+  // Batasi ke tahun berjalan: kalender tampil per bulan, tidak perlu
+  // fetch seluruh riwayat. Filter pakai index [startTime].
+  const yearStart = new Date(new Date().getFullYear(), 0, 1)
+  const yearEnd = new Date(new Date().getFullYear() + 1, 0, 1)
+
   const [divisions, sessions, prokers, events] = await Promise.all([
     prisma.division.findMany({ orderBy: { name: 'asc' }, select: { id: true, name: true, slug: true } }),
     prisma.attendanceSession.findMany({
-      where:
-        user.role === 'BPH'
+      where: {
+        ...(user.role === 'BPH'
           ? {}
-          : { OR: [{ divisionId: user.divisionId ?? undefined }, { divisionId: null }] },
+          : { OR: [{ divisionId: user.divisionId ?? undefined }, { divisionId: null }] }),
+        startTime: { gte: yearStart, lt: yearEnd },
+      },
       include: { division: { select: { id: true, name: true, slug: true } } },
       orderBy: { startTime: 'asc' },
       take: 300,
     }),
     prisma.proker.findMany({
-      where: user.role === 'BPH' ? {} : { divisionId: user.divisionId ?? undefined },
+      where: {
+        ...(user.role === 'BPH' ? {} : { divisionId: user.divisionId ?? undefined }),
+        OR: [
+          { startDate: null, endDate: null },
+          { startDate: { gte: yearStart } },
+          { endDate: { gte: yearStart } },
+        ],
+      },
       include: { division: { select: { id: true, name: true, slug: true } } },
       take: 300,
     }),
     prisma.event.findMany({
-      where:
-        user.role === 'BPH'
+      where: {
+        ...(user.role === 'BPH'
           ? {}
           : user.role === 'KADIV'
             ? {
@@ -35,7 +49,9 @@ export default async function KalenderPage() {
                 { visibility: 'PUBLIC', status: 'PUBLISHED' },
               ],
             }
-            : { visibility: 'PUBLIC', status: 'PUBLISHED' },
+            : { visibility: 'PUBLIC', status: 'PUBLISHED' }),
+        startTime: { gte: yearStart, lt: yearEnd },
+      },
       include: { division: { select: { id: true, name: true, slug: true } } },
       orderBy: { startTime: 'asc' },
       take: 300,

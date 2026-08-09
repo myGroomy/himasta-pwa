@@ -420,7 +420,7 @@ function ManagedEventRow({ event: e }: { event: EventData }) {
 function ManageRegistrationsButton({ event }: { event: EventData }) {
   const [open, setOpen] = useState(false)
   const [registrations, setRegistrations] = useState<
-    { id: string; name: string; email: string | null; attended: boolean; qrToken: string | null }[]
+    { id: string; name: string; email: string | null; attended: boolean; qrToken: string | null; certificateUrl: string | null }[]
   >([])
   const [loading, setLoading] = useState(false)
   const router = useRouter()
@@ -454,6 +454,26 @@ function ManageRegistrationsButton({ event }: { event: EventData }) {
 
   const attendedCount = registrations.filter((r) => r.attended).length
 
+  async function setCertLink(id: string, url: string) {
+    const res = await fetch(`/api/events/${event.id}/registrations`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        registrationId: id,
+        attended: registrations.find((r) => r.id === id)?.attended ?? false,
+        certificateUrl: url,
+      }),
+    })
+    if (res.ok) {
+      setRegistrations((prev) =>
+        prev.map((r) => (r.id === id ? { ...r, certificateUrl: url || null } : r))
+      )
+      toast({ title: url ? 'Link sertifikat disimpan' : 'Link sertifikat dihapus' })
+    } else {
+      toast({ title: 'Gagal simpan link sertifikat', variant: 'destructive' })
+    }
+  }
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <Button variant="outline" size="sm" onClick={() => setOpen(true)}>
@@ -475,20 +495,40 @@ function ManageRegistrationsButton({ event }: { event: EventData }) {
         ) : (
           <div className="max-h-96 divide-y overflow-y-auto rounded-lg border">
             {registrations.map((r) => (
-              <div key={r.id} className="flex items-center justify-between gap-3 px-3 py-2">
-                <div className="min-w-0">
-                  <p className="truncate text-sm font-medium">{r.name}</p>
-                  <p className="truncate text-xs text-muted-foreground">
-                    {r.email ?? 'Eksternal'}
-                  </p>
+              <div key={r.id} className="flex flex-col gap-2 px-3 py-2">
+                <div className="flex items-center justify-between gap-3">
+                  <div className="min-w-0">
+                    <p className="truncate text-sm font-medium">{r.name}</p>
+                    <p className="truncate text-xs text-muted-foreground">
+                      {r.email ?? 'Eksternal'}
+                    </p>
+                  </div>
+                  <Button
+                    size="sm"
+                    variant={r.attended ? 'default' : 'outline'}
+                    onClick={() => toggle(r.id, !r.attended)}
+                  >
+                    {r.attended ? 'Hadir ✓' : 'Tandai Hadir'}
+                  </Button>
                 </div>
-                <Button
-                  size="sm"
-                  variant={r.attended ? 'default' : 'outline'}
-                  onClick={() => toggle(r.id, !r.attended)}
-                >
-                  {r.attended ? 'Hadir ✓' : 'Tandai Hadir'}
-                </Button>
+                <div className="flex gap-2">
+                  <Input
+                    placeholder="Link sertifikat (diisi BPH/Kadiv)"
+                    defaultValue={r.certificateUrl ?? ''}
+                    className="h-8 text-xs"
+                    onBlur={(e) => {
+                      if ((e.target.value || '') !== (r.certificateUrl ?? '')) setCertLink(r.id, e.target.value.trim())
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') (e.target as HTMLInputElement).blur()
+                    }}
+                  />
+                  {r.certificateUrl && (
+                    <Button asChild size="sm" variant="outline" className="h-8 shrink-0">
+                      <a href={r.certificateUrl} target="_blank" rel="noopener noreferrer">Buka</a>
+                    </Button>
+                  )}
+                </div>
               </div>
             ))}
           </div>

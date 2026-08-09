@@ -1,10 +1,11 @@
 'use client'
 
 import Link from 'next/link'
-import { useState } from 'react'
-import { signIn } from 'next-auth/react'
+import Image from 'next/image'
+import { useEffect, useState } from 'react'
+import { signIn, getProviders } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
-import { Loader2, Eye, EyeOff, School, User, Lock } from 'lucide-react'
+import { Loader2, Eye, EyeOff, User, Lock } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -15,7 +16,13 @@ export default function LoginPage() {
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [googleLoading, setGoogleLoading] = useState(false)
+  const [hasGoogle, setHasGoogle] = useState(false)
   const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    getProviders().then((p) => setHasGoogle(Boolean(p?.google)))
+  }, [])
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -42,32 +49,35 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="flex-1 flex flex-col justify-center px-6 py-12 bg-[#001035] text-white">
+    <div className="flex-1 flex flex-col justify-center px-6 py-12">
       <div className="w-full max-w-sm mx-auto space-y-8">
-        {/* Header Section */}
-        <div className="text-center flex flex-col items-center">
-          {/* Logo Placeholder */}
-          <div className="w-16 h-16 bg-white/10 rounded border border-white/20 flex items-center justify-center mb-6">
-            <School className="h-8 w-8 text-white" />
+        {/* Header */}
+        <div className="text-center flex flex-col items-center gap-2">
+          <div className="relative h-14 w-14 overflow-hidden rounded-xl border border-border bg-muted mb-2">
+            <Image
+              src="/himasta-logo.webp"
+              alt="Logo HIMASTA"
+              fill
+              className="object-contain p-1"
+            />
           </div>
-          <h1 className="text-2xl font-bold tracking-tight text-white mb-2">
+          <h1 className="text-xl font-semibold tracking-tight text-foreground">
             Masuk ke akun Anda
           </h1>
-          <p className="text-xs text-slate-300">
-            Gunakan NIM atau Email kepengurusan HIMASTA
+          <p className="text-sm text-muted-foreground">
+            Gunakan NIM atau email kepengurusan HIMASTA
           </p>
         </div>
 
-        {/* Form Section */}
-        <div className="bg-[#001c55] border border-white/10 p-6 rounded shadow-lg space-y-6">
+        {/* Form */}
+        <div className="bg-card border border-border rounded-xl p-6 shadow-sm space-y-5">
           <form onSubmit={handleSubmit} className="space-y-4">
-            {/* NIM / Email */}
-            <div className="space-y-2 text-left">
-              <Label className="text-[10px] font-bold uppercase tracking-wider text-slate-300" htmlFor="identifier">
+            <div className="space-y-1.5 text-left">
+              <Label className="text-sm font-medium text-foreground" htmlFor="identifier">
                 NIM / Email
               </Label>
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-muted-foreground">
                   <User className="h-4 w-4" />
                 </div>
                 <Input
@@ -77,23 +87,25 @@ export default function LoginPage() {
                   value={identifier}
                   onChange={(e) => setIdentifier(e.target.value)}
                   required
-                  className="block w-full pl-10 pr-3 py-3 border border-white/10 bg-[#001035] text-white placeholder:text-slate-500 focus:border-white/40 focus:ring-0 transition-colors min-h-[48px] text-sm rounded"
+                  className="pl-9 h-10"
                 />
               </div>
             </div>
 
-            {/* Password */}
-            <div className="space-y-2 text-left">
+            <div className="space-y-1.5 text-left">
               <div className="flex justify-between items-center">
-                <Label className="text-[10px] font-bold uppercase tracking-wider text-slate-300" htmlFor="password">
+                <Label className="text-sm font-medium text-foreground" htmlFor="password">
                   Password
                 </Label>
-                <Link href="/forgot-password" className="text-xs font-semibold text-white/80 hover:text-white hover:underline">
+                <Link
+                  href="/forgot-password"
+                  className="text-xs font-medium text-primary hover:underline"
+                >
                   Lupa Password?
                 </Link>
               </div>
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-muted-foreground">
                   <Lock className="h-4 w-4" />
                 </div>
                 <Input
@@ -103,12 +115,13 @@ export default function LoginPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
-                  className="block w-full pl-10 pr-12 py-3 border border-white/10 bg-[#001035] text-white placeholder:text-slate-500 focus:border-white/40 focus:ring-0 transition-colors min-h-[48px] text-sm rounded"
+                  className="pl-9 pr-10 h-10"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword((v) => !v)}
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-white transition-colors focus:outline-none"
+                  aria-label={showPassword ? 'Sembunyikan password' : 'Tampilkan password'}
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-muted-foreground hover:text-foreground transition-colors"
                 >
                   {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                 </button>
@@ -116,15 +129,14 @@ export default function LoginPage() {
             </div>
 
             {error && (
-              <p className="rounded bg-red-500/20 px-3 py-2 text-xs text-red-200 text-left leading-relaxed border border-red-500/30">
+              <p className="rounded-md bg-destructive/10 px-3 py-2 text-xs text-destructive text-left leading-relaxed border border-destructive/20">
                 {error}
               </p>
             )}
 
-            {/* Action Button */}
             <Button
               type="submit"
-              className="w-full bg-white hover:bg-slate-100 text-[#001035] font-bold py-3 px-4 rounded transition-colors min-h-[48px] flex justify-center items-center mt-2 border-0"
+              className="w-full h-10 font-semibold"
               disabled={loading}
             >
               {loading && <Loader2 className="h-4 w-4 animate-spin mr-2" />}
@@ -132,10 +144,42 @@ export default function LoginPage() {
             </Button>
           </form>
 
-          {/* Footer Navigation */}
-          <div className="text-center text-xs text-slate-400 pt-4 border-t border-white/10">
+          {hasGoogle && (
+            <>
+              <div className="flex items-center gap-3">
+                <div className="h-px flex-1 bg-border" />
+                <span className="text-xs text-muted-foreground">atau</span>
+                <div className="h-px flex-1 bg-border" />
+              </div>
+
+              <Button
+                type="button"
+                variant="outline"
+                className="w-full h-10 font-medium"
+                disabled={googleLoading}
+                onClick={async () => {
+                  setGoogleLoading(true)
+                  await signIn('google', { callbackUrl: '/' })
+                }}
+              >
+                {googleLoading ? (
+                  <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                ) : (
+                  <svg className="h-4 w-4 mr-2" viewBox="0 0 24 24" aria-hidden="true">
+                    <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.27-4.74 3.27-8.1Z" />
+                    <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84A11 11 0 0 0 12 23Z" />
+                    <path fill="#FBBC05" d="M5.84 14.1a6.6 6.6 0 0 1 0-4.2V7.06H2.18a11 11 0 0 0 0 9.88l3.66-2.84Z" />
+                    <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15A11 11 0 0 0 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52Z" />
+                  </svg>
+                )}
+                Masuk dengan Google
+              </Button>
+            </>
+          )}
+
+          <div className="text-center text-sm text-muted-foreground pt-4 border-t border-border">
             Belum punya akun?{' '}
-            <Link href="/register" className="font-bold text-white hover:underline">
+            <Link href="/register" className="font-medium text-primary hover:underline">
               Daftar disini
             </Link>
           </div>

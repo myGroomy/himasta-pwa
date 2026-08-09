@@ -9,6 +9,7 @@ import {
   AnnouncementDialog,
   type AnnouncementDialogData,
 } from '@/components/shared/announcement-dialog'
+import { AnnouncementReaction } from '@/components/shared/announcement-reaction'
 
 const CATEGORY_BADGE: Record<string, string> = {
   event: 'bg-amber-100 text-amber-900',
@@ -24,7 +25,13 @@ const CATEGORY_LABEL: Record<string, string> = {
   organisasi: 'Organisasi',
 }
 
-export function AnnouncementList({ announcements }: { announcements: AnnouncementDialogData[] }) {
+export function AnnouncementList({
+  announcements,
+  currentUserId,
+}: {
+  announcements: AnnouncementDialogData[]
+  currentUserId?: string
+}) {
   const [selected, setSelected] = useState<AnnouncementDialogData | null>(null)
 
   return (
@@ -93,6 +100,13 @@ export function AnnouncementList({ announcements }: { announcements: Announcemen
                 <p className="text-[11px] text-muted-foreground">
                   {a.scope === 'GENERAL' ? 'HIMASTA' : (a.division?.name ?? 'Divisi')}
                 </p>
+              </div>
+              <div className="ml-auto">
+                <AnnouncementReaction
+                  announcementId={a.id}
+                  initialCount={a._count?.reactions ?? 0}
+                  initialReacted={a.reactions?.some((r) => r.userId === currentUserId) ?? false}
+                />
               </div>
             </div>
           </article>

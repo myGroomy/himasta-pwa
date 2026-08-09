@@ -28,13 +28,19 @@ export async function PATCH(
 
   const task = await prisma.task.findUnique({
     where: { id: params.id },
-    include: { proker: { select: { divisionId: true, status: true } } },
+    include: {
+      proker: { select: { divisionId: true, status: true } },
+      division: { select: { id: true } },
+    },
   })
   if (!task) return notFound('Task tidak ditemukan')
 
   const isProkerManager =
+    user.isSuper ||
     user.role === 'BPH' ||
-    (user.role === 'KADIV' && task.proker.divisionId === user.divisionId)
+    (user.role === 'KADIV' &&
+      ((task.proker && task.proker.divisionId === user.divisionId) ||
+        (task.division && task.division.id === user.divisionId)))
   const isAssignee = task.assigneeId === user.id
 
   const body = await req.json().catch(() => null)
@@ -58,8 +64,8 @@ export async function PATCH(
       include: { assignee: { select: { id: true, name: true } } },
     })
 
-    // Progress task menggerakkan status proker induk
-    await syncProkerStatus(task.prokerId)
+    // Progress task menggerakkan status proker induk (task divisi tanpa proker di-skip)
+    if (task.prokerId) await syncProkerStatus(task.prokerId)
 
     return NextResponse.json({ task: updated })
   } catch (error) {

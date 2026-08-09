@@ -22,7 +22,7 @@ export default async function KegiatanPage() {
       include: {
         division: { select: { id: true, name: true, slug: true } },
         createdBy: { select: { id: true, name: true } },
-        _count: { select: { records: true } },
+        // records dipakai utk statusCounts; _count.records redundan (records.length)
         records: { select: { status: true } },
       },
       orderBy: { startTime: 'desc' },

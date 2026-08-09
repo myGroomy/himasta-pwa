@@ -48,7 +48,7 @@ export default async function PublicEventPage({ params }: { params: { id: string
           </Button>
           <div className="flex items-center gap-2">
             <div className="relative h-6 w-6">
-              <Image src="/himasta-logo.png" alt="Logo" fill className="object-contain" />
+              <Image src="/himasta-logo.webp" alt="Logo" fill className="object-contain" />
             </div>
             <span className="font-bold hidden sm:inline-block">HIMASTA</span>
           </div>

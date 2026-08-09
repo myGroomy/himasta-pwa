@@ -9,6 +9,7 @@ import {
 } from '@/lib/api'
 import { z } from 'zod'
 import type { SessionUser } from '@/lib/auth'
+import { pushToUsersAsync } from '@/lib/push'
 
 const createSchema = z.object({
   title: z.string().min(3, 'Judul minimal 3 karakter').max(200),
@@ -138,6 +139,16 @@ async function createAnnouncementNotifications(
       link: `/announcements/${announcementId}`,
     })),
   })
+
+  // Push ke perangkat (saat app ditutup) — fire-and-forget.
+  pushToUsersAsync(
+    recipients.map((r) => r.id),
+    {
+      title: 'Pengumuman baru',
+      message: announcement.title,
+      link: `/announcements/${announcementId}`,
+    }
+  )
 }
 
 async function notifyBphPending(announcementId: string, author: SessionUser, title: string) {
@@ -154,4 +165,13 @@ async function notifyBphPending(announcementId: string, author: SessionUser, tit
       link: `/admin/approval`,
     })),
   })
+
+  pushToUsersAsync(
+    bphs.map((b) => b.id),
+    {
+      title: 'Menunggu approval',
+      message: `Pengumuman "${title}" dari ${author.name} menunggu persetujuan Anda.`,
+      link: `/admin/approval`,
+    }
+  )
 }
