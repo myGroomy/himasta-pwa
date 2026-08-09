@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from 'next'
 import './globals.css'
 import { Toaster } from '@/components/ui/use-toast'
-import { ServiceWorkerRegistration } from '@/components/shared/service-worker-registration'
 
 const APP_NAME = 'HIMASTA'
 const APP_DESCRIPTION =
@@ -74,7 +73,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <ThemeProviderWrapper attribute="class" defaultTheme="light" enableSystem>
           {children}
           <Toaster />
-          <ServiceWorkerRegistration />
         </ThemeProviderWrapper>
       </body>
     </html>

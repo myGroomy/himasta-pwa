@@ -1,4 +1,6 @@
 /** @type {import('next').NextConfig} */
+const withPWA = require('@ducanh2912/next-pwa').default
+
 const nextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
@@ -25,4 +27,31 @@ const nextConfig = {
   },
 }
 
-module.exports = nextConfig
+module.exports = withPWA({
+  dest: 'public',
+  disable: process.env.NODE_ENV === 'development',
+  register: true,
+  scope: '/',
+  extendDefaultRuntimeCaching: true,
+  workboxOptions: {
+    runtimeCaching: [
+      // Data API (termasuk auth/session) — SELALU fresh, jangan pernah di-cache
+      {
+        urlPattern: ({ sameOrigin, url }) => sameOrigin && url.pathname.startsWith('/api/'),
+        handler: 'NetworkOnly',
+        method: 'GET',
+        options: { cacheName: 'apis' },
+      },
+      // RSC payload halaman (isi force-dynamic) — network-first, cache hanya utk fallback offline
+      {
+        urlPattern: /\/_next\/data\/.+\/.+\.json$/i,
+        handler: 'NetworkFirst',
+        method: 'GET',
+        options: {
+          cacheName: 'next-data',
+          expiration: { maxEntries: 32, maxAgeSeconds: 86400 },
+        },
+      },
+    ],
+  },
+})(nextConfig)
