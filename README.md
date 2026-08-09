@@ -67,7 +67,7 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY="<anon key dari Supabase Dashboard>"
 SUPABASE_SERVICE_ROLE_KEY="<service role key dari Supabase Dashboard>"
 
 NEXTAUTH_SECRET="<random-long-string>"   # openssl rand -base64 32
-NEXTAUTH_URL="https://himasta.livowear.my.id"
+NEXTAUTH_URL="<your-endpoint-url>"
 ```
 
 Tambahan opsional:
@@ -126,7 +126,7 @@ Pilihan [Enter=Local]:
 - Pilih **2 / Domain**: Cloudflare tunnel dinyalakan, app bisa diakses publik lewat `https://himasta.livowear.my.id`.
 - Kalau `cloudflared` tidak terpasang, config tunnel belum ada, atau tunnel belum terdaftar, wrapper otomatis memakai mode Local.
 
-Akses publik (setelah pilih Domain): **https://himasta.livowear.my.id**
+Akses publik (setelah pilih Domain): **<domain>**
 
 ### Variabel Tunnel
 
@@ -222,11 +222,3 @@ Prisma CLI membaca `.env`, bukan `.env.local`. Pastikan `.env` ada dan terisi.
 - PWA meng-cache aset UI di browser; data API selalu diambil fresh.
 
 ---
-
-## Roadmap
-
-- **V1 (selesai):** auth, portal info, workspace divisi, absensi QR, arsip dokumen, direktori, notifikasi in-app, admin (approval + kelola user).
-- **V2:** proker + task, sistem perizinan, event management, kalender, push notification, anggaran ringan. Lihat `PLAN/PRD_V2.md`.
-- **V3:** regenerasi periode, analytics, search lanjutan, diskusi divisi, integrasi Google. Lihat `PLAN/PRD_V3.md`.
-
-Dokumen perancangan: `PLAN/PRD.md`, `PLAN/PRD_V2.md`, `PLAN/PRD_V3.md`, `PLAN/TDD.md`.
