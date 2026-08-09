@@ -12,7 +12,7 @@ PWA berbasis Next.js 14 untuk operasional internal HIMASTA (portal info, absensi
 └──────────────┬───────────────┘      └───────────────────────────────────────┘
                │ Cloudflare Tunnel (scripts/with-tunnel.mjs)
                ▼
-        https://himasta.livowear.my.id
+        <your-domain>
 ```
 
 - **App HIMASTA** adalah kode aplikasi (`app/`, `components/`, `lib/`, `prisma/`). Di folder proyek ini.
